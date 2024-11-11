@@ -1,0 +1,18 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-CKEn3u-1.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/css/background.css": {
+    "file": "assets/background-BofZJbVz.css",
+    "src": "resources/css/background.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-BjCBnTiP.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  }
+}
