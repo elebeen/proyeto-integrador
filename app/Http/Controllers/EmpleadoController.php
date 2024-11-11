@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Mantenimiento;
 use App\Http\Requests;
 use Carbon\Carbon;
+use App\Models\Auto;
 use SplHeap;
 
 class EmpleadoController extends Controller
@@ -110,6 +111,11 @@ class EmpleadoController extends Controller
         return view('empleado.cola-citas', compact('citasOrdenadas'));
     }
 
+    public function filtros_autos(Request $request){
+        $request = Auto::get()->all();
+        return view('empleado.autos', compact('request'));
+    }
+    
     /**
      * Método para actualizar el estado de una cita a terminado y guardar la fecha de la reparacion
      */

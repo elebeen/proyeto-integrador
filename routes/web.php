@@ -49,6 +49,9 @@ Route::middleware(['auth:empleado'])->group(function () {
     Route::get('empleado/cola-citas',[EmpleadoController::class, 'ordenar_citas_prioridad'])
         ->name('cola.citas');
 
+    Route::get('empleado/autos', [EmpleadoController::class, 'filtros_autos'])
+        ->name('autos.filtros');
+
     Route::get('empleado/citas_prioridad', [EmpleadoController::class,'ordenar_citas_prioridad'])
         ->name('citas.prioridad');
 
