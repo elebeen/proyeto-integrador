@@ -1,5 +1,5 @@
 <x-empleado>
-    <div class="container mx-auto p-6">
+    <div class="w-full p-6">
         <h1 class="text-2xl font-bold mb-6">Filtrar Citas de Mantenimiento</h1>
 
         <!-- Formulario de filtros -->
@@ -50,34 +50,41 @@
             </div>
         </form>
 
-        <!-- Tabla de citas filtradas -->
-        <div class="overflow-x-auto">
-            <table class="w-full bg-white rounded-lg shadow-lg">
-                <thead class="bg-gray-200">
-                    <tr>
-                        <th class="p-4 text-left">Fecha de Entrega</th>
-                        <th class="p-4 text-left">Tipo de Servicio</th>
-                        <th class="p-4 text-left">Estado</th>
-                        <th class="p-4 text-left">Usuario</th>
-                        <th class="p-4 text-left">Placa del Vehículo</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($citasFiltradas as $cita)
-                        <tr class="border-b border-gray-200">
-                            <td class="p-4">{{ $cita->fecha_entrega_cliente }}</td>
-                            <td class="p-4">{{ ucfirst($cita->servicio_tipo) }}</td>
-                            <td class="p-4">{{ $cita->estado ? 'Terminada' : 'No Terminada' }}</td>
-                            <td class="p-4">{{ $cita->user->name ?? 'N/A' }}</td>
-                            <td class="p-4">{{ $cita->auto->placa ?? 'N/A' }}</td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" class="p-4 text-center text-gray-500">No se encontraron citas con los filtros seleccionados.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+        <div class="w-full">
+            <div class="h-full">
+                @forelse($citasFiltradas as $cita)
+                    <div class="overflow-x-auto">
+                        <table class="w-full bg-white rounded-lg shadow-lg">
+                            <thead class="bg-gray-200">
+                                <tr>
+                                    <th class="p-4 text-left">Fecha de Entrega</th>
+                                    <th class="p-4 text-left">Tipo de Servicio</th>
+                                    <th class="p-4 text-left">Estado</th>
+                                    <th class="p-4 text-left">Usuario</th>
+                                    <th class="p-4 text-left">Placa del Vehículo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-200">
+                                    <td class="p-4">{{ $cita->fecha_entrega_cliente }}</td>
+                                    <td class="p-4">{{ ucfirst($cita->servicio_tipo) }}</td>
+                                    <td class="p-4">{{ $cita->estado ? 'Terminada' : 'No Terminada' }}</td>
+                                    <td class="p-4">{{ $cita->user->name ?? 'N/A' }}</td>
+                                    <td class="p-4">{{ $cita->auto->placa ?? 'N/A' }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                @empty
+                    <x-no-found>
+                        <div class="min-h-80">
+                            <h1 class="mt-4 text-white text-lg">Lo sentimos,</h1>
+                            <p class="font-bold text-white text-2xl">no hay mantenimientos para mostrar</p>
+                        </div>
+                    </x-no-found>
+                @endforelse
+            </div>
         </div>
+        <!-- Tabla de citas filtradas -->
     </div>
 </x-empleado>   

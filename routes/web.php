@@ -52,6 +52,9 @@ Route::middleware(['auth:empleado'])->group(function () {
     Route::get('empleado/autos', [EmpleadoController::class, 'filtros_autos'])
         ->name('autos.filtros');
 
+    Route::get('empleado/usuarios', [EmpleadoController::class, 'filtros_usuarios'])
+        ->name('usuarios.filtros');
+
     Route::get('empleado/citas_prioridad', [EmpleadoController::class,'ordenar_citas_prioridad'])
         ->name('citas.prioridad');
 

@@ -11,6 +11,7 @@ class Auto extends Model
         "modelo",
         "kilometraje",
         "color",
+        "placa",
         "anio_fabri",
     ];
     public function mantenimiento() {
