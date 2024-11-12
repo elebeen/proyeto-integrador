@@ -14,10 +14,14 @@ use Illuminate\View\View;
 
 class EmpleadoResetPasswordController extends Controller
 {
-    public function create(Request $request): View {
-        return view('empleado.change-password', ['request' => $request]);
+    public function create(): View {                      
+        $token = Str::random(60);         
+        return view('empleado.cambiar-contrasena', compact('token'));
     }
 
+    // public function create_password(Request $request) {
+    //     return view('empleado.cambiar-contraseña');
+    // }
     public function store(Request $request): RedirectResponse
     {
         $request->validate([

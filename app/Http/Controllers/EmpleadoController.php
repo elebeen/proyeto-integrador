@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Mantenimiento;
 use App\Http\Requests;
-use Carbon\Carbon;
+use App\Models\Repuesto;
 use App\Models\Auto;
 use App\Models\User;
+use Carbon\Carbon;
 use SplHeap;
 
 class EmpleadoController extends Controller
@@ -120,6 +121,11 @@ class EmpleadoController extends Controller
     public function filtros_usuarios(Request $request) {
         $request = User::get()->all();
         return view('empleado.usuarios', compact('request'));
+    }
+
+    public function filtros_repuestos(Request $request) {
+        $request = Repuesto::get()->all();
+        return view('empleado.repuestos', compact('request'));
     }
     /**
      * Método para actualizar el estado de una cita a terminado y guardar la fecha de la reparacion

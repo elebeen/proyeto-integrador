@@ -30,9 +30,14 @@ Route::middleware('guest')->group(function () {
         ->name('empleado.login');
     
     Route::post('empleado/forgot-password', [EmpleadoResetPasswordController::class, 'store'])
-            ->name('empleado.password');
+        ->name('empleado.password');
     
-    Route::get('empleado/reset-password/{token}', [EmpleadoResetPasswordController::class, 'create']);
+    Route::get('empleado/reset-password/{token}', [EmpleadoResetPasswordController::class, 'create'])
+        ->name('empleado.create-password');
+
+    Route::get('empleado/reset-form', [EmpleadoResetPasswordController::class, 'create'])
+        ->name('empleado.reset-form');
+
 });
 
 Route::middleware(['auth:empleado'])->group(function () {
@@ -54,6 +59,9 @@ Route::middleware(['auth:empleado'])->group(function () {
 
     Route::get('empleado/usuarios', [EmpleadoController::class, 'filtros_usuarios'])
         ->name('usuarios.filtros');
+
+    Route::get('empleado/repuestos', [EmpleadoController::class, 'filtros_repuestos'])
+        ->name('repuestos.filtros');
 
     Route::get('empleado/citas_prioridad', [EmpleadoController::class,'ordenar_citas_prioridad'])
         ->name('citas.prioridad');
