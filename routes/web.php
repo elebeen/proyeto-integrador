@@ -5,7 +5,9 @@ use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\EmpleadoResetPasswordController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ProfileController;
+use App\Mail\MyTestEmail;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
 
 Route::get('/', function () {
     return view('welcome');
@@ -15,6 +17,11 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/testroute', function(){
+    $name = "Mondongo";
+    Mail::to('pepito@gmail.com')->send( new MyTestEmail($name));
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
