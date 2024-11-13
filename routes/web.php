@@ -36,15 +36,11 @@ Route::middleware('guest')->group(function () {
     Route::post('empleado/login', [EmpleadoLoginController::class,'store'])
         ->name('empleado.login');
     
-    Route::post('empleado/forgot-password', [EmpleadoResetPasswordController::class, 'store'])
-        ->name('empleado.password');
-    
-    Route::get('empleado/reset-password/{token}', [EmpleadoResetPasswordController::class, 'create'])
-        ->name('empleado.create-password');
-
-    Route::get('empleado/reset-form', [EmpleadoResetPasswordController::class, 'create'])
-        ->name('empleado.reset-form');
-
+    Route::view('/empleado/forgot-password','empleado.forgot-password' )
+        ->name('empleado-password.request');
+         
+    Route::post('/empleado/forgot-password', [EmpleadoResetPasswordController::class, 'passwordEmail'])
+        ->name('password.email');
 });
 
 Route::middleware(['auth:empleado'])->group(function () {

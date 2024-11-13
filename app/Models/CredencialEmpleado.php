@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 // use Illuminate\Database\Eloquent\Model;
 
-class CredencialEmpleado extends Authenticatable
+class CredencialEmpleado extends Authenticatable implements CanResetPassword
 {
     use Notifiable;
     public $timestamps = false;

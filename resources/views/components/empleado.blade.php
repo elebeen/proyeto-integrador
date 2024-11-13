@@ -76,12 +76,12 @@
                         <span class="flex-1 ms-3 whitespace-nowrap">Repuestos</span>
                     </a>
                 </li>
-                <li>
+                {{-- <li>
                     <a href="{{ route('empleado.reset-form') }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-400 dark:hover:bg-gray-700 focus-within:bg-gray-400 dark:focus-within:bg-gray-700 group">
                         <x-gear class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></x-gear>
                         <span class="flex-1 ms-3 whitespace-nowrap">Cambiar contraseña</span>
                     </a>
-                </li>
+                </li> --}}
                 <li>
                     <form action="{{ route('empleado.logout') }}" method="POST">
                         @csrf 

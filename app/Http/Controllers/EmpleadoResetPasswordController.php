@@ -2,27 +2,41 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\PasswordReset;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Str;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rules;
-use Illuminate\View\View;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use App\Models\Empleado;
+use App\Models\CredencialEmpleado;
 
 class EmpleadoResetPasswordController extends Controller
 {
-    public function create(): View {                      
-        $token = Str::random(60);         
-        return view('empleado.cambiar-contrasena', compact('token'));
-    }
+    public function passwordEmail(Request $request) {
+        $request->validate(['usuario' => 'required']);
 
-    // public function create_password(Request $request) {
-    //     return view('empleado.cambiar-contraseña');
-    // }
-    public function store(Request $request): RedirectResponse
+        $credencialEmpleado = CredencialEmpleado::where('usuario', $request->usuario)->first();
+        
+        if (!$credencialEmpleado) {
+            return back()->withErrors(['usuario' => 'El usuario no está registrado.']);
+        }
+
+        $email = $credencialEmpleado->empleado->email ?? null;
+
+        if (!$email) {
+            return back()->withErrors(['usuario' => 'No se encontró un correo electrónico asociado a este usuario.']);
+        }
+
+        $status = Password::sendResetLink(['email' => $email]);
+        
+        return $status === Password::RESET_LINK_SENT
+                    ? back()->with(['status' => __($status)])
+                    : back()->withErrors(['usuario' => __($status)]);
+    }
+        public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'token' => ['required'],
