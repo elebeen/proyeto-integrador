@@ -40,7 +40,13 @@ Route::middleware('guest')->group(function () {
         ->name('empleado-password.request');
          
     Route::post('/empleado/forgot-password', [EmpleadoResetPasswordController::class, 'passwordEmail'])
-        ->name('password.email');
+        ->name('empleado-password.email');
+
+    Route::get('/reset-password/{token}', [EmpleadoResetPasswordController::class, 'passwordReset'])
+        ->name('empleado-password.reset');
+
+    Route::post('/reset-password', [EmpleadoResetPasswordController::class, 'passwordUpdate'] )
+        ->name('empleado-password.update');
 });
 
 Route::middleware(['auth:empleado'])->group(function () {

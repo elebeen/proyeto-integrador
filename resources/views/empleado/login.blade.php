@@ -9,6 +9,7 @@
             </h3>
         </div>
     </div>
+    <x-auth-session-status class="mb-4" :status="session('status')" />
     <form action="{{ route('empleado.login') }}" method="POST">
         @csrf
         <div>

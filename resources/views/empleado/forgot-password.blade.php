@@ -6,13 +6,13 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form method="POST" action="">
+    <form method="POST" action="{{ route('empleado-password.request') }}">
         @csrf
 
         <!-- Email Address -->
         <div>
             <x-input-label for="usuario" :value="__('Usuario')" />
-            <x-text-input id="usuario" class="block mt-1 w-full" type="usuario" name="usuario" :value="old('usuario')" required autofocus />
+            <x-text-input id="usuario" class="block mt-1 w-full" type="text" name="usuario" :value="old('usuario')" required autofocus />
             <x-input-error :messages="$errors->get('usuario')" class="mt-2" />
         </div>
 

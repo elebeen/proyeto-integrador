@@ -7,63 +7,70 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
+use App\Models\CredencialEmpleado;
 use Illuminate\Validation\Rules;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\Empleado;
-use App\Models\CredencialEmpleado;
+use App\Models\User;
 
 class EmpleadoResetPasswordController extends Controller
 {
     public function passwordEmail(Request $request) {
         $request->validate(['usuario' => 'required']);
 
-        $credencialEmpleado = CredencialEmpleado::where('usuario', $request->usuario)->first();
-        
-        if (!$credencialEmpleado) {
-            return back()->withErrors(['usuario' => 'El usuario no está registrado.']);
+        $credencial = CredencialEmpleado::where('usuario', $request->usuario)
+            ->first();
+
+        if (!$credencial) {
+            return back()->withErrors(['usuario' => 'No encontramos un usuario con ese nombre.']);
         }
 
-        $email = $credencialEmpleado->empleado->email ?? null;
+        $correo = Empleado::join('credencial_empleados', 'empleados.id', '=', 'credencial_empleados.empleado_id')
+            ->select('empleados.correo')
+            ->first()
+            ->correo;
 
-        if (!$email) {
-            return back()->withErrors(['usuario' => 'No se encontró un correo electrónico asociado a este usuario.']);
-        }
-
-        $status = Password::sendResetLink(['email' => $email]);
-        
-        return $status === Password::RESET_LINK_SENT
-                    ? back()->with(['status' => __($status)])
-                    : back()->withErrors(['usuario' => __($status)]);
-    }
-        public function store(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'token' => ['required'],
-            'usuario' => ['usuario'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
-
-        // Here we will attempt to reset the user's password. If it is successful we
-        // will update the password on an actual user model and persist it to the
-        // database. Otherwise we will parse the error and return the response.
-        $status = Password::reset(
-            $request->only('usuario', 'password', 'password_confirmation', 'token'),
-            function ($empleado) use ($request) {
-                $empleado->forceFill([
-                    'password' => Hash::make($request->password),
-                    // 'remember_token' => Str::random(60),
-                ])->save();
-
-                event(new PasswordReset($empleado));
-            }
+        $status = Password::broker('credenciales')->sendResetLink(
+            ['email' => $correo]
         );
 
-        // If the password was successfully reset, we will redirect the user back to
-        // the application's home authenticated view. If there is an error we can
-        // redirect them back to where they came from with their error message.
-        return $status == Password::PASSWORD_RESET
-                    ? redirect()->route('empleado.index')->with('status', __($status))
-                    : back()->withInput($request->only('usuario'));
+        return $status === Password::RESET_LINK_SENT
+            ? back()->with(['status' => 'Te hemos enviado un enlace para restablecer tu contraseña.'])
+            : back()->withErrors(['usuario' => 'Hubo un error al enviar el enlace de restablecimiento.']);
+    }
+
+    public function passwordReset(string $token) {
+        return view('empleado.reset-password', ['token' => $token]);
+    }
+
+    public function passwordUpdate(Request $request) {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:8|confirmed',
+        ]);
+        
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (CredencialEmpleado $user, string $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ]);
+        
+                $user->save();
+        
+                event(new PasswordReset($user));
+            }
+        );
+        
+        return $status === Password::PASSWORD_RESET
+                    ? redirect()->route('login')->with('status', __($status))
+                    : back()->withErrors(['email' => [__($status)]]);
+    }
+
+    public function broker()
+    {
+        return Password::broker('credenciales_empleados');
     }
 }
