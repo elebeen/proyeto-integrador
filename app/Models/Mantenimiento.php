@@ -33,4 +33,9 @@ class Mantenimiento extends Model
     {
         return $this->hasMany(Reparacion::class);
     }
+
+    public function empleado()
+    {
+        return $this->hasMany(Empleado::class);
+    }
 }
