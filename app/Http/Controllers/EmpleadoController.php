@@ -23,7 +23,7 @@ class EmpleadoController extends Controller
         $query = Mantenimiento::query();
 
         // Filtrar por fecha de entrega hasta una fecha específica
-        if ($request->has('fecha')) {
+        if ($request->has('fecha') && $request->fecha !== null) {
             $query->where('fecha_entrega_cliente', '<=', $request->fecha);
         }
 
@@ -38,23 +38,23 @@ class EmpleadoController extends Controller
         }
 
         // Filtrar por estado (citas no terminadas)
-        if ($request->filled('estado') && $request->estado == false) {
+        if ($request->filled('estado') && $request->estado == 0) {
             $query->where('estado', false);  // Filtrar por citas que no han sido terminadas
         }
 
-        if ($request->filled('estado') && $request->estado == true) {
+        if ($request->filled('estado') && $request->estado == 1) {
             $query->where('estado', false);  // Filtrar por citas que no han sido terminadas
         }
 
         // Filtrar por nombre del usuario (relacionado a la tabla `users`)
-        if ($request->filled('usuario')) {
+        if ($request->filled('usuario') && $request->usuario !== null) {
             $query->whereHas('user', function($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->usuario . '%');
             });
         }
 
         // Filtrar por placa del vehículo (relacionado a la tabla `autos`)
-        if ($request->filled('placa')) {
+        if ($request->filled('placa') && $request->placa !== null) {
             $query->whereHas('auto', function($q) use ($request) {
                 $q->where('placa', 'like', '%' . $request->placa . '%');
             });
@@ -114,8 +114,45 @@ class EmpleadoController extends Controller
     }
 
     public function filtros_autos(Request $request){
-        $request = Auto::get()->all();
-        return view('empleado.autos', compact('request'));
+        $query = Auto::query();
+
+        // Filtrar por marca
+        if ($request->filled('marca') && $request->marca !== null) {
+            $query->where('marca', 'like', '%' . $request->marca . '%');
+        }
+
+        // Filtrar por modelo
+        if ($request->filled('modelo') && $request->modelo !== null) {
+            $query->where('modelo', 'like', '%' . $request->modelo . '%');
+        }
+
+        // Filtrar por color
+        if ($request->filled('color') && $request->color !== null) {
+            $query->where('color', 'like', '%' . $request->color . '%');
+        }
+
+        // Filtrar por placa
+        if ($request->filled('placa') && $request->placa !== null) {
+            $query->where('placa', 'like', '%' . $request->placa . '%');
+        }
+
+        // Filtrar por año de fabricación
+        if ($request->filled('anio_fabri') && $request->anio_fabri !== null) {
+            $query->where('anio_fabri','<=', $request->anio_fabri);
+        }
+
+        // Filtrar por usuario (relacionado a la tabla `users`)
+        if ($request->filled('usuario') && $request->usuario !== null) {
+            $query->whereHas('user', function($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->usuario . '%');
+            });
+        }
+
+        // Obtener los autos filtrados
+        $autos = $query->get();
+
+        // Pasar los autos filtrados a la vista
+        return view('empleado.autos', compact('autos'));
     }
     
     public function filtros_usuarios(Request $request) {

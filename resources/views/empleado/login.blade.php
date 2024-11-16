@@ -1,7 +1,7 @@
 <x-guest-layout>
     <div class="text-center text-xl font-semibold text-slate-600">
         <div class="flex justify-center items-center text-center">
-            <h3 class="flex items-center text-[#0b847a]">
+            <h3 class="flex items-center text-[#fdf0d5]">
                 <div class="mr-1">
                     <x-user-logo class=""/>
                 </div>

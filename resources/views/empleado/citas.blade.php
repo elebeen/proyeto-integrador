@@ -7,13 +7,13 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 <!-- Filtro por fecha -->
                 <div>
-                    <label for="fecha" class="block text-sm font-medium text-gray-700">Fecha de Entrega</label>
+                    <label for="fecha" class="block text-base font-medium text-gray-700">Fecha de recepción limite</label>
                     <input type="date" id="fecha" name="fecha" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" value="{{ request('fecha') }}">
                 </div>
 
                 <!-- Filtro por tipo de servicio -->
                 <div>
-                    <label for="servicio_tipo" class="block text-sm font-medium text-gray-700">Tipo de Servicio</label>
+                    <label for="servicio_tipo" class="block text-base font-medium text-gray-700">Tipo de Servicio</label>
                     <select id="servicio_tipo" name="servicio_tipo" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
                         <option value="">Selecciona una opción</option>
                         <option value="premium" {{ request('servicio_tipo') == 'premium' ? 'selected' : '' }}>Premium</option>
@@ -23,7 +23,7 @@
 
                 <!-- Filtro por estado -->
                 <div>
-                    <label for="estado" class="block text-sm font-medium text-gray-700">Estado</label>
+                    <label for="estado" class="block text-base font-medium text-gray-700">Estado</label>
                     <select id="estado" name="estado" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
                         <option value="">Selecciona una opción</option>
                         <option value="1" {{ request('estado') === '1' ? 'selected' : '' }}>Terminada</option>
@@ -33,13 +33,13 @@
 
                 <!-- Filtro por nombre de usuario -->
                 <div>
-                    <label for="usuario" class="block text-sm font-medium text-gray-700">Nombre del Usuario</label>
+                    <label for="usuario" class="block text-base font-medium text-gray-700">Nombre del Usuario</label>
                     <input type="text" id="usuario" name="usuario" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" value="{{ request('usuario') }}" placeholder="Nombre de usuario">
                 </div>
 
                 <!-- Filtro por placa -->
                 <div>
-                    <label for="placa" class="block text-sm font-medium text-gray-700">Placa del Vehículo</label>
+                    <label for="placa" class="block text-base font-medium text-gray-700">Placa del Vehículo</label>
                     <input type="text" id="placa" name="placa" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" value="{{ request('placa') }}" placeholder="Placa del vehículo">
                 </div>
             </div>
@@ -50,41 +50,42 @@
             </div>
         </form>
 
-        <div class="w-full">
-            <div class="h-full">
-                @forelse($citasFiltradas as $cita)
-                    <div class="overflow-x-auto">
-                        <table class="w-full bg-white rounded-lg shadow-lg">
-                            <thead class="bg-gray-200">
-                                <tr>
-                                    <th class="p-4 text-left">Fecha de Entrega</th>
-                                    <th class="p-4 text-left">Tipo de Servicio</th>
-                                    <th class="p-4 text-left">Estado</th>
-                                    <th class="p-4 text-left">Usuario</th>
-                                    <th class="p-4 text-left">Placa del Vehículo</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="border-b border-gray-200">
-                                    <td class="p-4">{{ $cita->fecha_entrega_cliente }}</td>
-                                    <td class="p-4">{{ ucfirst($cita->servicio_tipo) }}</td>
-                                    <td class="p-4">{{ $cita->estado ? 'Terminada' : 'No Terminada' }}</td>
-                                    <td class="p-4">{{ $cita->user->name ?? 'N/A' }}</td>
-                                    <td class="p-4">{{ $cita->auto->placa ?? 'N/A' }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                @empty
+        <div class="overflow-x-auto h-full w-full">
+            @if($citasFiltradas->isNotEmpty()) 
+                <table class="w-full bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200 table-fixed">
+                    <thead class="bg-gray-800 text-white">
+                        <tr>
+                            <th class="p-4 text-left font-semibold uppercase tracking-wider">Fecha de recepción</th>
+                            <th class="p-4 text-left font-semibold uppercase tracking-wider">Tipo de Servicio</th>
+                            <th class="p-4 text-left font-semibold uppercase tracking-wider">Estado</th>
+                            <th class="p-4 text-left font-semibold uppercase tracking-wider">Usuario</th>
+                            <th class="p-4 text-left font-semibold uppercase tracking-wider">Placa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($citasFiltradas as $index => $cita)
+                            <tr class="{{ $index % 2 === 0 ? 'bg-gray-100' : 'bg-white' }} hover:bg-gray-400 transition duration-200">
+                                <td class="p-4 text-gray-700 border-b">{{ $cita->fecha_entrega_cliente }}</td>
+                                <td class="p-4 text-gray-700 border-b">{{ ucfirst($cita->servicio_tipo) }}</td>
+                                <td class="p-4 text-gray-700 border-b">
+                                    {{ $cita->estado ? 'Terminada' : 'No Terminada' }}
+                                </td>
+                                <td class="p-4 text-gray-700 border-b">{{ $cita->user->name ?? 'N/A' }}</td>
+                                <td class="p-4 text-gray-700 border-b">{{ $cita->auto->placa ?? 'N/A' }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>                
+            @else
+                <div class="h-full flex items-center justify-center">
                     <x-no-found>
-                        <div class="min-h-80">
+                        <div class="h-full text-center">
                             <h1 class="mt-4 text-white text-lg">Lo sentimos,</h1>
                             <p class="font-bold text-white text-2xl">no hay mantenimientos para mostrar</p>
                         </div>
                     </x-no-found>
-                @endforelse
-            </div>
+                </div>
+            @endif
         </div>
-        <!-- Tabla de citas filtradas -->
     </div>
 </x-empleado>   
