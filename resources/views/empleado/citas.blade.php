@@ -42,6 +42,19 @@
                     <label for="placa" class="block text-base font-medium text-gray-700">Placa del Vehículo</label>
                     <input type="text" id="placa" name="placa" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" value="{{ request('placa') }}" placeholder="Placa del vehículo">
                 </div>
+
+                <!-- Filtro por categoria -->
+                <div>
+                    <label for="categoria" class="block text-base font-medium text-gray-700">Tipo de reparación</label>
+                    <select name="categoria" id="categoria" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                        <option value="">Seleccione una opción</option>
+                        <option value="Electricidad" {{ old('categoria', request('categoria')) == 'Electricidad' ? 'selected' : '' }}>Electricidad</option>
+                        <option value="Mecanica" {{ old('categoria', request('categoria')) == 'Mecanica' ? 'selected' : '' }}>Mecánica</option>
+                        <option value="Planchado" {{ old('categoria', request('categoria')) == 'Planchado' ? 'selected' : '' }}>Planchado</option>
+                        <option value="General" {{ old('categoria', request('categoria')) == 'General' ? 'selected' : '' }}>General</option>
+                        <option value="Preventivo" {{ old('categoria', request('categoria')) == 'Preventivo' ? 'selected' : '' }}>Preventivo</option>
+                    </select>
+                </div>
             </div>
 
             <div class="mt-4">
@@ -58,20 +71,39 @@
                             <th class="p-4 text-left font-semibold uppercase tracking-wider">Fecha de recepción</th>
                             <th class="p-4 text-left font-semibold uppercase tracking-wider">Tipo de Servicio</th>
                             <th class="p-4 text-left font-semibold uppercase tracking-wider">Estado</th>
+                            <th class="p-4 text-left font-semibold uppercase tracking-wider">Ingreso del auto al taller</th>
                             <th class="p-4 text-left font-semibold uppercase tracking-wider">Usuario</th>
                             <th class="p-4 text-left font-semibold uppercase tracking-wider">Placa</th>
+                            <th class="p-4 text-left font-semibold uppercase tracking-wider">Empleado a cargo</th>
+                            <th class="p-4 text-left font-semibold uppercase tracking-wider">Categoria</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($citasFiltradas as $index => $cita)
-                            <tr class="{{ $index % 2 === 0 ? 'bg-gray-100' : 'bg-white' }} hover:bg-gray-400 transition duration-200">
+                            <tr class="{{ $index % 2 === 0 ? 'bg-gray-100' : 'bg-white' }} hover:bg-gray-300 transition duration-200">
                                 <td class="p-4 text-gray-700 border-b">{{ $cita->fecha_entrega_cliente }}</td>
-                                <td class="p-4 text-gray-700 border-b">{{ ucfirst($cita->servicio_tipo) }}</td>
                                 <td class="p-4 text-gray-700 border-b">
-                                    {{ $cita->estado ? 'Terminada' : 'No Terminada' }}
+                                    <span class="px-3 py-1 rounded-full text-sm font-medium 
+                                        {{ $cita->servicio_tipo === 'normal' ? 'bg-blue-400 text-white' : 'bg-yellow-500 text-black' }}">
+                                        {{ ucfirst($cita->servicio_tipo) }}
+                                    </span>
                                 </td>
-                                <td class="p-4 text-gray-700 border-b">{{ $cita->user->name ?? 'N/A' }}</td>
+                                <td class="p-4 text-white border-b">
+                                    <span class="px-3 py-1 rounded-full text-sm font-medium 
+                                        {{ $cita->estado ? 'bg-green-600' : 'bg-red-600' }}">
+                                        {{ $cita->estado ? 'Terminado' : 'Pendiente' }}
+                                    </span>
+                                </td>
+                                <td class="p-4 text-white border-b">
+                                    <span class="px-3 py-1 rounded-full text-sm font-medium 
+                                        {{ $cita->auto_ingresado ? 'bg-green-600' : 'bg-red-600' }}">
+                                        {{ $cita->auto_ingresado ? 'Ingresado' : 'No ingresado' }}
+                                    </span>
+                                </td>
+                                <td class="p-4 text-gray-700 border-b">{{ $cita->user->name }}</td>
                                 <td class="p-4 text-gray-700 border-b">{{ $cita->auto->placa ?? 'N/A' }}</td>
+                                <td class="p-4 text-gray-700 border-b">{{ $cita->empleado->nombre ?? 'N/A' }}</td>
+                                <td class="p-4 text-gray-700 border-b">{{ $cita->categoria }}</td>
                             </tr>
                         @endforeach
                     </tbody>

@@ -28,6 +28,6 @@ class Empleado extends Model
     }
 
     public function mantenimiento() {
-        return $this->belongsTo(Mantenimiento::class);
+        return $this->hasMany(Mantenimiento::class);
     }
 }

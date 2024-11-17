@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Mantenimiento;
-use App\Http\Requests;
 use App\Models\Repuesto;
 use App\Models\Auto;
 use App\Models\User;
@@ -43,7 +42,7 @@ class EmpleadoController extends Controller
         }
 
         if ($request->filled('estado') && $request->estado == 1) {
-            $query->where('estado', false);  // Filtrar por citas que no han sido terminadas
+            $query->where('estado', true);  // Filtrar por citas que no han sido terminadas
         }
 
         // Filtrar por nombre del usuario (relacionado a la tabla `users`)
@@ -60,6 +59,10 @@ class EmpleadoController extends Controller
             });
         }
 
+        if ($request->filled('categoria') && $request->categoria !== null) {
+            $query->where('categoria',$request->categoria);
+        }
+
         // Ejecutar la consulta y obtener las citas filtradas
         $citasFiltradas = $query->get();
 
@@ -70,11 +73,11 @@ class EmpleadoController extends Controller
     /**
      * Método para ordenar las citas en un heap
      */
-    public function ordenar_citas_prioridad()
+    public function ordenar_citas_prioridad(Request $request)
     {
         // Obtener solo las citas de la tabla `mantenimientos` donde el estado sea 'false' (incompleto)
         // y donde el auto esté ingresado.
-        $citas = Mantenimiento::where('estado', false)
+        $citas = Mantenimiento::where('estado', '=',0)
             ->whereHas('auto', function($query) {
                 $query->where('auto_ingresado', true);
             })
@@ -156,13 +159,61 @@ class EmpleadoController extends Controller
     }
     
     public function filtros_usuarios(Request $request) {
-        $request = User::get()->all();
-        return view('empleado.usuarios', compact('request'));
+        $query = User::query();
+
+        // Filtrar por name
+        if ($request->filled('name') && $request->name !== null) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+        // Filtrar por apellido
+        if ($request->filled('apellido') && $request->apellido !== null) {
+            $query->where('apellido','like','%' . $request->apellido . '%');
+        }
+        
+        $users = $query->get();
+
+        $users = $query->get();
+
+        // Calcular la edad para cada usuario
+        $usersConEdad = $users->map(function ($user) {
+            $user->edad = Carbon::parse($user->fecha_nac)->age; // Calcula la edad
+            return $user;
+        });
+
+        // Ordenar por edad (ascendente o descendente)
+        if ($request->filled('orden') && in_array($request->orden, ['asc', 'desc'])) {
+            $usersConEdad = $request->orden === 'asc'
+                ? $usersConEdad->sortBy('edad')
+                : $usersConEdad->sortByDesc('edad');
+        }
+
+        // Asegurarse de devolver los índices ordenados correctamente
+        $usersOrdenados = $usersConEdad->values();
+        // Pasar los datos a la vista
+        return view('empleado.usuarios', compact('usersOrdenados'));
     }
 
     public function filtros_repuestos(Request $request) {
-        $request = Repuesto::get()->all();
-        return view('empleado.repuestos', compact('request'));
+        $query = Repuesto::query();
+
+        // Filtrar por nombre
+        if ($request->filled('nombre') && $request->nombre !== null) {
+            $query->where('nombre', 'like', '%' . $request->nombre . '%');
+        }
+
+        if ($request->filled('stock_mayor') && $request->stock_mayor !== null) {
+            $query->where('stock', '>=', $request->stock_mayor);
+        }
+    
+        // Filtrar por stock menor que el valor ingresado
+        if ($request->filled('stock_menor') && $request->stock_menor !== null) {
+            $query->where('stock', '=<', $request->stock_menor);
+        }
+    
+        // Obtener los repuestos filtrados
+        $repuestos = $query->get();
+        
+        return view('empleado.repuestos', compact('repuestos'));
     }
     /**
      * Método para actualizar el estado de una cita a terminado y guardar la fecha de la reparacion

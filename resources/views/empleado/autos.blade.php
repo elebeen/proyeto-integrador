@@ -63,9 +63,9 @@
                     </thead>
                     <tbody>
                         @foreach($autos as $index => $auto)
-                            <tr class="{{ $index % 2 === 0 ? 'bg-gray-100' : 'bg-white' }} hover:bg-gray-200 transition duration-200">
-                                <td class="px-6 py-4 border-b text-gray-700">
-                                    <span class="px-3 py-1 bg-gray-300 rounded-full text-sm font-medium">
+                            <tr class="{{ $index % 2 === 0 ? 'bg-gray-100' : 'bg-white' }} hover:bg-gray-300 transition duration-200">
+                                <td class="px-6 py-4 border-b text-white">
+                                    <span class="px-3 py-1 bg-green-600 rounded-full text-sm font-medium">
                                         {{ $auto->marca }}
                                     </span>
                                 </td>
