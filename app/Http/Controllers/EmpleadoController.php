@@ -16,7 +16,7 @@ class EmpleadoController extends Controller
         return view("empleado.index");
     }
 
-    public function filtros_citas(Request $request)
+    public function filtros_citas(Request $request, Mantenimiento $mantenimiento)
     {
         // Obtener la consulta base de la tabla Mantenimiento
         $query = Mantenimiento::query();
@@ -67,7 +67,7 @@ class EmpleadoController extends Controller
         $citasFiltradas = $query->get();
 
         // Pasar las citas filtradas a la vista
-        return view('empleado.citas', compact('citasFiltradas'));
+        return view('empleado.citas', compact('citasFiltradas', 'mantenimiento'));
     }
 
     /**
@@ -215,9 +215,20 @@ class EmpleadoController extends Controller
         
         return view('empleado.repuestos', compact('repuestos'));
     }
+
+    public function mantenimientosDetalle(Mantenimiento $mantenimiento)
+    {
+        // No necesitas buscarlo de nuevo, Laravel ya lo ha cargado.
+        return view('empleado.detalle-cita', compact('mantenimiento'));
+    }
+
     /**
      * Método para actualizar el estado de una cita a terminado y guardar la fecha de la reparacion
      */
+
+    public function editar_mantenimiento(Mantenimiento $mantenimiento, Request $request) {
+        
+    }
     public function actualizar_estado_cita(Mantenimiento $mantenimiento, Request $request)
     {
         // Buscar la cita por su ID

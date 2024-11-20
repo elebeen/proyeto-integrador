@@ -31,7 +31,7 @@
                 <!-- Filtro por año de fabricacion -->
                 <div>
                     <label for="anio_fabri" class="block text-base font-medium text-gray-700">Año de fabricación</label>
-                    <input type="number" id="anio_fabri" name="anio_fabri" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" value="{{ request('anio_fabri') }}" placeholder="Ejemplo: 2014">
+                    <input type="number" id="anio_fabri" name="anio_fabri" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" value="{{ request('anio_fabri') }}" placeholder="Filtrar autos con fechas de fabricacion anteriores a la indicada">
                 </div>
 
                 <!-- Filtro por usuarios -->

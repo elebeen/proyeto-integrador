@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class RepuestosSeeder extends Seeder
 {
@@ -12,35 +13,18 @@ class RepuestosSeeder extends Seeder
      */
     public function run(): void
     {
-        $repuestos = [
-            [
-                'nombre' => 'Filtro de aceite',
-                'stock' => 50,
-            ],
-            [
-                'nombre' => 'Amortiguadores',
-                'stock' => 30,
-            ],
-            [
-                'nombre' => 'Bujías',
-                'stock' => 100,
-            ],
-            [
-                'nombre' => 'Aceite de motor',
-                'stock' => 200,
-            ],
-            [
-                'nombre' => 'Frenos',
-                'stock' => 40,
-            ],
-        ];
+        $repuestos = [];
 
-        // Insertar los registros en la tabla
-        foreach ($repuestos as &$data) {
-            $data['created_at'] = now();
-            $data['updated_at'] = now();
+        for ($i = 0; $i < 20; $i++) {
+            $repuestos[] = [
+                'nombre' => 'Repuesto ' . Str::random(5), // Nombre dinámico
+                'stock' => rand(10, 200), // Stock aleatorio entre 10 y 200
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
         }
 
+        // Insertar los registros en la tabla
         DB::table('repuestos')->insert($repuestos);
     }
 }

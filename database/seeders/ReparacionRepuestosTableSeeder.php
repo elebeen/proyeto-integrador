@@ -12,29 +12,16 @@ class ReparacionRepuestosTableSeeder extends Seeder
      */
     public function run(): void
     {
-        $reparacionRepuestos = [
-            [
-                'reparacion_id' => 5,
-                'repuesto_id' => 3,
-                'cantidad_usada' => 2,
-            ],
-            [
-                'reparacion_id' => 6,
-                'repuesto_id' => 5,
-                'cantidad_usada' => 1,
-            ],
-            [
-                'reparacion_id' => 7,
-                'repuesto_id' => 2,
-                'cantidad_usada' => 4,
-            ],
-            [
-                'reparacion_id' => 8,
-                'repuesto_id' => 1,
-                'cantidad_usada' => 3,
-            ],
-        ];
+        $reparacionRepuestos = [];
 
+        for ($i=0; $i < 150; $i++) { 
+            $reparacionRepuestos[] = [
+                'reparacion_id' => rand(1, 150),
+                'repuesto_id' => rand(1, 20),
+                'cantidad_usada' => rand(1, 20),
+            ];
+        }
+        
         DB::table('reparacion_repuestos')->insert($reparacionRepuestos);
     }
 }

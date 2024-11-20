@@ -3,6 +3,7 @@
 use App\Http\Controllers\EmpleadoLoginController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\EmpleadoResetPasswordController;
+use App\Http\Controllers\MantenimientoDetalleEmpleadoController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ProfileController;
 use App\Mail\MyTestEmail;
@@ -72,17 +73,14 @@ Route::middleware(['auth:empleado'])->group(function () {
     Route::get('empleado/repuestos', [EmpleadoController::class, 'filtros_repuestos'])
         ->name('repuestos.filtros');
 
-    Route::get('empleado/citas_prioridad', [EmpleadoController::class,'ordenar_citas_prioridad'])
+    Route::get('empleado/citas_prioridad', [EmpleadoController::class, 'ordenar_citas_prioridad'])
         ->name('citas.prioridad');
-
-    Route::post('empleado/citas/actualizar/{mantenimiento}', [EmpleadoController::class,'actualizar_estado_cita'])
-        ->name('citas.actualizar');
-
-    Route::post('empleado/citas/ingreso/{mantenimiento}', [EmpleadoController::class,'marcar_auto_ingresado'])
-        ->name('auto.ingresado');
     
-    Route::post('empleado/citas/entrega/{mantenimiento}', [EmpleadoController::class,'marcar_auto_entregado'])
-        ->name('auto.entregado');
+    Route::get('empleado/citas/{mantenimiento}/detalle', [EmpleadoController::class, 'mantenimientosDetalle'])
+        ->name('mantenimiento.detalle');
+
+    Route::get('empleado/citas/{mantenimiento}/editar', [EmpleadoController::class, 'editar_mantenimiento'])
+        ->name('empleado.editar_mantenimiento');
 });
 
 require __DIR__.'/auth.php';

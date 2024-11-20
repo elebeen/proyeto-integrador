@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
         // Datos de ejemplo para insertar nuevos usuarios
         $users = [
             [
-                'name' => 'Juan Pérez',
+                'name' => 'Juan',
                 'email' => 'juan.perez@example.com',
                 'apellido' => 'Pérez',
                 'fecha_nac' => '1990-05-12',
@@ -29,7 +29,7 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Maria González',
+                'name' => 'Maria',
                 'email' => 'maria.gonzalez@example.com',
                 'apellido' => 'González',
                 'fecha_nac' => '1985-11-25',
@@ -41,11 +41,35 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Carlos Díaz',
+                'name' => 'Carlos',
                 'email' => 'carlos.diaz@example.com',
                 'apellido' => 'Díaz',
                 'fecha_nac' => '1992-07-19',
                 'telefono' => '1122334455',
+                'email_verified_at' => now(),
+                'password' => Hash::make('password123'), // Encriptar contraseña
+                'remember_token' => Str::random(60),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Joel',
+                'email' => 'joel.zeballos@example.com',
+                'apellido' => 'Zeballos',
+                'fecha_nac' => '2000-05-20',
+                'telefono' => '986352147',
+                'email_verified_at' => now(),
+                'password' => Hash::make('password123'), // Encriptar contraseña
+                'remember_token' => Str::random(60),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Henry',
+                'email' => 'henry.mamani@example.com',
+                'apellido' => 'Mamani',
+                'fecha_nac' => '1999-08-31',
+                'telefono' => '365278952',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password123'), // Encriptar contraseña
                 'remember_token' => Str::random(60),

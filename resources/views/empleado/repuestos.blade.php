@@ -8,18 +8,18 @@
                 <!-- Filtro por nombre -->
                 <div>
                     <label for="nombre" class="block text-base font-medium text-gray-700">Nombre</label>
-                    <input type="text" id="nombre" name="nombre" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" value="{{ request('nombre') }}">
+                    <input type="text" id="nombre" name="nombre" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" value="{{ request('nombre') }}" placeholder="Ingrese el nombre de un repuesto">
                 </div>
 
                 <!-- Filtro por numero de stock -->
                 <div>
                     <label for="stock_mayor" class="block text-base font-medium text-gray-700">Stock +</label>
-                    <input type="number" id="stock_mayor" name="stock_mayor" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" value="{{ request('stock_mayor') }}">
+                    <input type="number" id="stock_mayor" name="stock_mayor" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" value="{{ request('stock_mayor') }}" placeholder="Filtrar elementos con mayor stock del indicado">
                 </div>
 
                 <div>
                     <label for="stock_menor" class="block text-base font-medium text-gray-700">Stock -</label>
-                    <input type="number" id="stock_menor" name="stock_menor" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" value="{{ request('stock_menor') }}">
+                    <input type="number" id="stock_menor" name="stock_menor" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" value="{{ request('stock_menor') }}" placeholder="Filtrar elementos con menor stock del indicado">
                 </div>
             </div>
 
