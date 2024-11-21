@@ -79,7 +79,7 @@ Route::middleware(['auth:empleado'])->group(function () {
     Route::get('empleado/citas/{mantenimiento}/detalle', [EmpleadoController::class, 'mantenimientosDetalle'])
         ->name('mantenimiento.detalle');
 
-    Route::get('empleado/citas/{mantenimiento}/editar', [EmpleadoController::class, 'editar_mantenimiento'])
+    Route::post('empleado/citas/{mantenimiento}/editar', [EmpleadoController::class, 'editar_mantenimiento'])
         ->name('empleado.editar_mantenimiento');
 });
 

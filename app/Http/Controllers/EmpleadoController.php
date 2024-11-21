@@ -227,7 +227,20 @@ class EmpleadoController extends Controller
      */
 
     public function editar_mantenimiento(Mantenimiento $mantenimiento, Request $request) {
-        
+        $validated = $request->validate([
+            'motivo' => 'required|string|max:1024', 
+            'auto_ingresado' => 'required|boolean',  
+            'fecha_ingreso' => 'required|date',    
+            'fecha_devolucion' => 'required|date',   
+            'estado' => 'required|boolean',            
+            'reparacion_terminada' => 'required|date', 
+            'servicio_tipo' => 'required|string',     
+            'categoria' => 'required|string', 
+        ]);
+
+        $mantenimiento->update($validated);
+
+        return redirect()->route('citas.filtros')->with('success', 'Mantenimiento actualizado exitosamente.');
     }
     public function actualizar_estado_cita(Mantenimiento $mantenimiento, Request $request)
     {
