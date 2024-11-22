@@ -18,6 +18,10 @@ class Mantenimiento extends Model
         'estado',
     ];
 
+    protected $casts = [
+        'fecha_entrega_cliente' => 'datetime',
+    ];
+    
     // Definir relaciones
     public function auto()
     {
