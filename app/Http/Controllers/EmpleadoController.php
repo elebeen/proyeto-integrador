@@ -227,6 +227,7 @@ class EmpleadoController extends Controller
      */
 
     public function editar_mantenimiento(Mantenimiento $mantenimiento, Request $request) {
+        
         $validated = $request->validate([
             'motivo' => 'required|string|max:1024', 
             'auto_ingresado' => 'required|boolean',  

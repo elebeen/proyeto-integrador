@@ -3,7 +3,6 @@
 use App\Http\Controllers\EmpleadoLoginController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\EmpleadoResetPasswordController;
-use App\Http\Controllers\MantenimientoDetalleEmpleadoController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ProfileController;
 use App\Mail\MyTestEmail;
