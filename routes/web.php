@@ -9,6 +9,10 @@ use App\Mail\MyTestEmail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
 
+//rutas publicas
+Route::get('/', [UsuarioController::class, 'welcome'])->name('usuario.welcome');
+Route::get('servicios', [UsuarioController::class, 'services'])->name('usuario.servicios');
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -24,6 +28,8 @@ Route::get('/testroute', function(){
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('servicios', [UsuarioController::class, 'services'])->name('usuario.servicios');
+    Route::get('welcome',  [UsuarioController::class, 'welcome'])->name('usuario.welcome');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
