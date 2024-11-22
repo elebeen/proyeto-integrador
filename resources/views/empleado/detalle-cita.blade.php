@@ -89,69 +89,70 @@
                         >
                         <x-input-error :messages="$errors->get('auto_ingresado')" class="mt-2"/>
                     </div>
-                    <div class="overflow-x-auto h-full w-full p-6">
-                        <div class="grid grid-cols-3 gap-6 bg-white p-8 rounded-lg shadow-md">
-                            <div class="col-span-1">
-                                <label for="auto_ingresado" class="block text-lg font-medium text-gray-700 mb-2">Auto ingresado al taller</label>
-                                <button class="{{ $mantenimiento->auto_ingresado ? 'bg-green-600' : 'bg-red-600' }} w-full px-4 py-2 rounded-md hover:bg-orange-100 text-white focus:ring focus:ring-blue-300 focus:outline-none    " type="menu" value="{{ old('auto_ingresado', $mantenimiento->auto_ingresado) }}">
-                                    {{ $mantenimiento->auto_ingresado ? 'Ingresado' : 'No Ingresado' }}
-                                </button>
+                </div>
+            </div>
+                <div class="overflow-x-auto h-full w-full p-6">
+                    <div class="grid grid-cols-3 gap-6 bg-white p-8 rounded-lg shadow-md">
+                        <div class="col-span-1">
+                            <label for="auto_ingresado" class="block text-lg font-medium text-gray-700 mb-2">Auto ingresado al taller</label>
+                            <button class="{{ $mantenimiento->auto_ingresado ? 'bg-green-600' : 'bg-red-600' }} w-full px-4 py-2 rounded-md hover:bg-orange-100 text-white focus:ring focus:ring-blue-300 focus:outline-none    " type="menu" value="{{ old('auto_ingresado', $mantenimiento->auto_ingresado) }}">
+                                {{ $mantenimiento->auto_ingresado ? 'Ingresado' : 'No Ingresado' }}
+                            </button>
+                        <x-input-error :messages="$errors->get('auto_ingresado')" class="mt-2" />
+                        </div>
+                        <div class="col-span-1">
+                            <label for="fecha_ingreso" class="block text-lg font-medium text-gray-700 mb-2">Fecha de ingreso</label>
+                            <input
+                                type="date"
+                                id="fecha_ingreso"
+                                name="fecha_ingreso"
+                                value="{{ old('fecha_entrega_cliente', $mantenimiento->fecha_entrega_cliente) }}"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none"
+                            >
+                            <x-input-error :messages="$errors->get('fecha_ingreso')" class="mt-2" />
+                        </div>
+                        <div class="col-span-1">
+                            <label for="fecha_devolucion" class="block text-lg font-medium text-gray-700 mb-2">Fecha de devolución</label>
+                            <input 
+                                type="date" 
+                                id="fecha_devolucion" 
+                                name="fecha_devolucion" 
+                                value="{{ old('fecha_devol_cliente', $mantenimiento->fecha_devol_cliente) }}" 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none"
+                            >
+                            <x-input-error :messages="$errors->get('fecha_devolucion')" class="mt-2" />
+                        </div>
+                        <div class="col-span-1">
+                            <label for="estado" class="block text-lg font-medium text-gray-700 mb-2">Estado</label>
+                            <button class="{{ $mantenimiento->estado ? 'bg-green-600' : 'bg-red-600' }} w-full px-4 py-2 rounded-md hover:bg-orange-100 text-white focus:ring focus:ring-blue-300 focus:outline-none" type="menu" value="{{ old('auto_ingresado', $mantenimiento->auto_ingresado) }}">
+                                {{ $mantenimiento->estado ? 'Terminado' : 'Pendiente' }}
+                            </button>
+                            <x-input-error :messages="$errors->get('estado')" class="mt-2" />
+                        </div>
+                        <div class="col-span-1">
+                            <label for="reparacion_terminada" class="block text-lg font-medium text-gray-700 mb-2">Fecha de término de la reparación</label>
+                            <input 
+                                type="date" 
+                                id="reparacion_terminada" 
+                                name="reparacion_terminada" 
+                                value="{{ old('reparacion_terminada', $mantenimiento->reparacion_terminada) }}" 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none"
+                            >
+                            <x-input-error :messages="$errors->get('reparacion_terminada')" class="mt-2" />
+                        </div>
+                        <div class="col-span-1">
+                            <label for="empleado_asignado" class="block text-lg font-medium text-gray-700 mb-2">Empleado asignado</label>
+                            <input 
+                                type="text" 
+                                id="empleado_asignado" 
+                                name="empleado_asignado" 
+                                value="{{ old('nombre', $mantenimiento->empleado->nombre) }} {{ old('apellido', $mantenimiento->empleado->apellido) }}" 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none"
+                            >
                             <x-input-error :messages="$errors->get('auto_ingresado')" class="mt-2" />
-                            </div>
-                            <div class="col-span-1">
-                                <label for="fecha_ingreso" class="block text-lg font-medium text-gray-700 mb-2">Fecha de ingreso</label>
-                                <input
-                                    type="date"
-                                    id="fecha_ingreso"
-                                    name="fecha_ingreso"
-                                    value="{{ old('fecha_entrega_cliente', $mantenimiento->fecha_entrega_cliente) }}"
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none"
-                                >
-                                <x-input-error :messages="$errors->get('fecha_ingreso')" class="mt-2" />
-                            </div>
-                            <div class="col-span-1">
-                                <label for="fecha_devolucion" class="block text-lg font-medium text-gray-700 mb-2">Fecha de devolución</label>
-                                <input 
-                                    type="date" 
-                                    id="fecha_devolucion" 
-                                    name="fecha_devolucion" 
-                                    value="{{ old('fecha_devol_cliente', $mantenimiento->fecha_devol_cliente) }}" 
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none"
-                                >
-                                <x-input-error :messages="$errors->get('fecha_devolucion')" class="mt-2" />
-                            </div>
-                            <div class="col-span-1">
-                                <label for="estado" class="block text-lg font-medium text-gray-700 mb-2">Estado</label>
-                                <button class="{{ $mantenimiento->estado ? 'bg-green-600' : 'bg-red-600' }} w-full px-4 py-2 rounded-md hover:bg-orange-100 text-white focus:ring focus:ring-blue-300 focus:outline-none" type="menu" value="{{ old('auto_ingresado', $mantenimiento->auto_ingresado) }}">
-                                    {{ $mantenimiento->estado ? 'Terminado' : 'Pendiente' }}
-                                </button>
-                                <x-input-error :messages="$errors->get('estado')" class="mt-2" />
-                            </div>
-                            <div class="col-span-1">
-                                <label for="reparacion_terminada" class="block text-lg font-medium text-gray-700 mb-2">Fecha de término de la reparación</label>
-                                <input 
-                                    type="date" 
-                                    id="reparacion_terminada" 
-                                    name="reparacion_terminada" 
-                                    value="{{ old('reparacion_terminada', $mantenimiento->reparacion_terminada) }}" 
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none"
-                                >
-                                <x-input-error :messages="$errors->get('reparacion_terminada')" class="mt-2" />
-                            </div>
-                            <div class="col-span-1">
-                                <label for="empleado_asignado" class="block text-lg font-medium text-gray-700 mb-2">Empleado asignado</label>
-                                <input 
-                                    type="text" 
-                                    id="empleado_asignado" 
-                                    name="empleado_asignado" 
-                                    value="{{ old('nombre', $mantenimiento->empleado->nombre) }} {{ old('apellido', $mantenimiento->empleado->apellido) }}" 
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none"
-                                >
-                                <x-input-error :messages="$errors->get('auto_ingresado')" class="mt-2" />
-                            </div>
-                            <div class="flex items-center">
-                                <button class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" type="submit">Actualizar</button>
-                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <button class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" type="submit">Actualizar</button>
                         </div>
                     </div>
                 </div>
