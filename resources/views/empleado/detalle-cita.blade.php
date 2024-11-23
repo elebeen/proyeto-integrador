@@ -186,6 +186,22 @@
 
         <div class="overflow-x-auto h-full w-full p-6 pt-0">
             <h1 class="text-2xl font-bold mb-6">Reparaciones</h1>
+            <form action="">
+                @csrf
+                @method('POST')
+                <ul class="bg-slate-400 p-8 rounded-lg shadow-md mt-4 mb-4">
+                    <li>
+                        <button type="submit">
+                            <div class="flex justify-left items-center transform transition-transform hover:scale-110">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+                                <span class="px-1 py-1 rounded-full text-lg font-medium text-white">Reparaciones</span>
+                            </div>
+                        </button>
+                    </li>
+                </ul>
+            </form>
             @foreach ($mantenimiento->reparaciones as $reparacion)
                 <ul class="bg-white p-8 rounded-lg shadow-md mt-4 mb-4">
                     <li>
@@ -204,22 +220,6 @@
                     </li>
                 </ul>
             @endforeach
-            <form action="">
-                @csrf
-                @method('POST')
-                <ul class="bg-slate-500 p-8 rounded-lg shadow-md mt-4 mb-4">
-                    <li>
-                        <button type="submit">
-                            <div class="flex justify-left items-center transform transition-transform hover:scale-110">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" class="size-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                </svg>
-                                <span class="px-1 py-1 rounded-full text-lg font-medium text-white">Reparaciones</span>
-                            </div>
-                        </button>
-                    </li>
-                </ul>
-            </form>
         </div>
 
     </div>
