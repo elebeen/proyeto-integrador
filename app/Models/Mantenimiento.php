@@ -11,7 +11,7 @@ class Mantenimiento extends Model
 
     // Campos permitidos para la asignación masiva
     protected $fillable = [
-        'motivo',
+        'reparacion_terminada',
         'auto_ingresado',
         'fecha_entrega_cliente',
         'fecha_devol_cliente',
@@ -33,7 +33,7 @@ class Mantenimiento extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function reparacion()
+    public function reparaciones()
     {
         return $this->hasMany(Reparacion::class);
     }

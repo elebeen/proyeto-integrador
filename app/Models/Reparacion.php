@@ -9,6 +9,9 @@ class Reparacion extends Model
     protected $fillable = [
         "descripcion",
     ];
+
+    protected $table = 'reparaciones';
+    
     public function repuestos() {
         return $this->belongsToMany(Repuesto::class, 'reparacion_repuestos')
             ->withPivot('cantidad_usada');

@@ -86,6 +86,9 @@ Route::middleware(['auth:empleado'])->group(function () {
 
     Route::post('empleado/citas/{mantenimiento}/editar', [EmpleadoController::class, 'editar_mantenimiento'])
         ->name('empleado.editar_mantenimiento');
+
+    // Route::get('empleado/citas/{mantenimiento}/detalle', [EmpleadoController::class, 'mostrar_reparaciones'])
+    //     ->name('mantenimiento.reparaciones');
 });
 
 require __DIR__.'/auth.php';

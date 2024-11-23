@@ -97,7 +97,13 @@
                                 >
                                 <td class="p-4 text-gray-700 border-b">
                                     <div class="flex justify-center">
-                                        {{ $cita->fecha_entrega_cliente }}
+                                        @if ($cita->fecha_entrega_cliente)
+                                            {{ $cita->fecha_entrega_cliente->format('d/m/Y') }}
+                                        @else
+                                            <span class="px-3 py-1 rounded-full text-sm font-medium bg-red-600 text-white">
+                                                No se ingresó
+                                            </span>
+                                        @endif
                                     </div>
                                 </td>
                                 <td class="p-4 text-gray-700 border-b">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Mantenimiento;
+use App\Models\Reparacion;
 use App\Models\Repuesto;
 use App\Models\Auto;
 use App\Models\User;
@@ -219,91 +220,29 @@ class EmpleadoController extends Controller
     public function mantenimientosDetalle(Mantenimiento $mantenimiento)
     {
         // No necesitas buscarlo de nuevo, Laravel ya lo ha cargado.
+        $mantenimiento->load('reparaciones.repuestos');
         return view('empleado.detalle-cita', compact('mantenimiento'));
     }
-
-    /**
-     * Método para actualizar el estado de una cita a terminado y guardar la fecha de la reparacion
-     */
 
     public function editar_mantenimiento(Mantenimiento $mantenimiento, Request $request) {
         
         $validated = $request->validate([
             'auto_ingresado' => 'required|boolean',
-            'fecha_ingreso' => 'required|date',
-            'fecha_devolucion' => 'required|date',
+            'fecha_entrega_cliente' => 'date|nullable',
+            'fecha_devol_cliente' => 'date|nullable',
             'estado' => 'required|boolean',
-            'reparacion_terminada' => 'required|date',
+            'reparacion_terminada' => 'date|nullable',
         ]);
 
         $mantenimiento->update($validated);
 
         return redirect()->route('citas.filtros')->with('success', 'Mantenimiento actualizado exitosamente.');
     }
-    public function actualizar_estado_cita(Mantenimiento $mantenimiento, Request $request)
-    {
-        // Buscar la cita por su ID
-        $cita = Mantenimiento::findOrFail($mantenimiento);
 
-        // Verificar si el estado es de 'false' a 'true' (marcar como completado)
-        if ($cita->estado == false && $request->estado == true) {
-            // Acción por defecto: marcar como completado
-            $cita->estado = true;
-            $cita->reparacion_terminada = Carbon::now(); // Establecer la fecha de terminación
-            $cita->save();
-
-            // Redirigir después de completar
-            return redirect()->route('empleado.editar')->with('success', 'La cita fue marcada como terminada.');
-        }
-
-        // Si el estado cambia de 'true' a 'false' (marcar como incompleto)
-        if ($cita->estado == true && $request->estado == false) {
-            // Pedir confirmación para cambiar el estado a incompleto
-            if (!$request->has('confirmar')) {
-                // Si no se ha confirmado, mostrar mensaje de confirmación
-                return redirect()->route('empleado.editar', ['id' => $mantenimiento])
-                    ->with('confirmar_cambio', true);
-            }
-
-            // Confirmación recibida: cambiar estado a incompleto
-            $cita->estado = false;
-            $cita->reparacion_terminada = null; // Restablecer la fecha de terminación
-            $cita->save();
-
-            return redirect()->route('empleado.editar')->with('success', 'La cita fue marcada como incompleta.');
-        }
-
-        // Si el estado no cambia, simplemente redirigir sin acción
-        // return redirect()->route('empleado.editar');
-        return response()->json($cita);
-    }
-
-    /**
-     * Método para marcar el auto como ingresado al taller y actualizar la fecha de entrega del auto al taller
-     */
-    public function marcar_auto_ingresado(Mantenimiento $mantenimiento)
-    {
-        $cita = Mantenimiento::findOrFail($mantenimiento);
-
-        $cita->auto_ingresado = true; 
-        $cita->save();
-
-        $cita->fecha_entrega_cliente = Carbon::now(); 
-        $cita->save();
-
-        // return redirect()->route('empleado.editar');
-        return response()->json($cita);
-    }
-
-    // marcar cuando el auto es recogido por el cliente del taller
-    public function marcar_auto_entregado(Mantenimiento $mantenimiento) 
-    {
-        $cita = Mantenimiento::findOrFail($mantenimiento);
-        
-        $cita->fecha_devol_cliente = Carbon::now();
-        $cita->save();
-
-        // return redirect()->route('empleado.editar');
-        return response()->json($cita);
-    }
+    // public function mostrar_reparaciones(Mantenimiento $mantenimiento) {
+    //     $reparaciones = Reparacion::with('mantenimientos')
+    //         ->where('mantenimiento_id', '')
+    //         ->get();
+    //     return view('empleado.detalle-cita', compact('mantenimiento', 'reparaciones'));
+    // }
 }

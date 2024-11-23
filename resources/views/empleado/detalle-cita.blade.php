@@ -8,10 +8,11 @@
                     <textarea 
                         id="motivo"
                         name="motivo"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-md"
+                        class="w-full px-4 py-2 m-0 border border-gray-300 rounded-md"
                         disabled
                         rows="3"
-                    >{{ old('motivo', $mantenimiento->motivo ) }}</textarea>
+                    >{{ old('motivo', $mantenimiento->motivo ) }}
+                    </textarea>
                 </div>
                 <div class="col-span-1">
                     <label for="cliente" class="block text-lg font-medium text-gray-700 mb-2">Cliente</label>
@@ -95,7 +96,7 @@
                             data-value="{{ old('auto_ingresado', $mantenimiento->auto_ingresado) }}"
                             onclick="toggleAutoIngresado()"
                         >
-                            {{ $mantenimiento->auto_ingresado ? 'Ingresado' : 'No Ingresado' }}
+                            {{ $mantenimiento?->auto_ingresado ? 'Ingresado' : 'No Ingresado' }}
                         </button>
                         <!-- Campo oculto para enviar el valor del botón -->
                         <input 
@@ -107,26 +108,26 @@
                         <x-input-error :messages="$errors->get('auto_ingresado')" class="mt-2" />
                     </div>
                     <div class="col-span-1">
-                        <label for="fecha_ingreso" class="block text-lg font-medium text-gray-700 mb-2">Fecha de ingreso</label>
+                        <label for="fecha_entrega_cliente" class="block text-lg font-medium text-gray-700 mb-2">Fecha de ingreso</label>
                         <input
                             type="date"
-                            id="fecha_ingreso"
-                            name="fecha_ingreso"
-                            value="{{ old('fecha_entrega_cliente', $mantenimiento->fecha_entrega_cliente) }}"
+                            id="fecha_entrega_cliente"
+                            name="fecha_entrega_cliente"
+                            value="{{ old('fecha_entrega_cliente', $mantenimiento->fecha_entrega_cliente?->format('Y-m-d')) }}"
                             class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none"
                         >
-                        <x-input-error :messages="$errors->get('fecha_ingreso')" class="mt-2" />
+                        <x-input-error :messages="$errors->get('fecha_entrega_cliente')" class="mt-2" />
                     </div>
                     <div class="col-span-1">
-                        <label for="fecha_devolucion" class="block text-lg font-medium text-gray-700 mb-2">Fecha de devolución</label>
+                        <label for="fecha_devol_cliente" class="block text-lg font-medium text-gray-700 mb-2">Fecha de devolución</label>
                         <input 
                             type="date" 
-                            id="fecha_devolucion" 
-                            name="fecha_devolucion" 
+                            id="fecha_devol_cliente" 
+                            name="fecha_devol_cliente" 
                             value="{{ old('fecha_devol_cliente', $mantenimiento->fecha_devol_cliente) }}" 
                             class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none"
                         >
-                        <x-input-error :messages="$errors->get('fecha_devolucion')" class="mt-2" />
+                        <x-input-error :messages="$errors->get('fecha_devol_cliente')" class="mt-2" />
                     </div>
                     <div class="col-span-1">
                         <label for="estado" class="block text-lg font-medium text-gray-700 mb-2">Estado</label>
@@ -138,7 +139,7 @@
                             data-value="{{ old('estado', $mantenimiento->estado) }}"
                             onclick="toggleEstado()"
                         >
-                            {{ $mantenimiento->estado ? 'Terminado' : 'Pendiente' }}
+                            {{ $mantenimiento?->estado ? 'Terminado' : 'Pendiente' }}
                         </button>
                         <!-- Campo oculto para sincronizar el valor del botón -->
                         <input 
@@ -182,12 +183,52 @@
                 </div>
             </div>
         </form>
+
+        <div class="overflow-x-auto h-full w-full p-6 pt-0">
+            <h1 class="text-2xl font-bold mb-6">Reparaciones</h1>
+            @foreach ($mantenimiento->reparaciones as $reparacion)
+                <ul class="bg-white p-8 rounded-lg shadow-md mt-4 mb-4">
+                    <li>
+                        <p>{{ $reparacion->descripcion}}</p>
+                        @if ($reparacion->repuestos->isEmpty())
+                            <p>No se usaron repuestos en esta reparación.</p>
+                        @else
+                            <ul>
+                                @foreach ($reparacion->repuestos as $repuesto)
+                                    <li>
+                                        {{ $repuesto->nombre }} (Cantidad: {{ $repuesto->pivot->cantidad_usada }})
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    </li>
+                </ul>
+            @endforeach
+            <form action="">
+                @csrf
+                @method('POST')
+                <ul class="bg-slate-500 p-8 rounded-lg shadow-md mt-4 mb-4">
+                    <li>
+                        <button type="submit">
+                            <div class="flex justify-left items-center transform transition-transform hover:scale-110">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+                                <span class="px-1 py-1 rounded-full text-lg font-medium text-white">Reparaciones</span>
+                            </div>
+                        </button>
+                    </li>
+                </ul>
+            </form>
+        </div>
+
     </div>
     <script>
         function toggleAutoIngresado() {
             // Obtener referencia al botón y al input oculto
             const toggleButton = document.getElementById('auto_ingresado_toggle');
             const hiddenInput = document.getElementById('auto_ingresado');
+            const fechaIngresoInput = document.getElementById('fecha_entrega_cliente');
             
             // Cambiar valor del botón (0 -> 1 o 1 -> 0)
             let currentValue = toggleButton.getAttribute('data-value');
@@ -202,10 +243,13 @@
                 toggleButton.textContent = "Ingresado";
                 toggleButton.classList.remove("bg-red-600", "hover:bg-red-700");
                 toggleButton.classList.add("bg-green-600", "hover:bg-green-700");
-            } else {
+                const currentDate = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
+                fechaIngresoInput.value = currentDate;
+            } else if (newValue == "0") {
                 toggleButton.textContent = "No Ingresado";
                 toggleButton.classList.remove("bg-green-600", "hover:bg-green-700");
                 toggleButton.classList.add("bg-red-600", "hover:bg-red-700");
+                fechaIngresoInput.value = "";
             }
         }
 
@@ -213,6 +257,7 @@
             // Obtener referencias al botón y al input oculto
             const toggleButton = document.getElementById('estado_toggle');
             const hiddenInput = document.getElementById('estado');
+            const reparacion_terminada_input = document.getElementById('reparacion_terminada');
             
             // Cambiar valor del botón (0 -> 1 o 1 -> 0)
             let currentValue = toggleButton.getAttribute('data-value');
@@ -227,10 +272,13 @@
                 toggleButton.textContent = "Terminado";
                 toggleButton.classList.remove("bg-red-600", "hover:bg-red-700");
                 toggleButton.classList.add("bg-green-600", "hover:bg-green-700");
-            } else {
+                const currentDate = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
+                reparacion_terminada_input.value = currentDate;
+            } else if (newValue == "0"){
                 toggleButton.textContent = "Pendiente";
                 toggleButton.classList.remove("bg-green-600", "hover:bg-green-700");
                 toggleButton.classList.add("bg-red-600", "hover:bg-red-700");
+                reparacion_terminada_input.value = "";
             }
         }
     </script>
