@@ -9,7 +9,11 @@ use App\Models\Repuesto;
 use App\Models\Auto;
 use App\Models\User;
 use Carbon\Carbon;
+use Doctrine\DBAL\Schema\View;
+use SplQueue;
 use SplHeap;
+
+
 
 class EmpleadoController extends Controller
 {
@@ -238,11 +242,87 @@ class EmpleadoController extends Controller
 
         return redirect()->route('citas.filtros')->with('success', 'Mantenimiento actualizado exitosamente.');
     }
+    
+    // funcion de filtrar auto
+    public function filtrarAuto(Request $request)
+    {
+        $query = Mantenimiento::query();
 
-    // public function mostrar_reparaciones(Mantenimiento $mantenimiento) {
-    //     $reparaciones = Reparacion::with('mantenimientos')
-    //         ->where('mantenimiento_id', '')
-    //         ->get();
-    //     return view('empleado.detalle-cita', compact('mantenimiento', 'reparaciones'));
-    // }
+        if ($request->filled('estado')) {
+            $query->where('estado', $request->estado);
+        }
+
+        $query->whereHas('auto', function ($q) {
+            $q->where('auto_ingresado', true);
+        });
+
+        $mantenimientosFiltrados = $query->with('auto')->get();
+
+        return view('empleado.mantenimientos', compact('mantenimientosFiltrados'));
+    }
+    
+    // function para la cola de espera de los autos
+    public function colaEspera(){
+        $mantenimientosTerminados = Mantenimiento::where('estado', true)
+            ->where('auto_devuelto', false) // excluir los recogidos
+            ->whereHas('auto', function ($q) {
+            $q->where('auto_ingresado', true);
+        })
+            ->with('auto')
+            ->get();
+        
+        $cola = new SplQueue();
+
+        foreach ($mantenimientosTerminados as $mantenimiento) {
+            $cola->enqueue($mantenimiento);
+        }
+
+    
+        $autosEnCola = [];
+        while (!$cola->isEmpty()) {
+            $autosEnCola[] = $cola->dequeue();
+        }
+
+        return view('empleado.cola-espera', compact('autosEnCola'));
+    }
+
+    // funcion para el auto recogido
+
+    public function marcarComoRecogido(Mantenimiento $mantenimiento){
+        $nuevoEstado = !$mantenimiento->auto_devuelto;
+
+        $mantenimiento->update([
+            ['estado' => $nuevoEstado]
+        ]);
+        return redirect()->route('cola.espera')->with('success', 'Auto recogido exitosamente.');
+    }
+
+    public function reparacionFormulario(Mantenimiento $mantenimiento)
+    {
+        $repuestos = Repuesto::all();
+
+        // Retornar la vista con los datos necesarios
+        return view('reparaciones.formulario', compact('mantenimiento', 'repuestos'));
+    }    
+
+    public function agregarReparacion(Mantenimiento $mantenimiento, Request $request) {
+        $request->validate([
+            'descripcion' => 'required|text',
+            'repuestos' => 'required|array', // Un array con los IDs de los repuestos
+            'repuestos.*.id' => 'required|exists:repuestos,id', // Validar que existen
+            'repuestos.*.cantidad_usada' => 'required|integer|min:1', // Validar cantidad positiva
+        ]);
+        
+        $reparacion = $mantenimiento->reparaciones()->create([
+            'descripcion' => $request->input('descripcion'),
+        ]);
+
+        foreach ($request->input('repuestos') as $repuesto) {
+            $reparacion->repuestos()->attach($repuesto['id'], [
+                'cantidad_usada' => $repuesto['cantidad_usada'],
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Reparación agregada exitosamente.');
+    }
 }
