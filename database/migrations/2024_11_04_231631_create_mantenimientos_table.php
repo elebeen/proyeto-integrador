@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('mantenimientos', function (Blueprint $table) {
             $table->id();
             $table->string('motivo');
-            $table->boolean('auto_ingresado');
+            $table->boolean('auto_ingresado')->default(false);
             $table->date('fecha_entrega_cliente');
             $table->date('fecha_devol_cliente');
             $table->boolean('estado');

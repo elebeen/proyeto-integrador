@@ -87,7 +87,7 @@ Route::middleware(['auth:empleado'])->group(function () {
     Route::post('empleado/citas/{mantenimiento}/editar', [EmpleadoController::class, 'editar_mantenimiento'])
         ->name('empleado.editar_mantenimiento');
 
-    Route::get('empleado/cola-de-espera', [EmpleadoController::class, 'colaEspera'])
+    Route::get('empleado/cola-de-espera', [EmpleadoController::class, 'lista_de_recojo'])
         ->name('cola.espera');
     
     Route::post('empleado/cola-espera/{id}/recogido', [EmpleadoController::class, 'marcarComoRecogido'])

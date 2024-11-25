@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('mantenimientos', function (Blueprint $table) {
-            $table->boolean('auto_devuelto')->nullable()->after('reparacion_terminada');
+            $table->boolean('auto_devuelto')->default(false)->after('reparacion_terminada');
         });
     }
 

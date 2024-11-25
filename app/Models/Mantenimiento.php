@@ -12,10 +12,11 @@ class Mantenimiento extends Model
     // Campos permitidos para la asignación masiva
     protected $fillable = [
         'reparacion_terminada',
-        'auto_ingresado',
         'fecha_entrega_cliente',
         'fecha_devol_cliente',
+        'auto_ingresado',
         'estado',
+        'auto_devuelto',
     ];
 
     protected $casts = [

@@ -15,7 +15,7 @@ class RepuestosSeeder extends Seeder
     {
         $repuestos = [];
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $repuestos[] = [
                 'nombre' => 'Repuesto ' . Str::random(5), // Nombre dinámico
                 'stock' => rand(10, 200), // Stock aleatorio entre 10 y 200

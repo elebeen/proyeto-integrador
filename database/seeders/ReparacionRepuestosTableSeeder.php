@@ -14,7 +14,7 @@ class ReparacionRepuestosTableSeeder extends Seeder
     {
         $reparacionRepuestos = [];
 
-        for ($i=0; $i < 150; $i++) { 
+        for ($i=0; $i < 500; $i++) { 
             $reparacionRepuestos[] = [
                 'reparacion_id' => rand(1, 150),
                 'repuesto_id' => rand(1, 20),
