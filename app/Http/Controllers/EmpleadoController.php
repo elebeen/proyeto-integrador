@@ -9,12 +9,37 @@ use App\Models\Repuesto;
 use App\Models\Auto;
 use App\Models\User;
 use Carbon\Carbon;
+use Doctrine\DBAL\Schema\View;
+use SplDoublyLinkedList;
 use SplHeap;
+use SplStack;
+
+
 
 class EmpleadoController extends Controller
 {
     public function index() {
-        return view("empleado.index");
+        // Obtén los últimos 10 usuarios registrados, ordenados por fecha de creación descendente.
+        $ultimosUsuarios = User::orderBy('created_at', 'desc')
+        ->take(10)
+        ->get();
+
+        // Crea un stack con SplStack.
+        $stack = new SplStack();
+
+        // Apila los usuarios en el stack.
+        foreach ($ultimosUsuarios as $usuario) {
+            $stack->push($usuario);
+        }
+
+        // Extrae los usuarios del stack (LIFO) para mostrarlos en el orden esperado.
+        $usuariosEnOrden = [];
+        while (!$stack->isEmpty()) {
+            $usuariosEnOrden[] = $stack->pop(); // Devuelve el último elemento del stack.
+        }
+
+        // Devuelve una vista con los usuarios en orden.
+        return view('empleado.index', compact('usuariosEnOrden'));
     }
 
     public function filtros_citas(Request $request, Mantenimiento $mantenimiento)
@@ -65,7 +90,7 @@ class EmpleadoController extends Controller
         }
 
         // Ejecutar la consulta y obtener las citas filtradas
-        $citasFiltradas = $query->get();
+        $citasFiltradas = $query->paginate(15);
 
         // Pasar las citas filtradas a la vista
         return view('empleado.citas', compact('citasFiltradas', 'mantenimiento'));
@@ -238,11 +263,97 @@ class EmpleadoController extends Controller
 
         return redirect()->route('citas.filtros')->with('success', 'Mantenimiento actualizado exitosamente.');
     }
+    
+    // funcion de filtrar auto
+    public function filtrarAuto(Request $request)
+    {
+        $query = Mantenimiento::query();
 
-    // public function mostrar_reparaciones(Mantenimiento $mantenimiento) {
-    //     $reparaciones = Reparacion::with('mantenimientos')
-    //         ->where('mantenimiento_id', '')
-    //         ->get();
-    //     return view('empleado.detalle-cita', compact('mantenimiento', 'reparaciones'));
-    // }
+        if ($request->filled('estado')) {
+            $query->where('estado', $request->estado);
+        }
+
+        $query->whereHas('auto', function ($q) {
+            $q->where('auto_ingresado', true);
+        });
+
+        $mantenimientosFiltrados = $query->with('auto')->get();
+
+        return view('empleado.mantenimientos', compact('mantenimientosFiltrados'));
+    }
+    
+    // function para la lista de  de los autos
+    public function lista_de_recojo()
+    {
+        $mantenimientosTerminados = Mantenimiento::where('estado', true)
+            ->where('auto_devuelto', false) // excluir los recogudos
+            ->whereHas('auto', function ($q) {
+                $q->where('auto_ingresado', true);
+            })
+            ->with('auto') 
+            ->get();
+
+        
+        $listaEnlazada = new SplDoublyLinkedList();
+
+    
+        foreach ($mantenimientosTerminados as $mantenimiento) {
+            $listaEnlazada->push($mantenimiento);
+        }
+
+        // Pasar la lista como array a la vista
+        $autosEnCola = [];
+        for ($listaEnlazada->rewind(); $listaEnlazada->valid(); $listaEnlazada->next()) {
+            $autosEnCola[] = $listaEnlazada->current();
+        }
+
+        return view('empleado.cola-espera', compact('autosEnCola'));
+    }
+
+    // funcion para el auto recogido
+
+    public function marcarComoRecogido($id)
+    {
+        $mantenimiento = Mantenimiento::findOrFail($id);
+
+        $mantenimiento->update([
+            'auto_devuelto' => true,
+        ]);
+
+        return redirect()->route('cola.espera')->with('success', 'Auto eliminado de la lista.');
+    }
+
+
+    public function reparacionFormulario(Mantenimiento $mantenimiento)
+    {
+        $repuestos = Repuesto::all();
+
+        // Retornar la vista con los datos necesarios
+        return view('reparaciones.formulario', compact('mantenimiento', 'repuestos'));
+    }    
+
+    public function agregarReparacion(Mantenimiento $mantenimiento, Request $request) {
+        $request->validate([
+            'descripcion' => 'required|text',
+            'repuestos' => 'required|array', // Un array con los IDs de los repuestos
+            'repuestos.*.id' => 'required|exists:repuestos,id', // Validar que existen
+            'repuestos.*.cantidad_usada' => 'required|integer|min:1', // Validar cantidad positiva
+        ]);
+        
+        $reparacion = $mantenimiento->reparaciones()->create([
+            'descripcion' => $request->input('descripcion'),
+        ]);
+
+        foreach ($request->input('repuestos') as $repuesto) {
+            $reparacion->repuestos()->attach($repuesto['id'], [
+                'cantidad_usada' => $repuesto['cantidad_usada'],
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Reparación agregada exitosamente.');
+    }
+
+    public function mostrarUltimosUsuarios(User $user) {
+        
+    }
 }

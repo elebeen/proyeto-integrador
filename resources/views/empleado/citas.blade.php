@@ -154,6 +154,11 @@
                         @endforeach
                     </tbody>
                 </table>
+                <div class="mt-4">
+                    <div class="space-x-4 flex items-center justify-around">
+                        {{ $citasFiltradas->links('pagination::tailwind') }}
+                    </div>
+                </div>
             @else
                 <div class="h-full flex items-center justify-center">
                     <x-no-found>
