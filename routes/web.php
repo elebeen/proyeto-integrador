@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Mail;
 //rutas publicas
 Route::get('/', [UsuarioController::class, 'welcome'])->name('usuario.welcome');
 Route::get('servicios', [UsuarioController::class, 'services'])->name('usuario.servicios');
+Route::get('quienes_somos', [UsuarioController::class, 'quienes_somos'])->name('usuario.quienes_somos');
 
 Route::get('/', function () {
     return view('welcome');

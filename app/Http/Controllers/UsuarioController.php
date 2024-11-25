@@ -19,5 +19,10 @@ class UsuarioController extends Controller
     public function services() {
         return view("usuario.services");
     }
+
+    public function quienes_somos() {
+        return view("usuario.quienes_somos");
+    }
+
 }
 

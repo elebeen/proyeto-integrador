@@ -11,7 +11,7 @@
 
     <ul id="menu" class="hidden md:flex space-x-8 text-white font-medium items-center">
         <li><a href="{{ route('usuario.welcome') }}" class="hover:text-red-600 transition">Inicio</a></li>
-        <li><a href="#" class="hover:text-red-600 transition">Quienes Somos</a></li>
+        <li><a href="{{ route('usuario.quienes_somos') }}" class="hover:text-red-600 transition">Quienes Somos</a></li>
         <li><a href="{{ route('usuario.servicios') }}" class="hover:text-red-600 transition">Servicios</a></li>
         <li><a href="#" class="hover:text-red-600 transition">Contacto</a></li>
     </ul>
