@@ -99,6 +99,9 @@ Route::middleware(['auth:empleado'])->group(function () {
 
     Route::get('/mantenimiento/{mantenimiento}/formulario-reparacion', [EmpleadoController::class, 'reparacionFormulario'])
         ->name('reparacion.formulario');
+
+    Route::get('/empleado/mis_reparaciones', [EmpleadoController::class, 'mostrarMantenimientoPorEmpleado'])
+        ->name('mantenimiento.empleado');
     
 });
 

@@ -85,6 +85,14 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{ route('mantenimiento.empleado') }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-400 dark:hover:bg-gray-700 focus-within:bg-gray-400 dark:focus-within:bg-gray-700 group">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-white dark:group-hover:text-white">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h16.5" />
+                              </svg>                              
+                            <span class="flex-1 ms-3 whitespace-nowrap">Mis mantenimientos</span>
+                        </a>
+                    </li>
+                    <li>
                         <form action="{{ route('empleado.logout') }}" method="POST">
                             @csrf 
                             <button type="submit" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-red-600 hover:text-white dark:hover:bg-red-600 group w-full">

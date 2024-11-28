@@ -19,13 +19,11 @@ class Empleado extends Model
         "telefono",
     ];
 
-    protected $hidden = ['password'];
-
     public function credencialEmpleado() {
         return $this->hasOne(CredencialEmpleado::class);
     }
 
-    public function mantenimiento() {
+    public function mantenimientos() {
         return $this->hasMany(Mantenimiento::class);
     }
 }

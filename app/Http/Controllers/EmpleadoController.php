@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Mantenimiento;
 use App\Models\Reparacion;
@@ -9,7 +10,6 @@ use App\Models\Repuesto;
 use App\Models\Auto;
 use App\Models\User;
 use Carbon\Carbon;
-use Doctrine\DBAL\Schema\View;
 use SplDoublyLinkedList;
 use SplHeap;
 use SplStack;
@@ -19,15 +19,12 @@ use SplStack;
 class EmpleadoController extends Controller
 {
     public function index() {
-        // Obtén los últimos 10 usuarios registrados, ordenados por fecha de creación descendente.
-        $ultimosUsuarios = User::orderBy('created_at', 'desc')
+        $ultimosUsuarios = User::orderBy('created_at', 'asc')
         ->take(10)
         ->get();
 
-        // Crea un stack con SplStack.
         $stack = new SplStack();
 
-        // Apila los usuarios en el stack.
         foreach ($ultimosUsuarios as $usuario) {
             $stack->push($usuario);
         }
@@ -38,7 +35,6 @@ class EmpleadoController extends Controller
             $usuariosEnOrden[] = $stack->pop(); // Devuelve el último elemento del stack.
         }
 
-        // Devuelve una vista con los usuarios en orden.
         return view('empleado.index', compact('usuariosEnOrden'));
     }
 
@@ -106,11 +102,10 @@ class EmpleadoController extends Controller
         $citas = Mantenimiento::where('estado', '=',0)
             ->whereHas('auto', function($query) {
                 $query->where('auto_ingresado', true);
-            })
+            })  
             ->with(['auto', 'user']) // Cargar relaciones de auto y user
             ->get();
 
-        // Definir una clase personalizada para ordenar las citas en el heap
         $heap = new class extends SplHeap {
             protected function compare($cita1, $cita2)
             {
@@ -122,23 +117,19 @@ class EmpleadoController extends Controller
                     return -1;
                 }
 
-                // Si ambos tienen el mismo tipo de servicio, comparar por fecha (más antiguo, más prioridad)
                 return $cita1->created_at <=> $cita2->created_at;
             }
         };
 
-        // Insertar las citas en el heap
         foreach ($citas as $cita) {
             $heap->insert($cita);
         }
 
-        // Extraer citas en orden de prioridad
         $citasOrdenadas = [];
         foreach ($heap as $cita) {
             $citasOrdenadas[] = $cita;
         }
 
-        // Pasar las citas ordenadas a la vista
         return view('empleado.cola-citas', compact('citasOrdenadas'));
     }
 
@@ -292,16 +283,13 @@ class EmpleadoController extends Controller
             })
             ->with('auto') 
             ->get();
-
         
         $listaEnlazada = new SplDoublyLinkedList();
 
-    
         foreach ($mantenimientosTerminados as $mantenimiento) {
             $listaEnlazada->push($mantenimiento);
         }
 
-        // Pasar la lista como array a la vista
         $autosEnCola = [];
         for ($listaEnlazada->rewind(); $listaEnlazada->valid(); $listaEnlazada->next()) {
             $autosEnCola[] = $listaEnlazada->current();
@@ -353,7 +341,27 @@ class EmpleadoController extends Controller
         return redirect()->back()->with('success', 'Reparación agregada exitosamente.');
     }
 
-    public function mostrarUltimosUsuarios(User $user) {
-        
+    public function mostrarMantenimientoPorEmpleado(Mantenimiento $mantenimiento) {
+         // Obtener el empleado asociado a la credencial autenticada
+        $credencial = Auth::guard('empleado')->user();
+        $empleado = $credencial?->empleado;
+
+        if (!$empleado) {
+            return redirect()
+                ->route('empleado.inicio')
+                ->with('error', 'No se encontró un empleado asociado a esta credencial.');
+        }
+
+        // Obtener los mantenimientos del empleado
+        $mantenimientos = $empleado->mantenimientos()->paginate(15);
+
+        // Verificar si el empleado tiene mantenimientos
+        if ($mantenimientos->isEmpty()) {
+            return redirect()
+                ->route('empleado.inicio')
+                ->with('error', 'No se encontraron mantenimientos asociados al empleado.');
+        }
+
+        return view('empleado.mis-mantenimientos', compact('mantenimientos'));
     }
 }
