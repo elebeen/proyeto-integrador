@@ -11,9 +11,9 @@
                             <th class="p-4 text-left font-semibold uppercase tracking-wider">Modelo</th>
                             <th class="p-4 text-left font-semibold uppercase tracking-wider">Fecha de Terminación</th>
                             <th class="p-4 text-left font-semibold uppercase tracking-wider">Tipo de servicio</th>
-                            <th class="p-4 text-left font-semibold uppercase tracking-wider">Estado</th>
+                            <th class="p-4 text-left font-semibold uppercase tracking-wider">Estado del mantenimiento</th>
                             <th class="p-4 text-left font-semibold uppercase tracking-wider">Ingreso del auto al taller</th>
-                            <th class="p-4 text-left font-semibold uppercase tracking-wider">Auto devuelto</th>
+                            <th class="p-4 text-left font-semibold uppercase tracking-wider">Estado del auto</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -46,10 +46,11 @@
                             <td class="p-4 text-center border-b">
                                 <form action="{{ route('cola.recogido', $auto->id) }}" method="POST">
                                     @csrf
-                                    <button type="submit" 
+                                    <button type="submit"
+                                        onclick="confirmAction({{ $auto->id }})"
                                         class="px-4 py-2 font-semibold rounded {{ $auto->auto_devuelto ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600' }} text-white transition duration-300 ease-in-out">
                                         {{ $auto->auto_devuelto ? 'Devuelto' : 'En taller' }}
-                                    </button>
+                                    </button>   
                                 </form>
                             </td>
                         </tr>
@@ -63,5 +64,16 @@
             @endif --}}
         </div>
     </div>
+    <script>
+        function confirmAction(autoid) {
+            // Mostrar la ventana de confirmación
+            const confirmed = confirm("¿Estás seguro de que deseas marcar este mantenimiento como recogido?");
+            
+            if (confirmed) {
+                // Si el usuario confirma, enviar el formulario
+                document.getElementById('form-' + autoid).submit();
+            }
+        }
+    </script>
 </x-empleado>
 

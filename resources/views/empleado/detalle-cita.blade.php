@@ -186,9 +186,7 @@
 
         <div class="overflow-x-auto h-full w-full p-6 pt-0">
             <h1 class="text-2xl font-bold mb-6">Reparaciones</h1>
-            <form action="{{ route('mantenimiento.reparaciones') }}">
-                @csrf
-                @method('POST')
+            <a href="{{ route('reparacion.formulario', $mantenimiento) }}">
                 <ul class="bg-slate-400 p-8 rounded-lg shadow-md mt-4 mb-4">
                     <li>
                         <button type="submit">
@@ -201,7 +199,7 @@
                         </button>
                     </li>
                 </ul>
-            </form>
+            </a>
             @foreach ($mantenimiento->reparaciones as $reparacion)
                 <ul class="bg-white p-8 rounded-lg shadow-md mt-4 mb-4">
                     <li>

@@ -317,28 +317,43 @@ class EmpleadoController extends Controller
         $repuestos = Repuesto::all();
 
         // Retornar la vista con los datos necesarios
-        return view('reparaciones.formulario', compact('mantenimiento', 'repuestos'));
+        return view('empleado.agregar-reparacion', compact('mantenimiento', 'repuestos'));
+
     }    
 
     public function agregarReparacion(Mantenimiento $mantenimiento, Request $request) {
+        // Validar la entrada
         $request->validate([
-            'descripcion' => 'required|text',
+            'descripcion' => 'required|string|max:30000',
             'repuestos' => 'required|array', // Un array con los IDs de los repuestos
-            'repuestos.*.id' => 'required|exists:repuestos,id', // Validar que existen
-            'repuestos.*.cantidad_usada' => 'required|integer|min:1', // Validar cantidad positiva
-        ]);
-        
-        $reparacion = $mantenimiento->reparaciones()->create([
-            'descripcion' => $request->input('descripcion'),
+            'repuestos.*.id' => 'required|exists:repuestos,id', // Validar que los IDs de repuestos existen
+            'repuestos.*.cantidad_usada' => 'required|integer|min:1', // Validar que la cantidad es positiva
         ]);
 
-        foreach ($request->input('repuestos') as $repuesto) {
-            $reparacion->repuestos()->attach($repuesto['id'], [
-                'cantidad_usada' => $repuesto['cantidad_usada'],
+        try {
+            // Crear la reparación asociada al mantenimiento
+            $reparacion = $mantenimiento->reparaciones()->create([
+                'descripcion' => $request->input('descripcion'),
             ]);
-        }
 
-        return redirect()->back()->with('success', 'Reparación agregada exitosamente.');
+            // Adjuntar los repuestos a la reparación
+            foreach ($request->input('repuestos') as $repuesto) {
+                $reparacion->repuestos()->attach($repuesto['id'], [
+                    'cantidad_usada' => $repuesto['cantidad_usada'],
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+
+            return redirect()
+                ->route('reparacion.formulario', ['mantenimiento' => $mantenimiento->id])
+                ->with('success', 'Reparación y repuestos agregados exitosamente.');
+        } catch (\Exception $e) {
+            // Manejar cualquier excepción y enviar un mensaje de error
+            return redirect()
+                ->back()
+                ->with('error', 'Ocurrió un error al agregar la reparación: ' . $e->getMessage());
+        }
     }
 
     public function mostrarMantenimientoPorEmpleado(Mantenimiento $mantenimiento) {
@@ -357,8 +372,7 @@ class EmpleadoController extends Controller
 
         // Verificar si el empleado tiene mantenimientos
         if ($mantenimientos->isEmpty()) {
-            return redirect()
-                ->route('empleado.inicio')
+            return view('empleado.mis-mantenimientos', compact('mantenimientos'))
                 ->with('error', 'No se encontraron mantenimientos asociados al empleado.');
         }
 

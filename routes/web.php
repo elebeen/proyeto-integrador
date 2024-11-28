@@ -97,7 +97,7 @@ Route::middleware(['auth:empleado'])->group(function () {
     Route::post('empleado/citas/{mantenimiento}/reparacion', [EmpleadoController::class, 'agregarReparacion'])
         ->name('mantenimiento.reparaciones');
 
-    Route::get('/mantenimiento/{mantenimiento}/formulario-reparacion', [EmpleadoController::class, 'reparacionFormulario'])
+    Route::get('/mantenimiento/citas/{mantenimiento}/formulario-reparacion', [EmpleadoController::class, 'reparacionFormulario'])
         ->name('reparacion.formulario');
 
     Route::get('/empleado/mis_reparaciones', [EmpleadoController::class, 'mostrarMantenimientoPorEmpleado'])

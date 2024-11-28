@@ -3,7 +3,7 @@
         <div>
             {{-- class="sticky top-0 bg-slate-200" style="box-shadow: 0 8px 6px rgba(0, 0, 0, 0.1);" --}}
             <div class=" pt-6">
-                <h1 class="text-2xl font-bold mb-6">Filtrar Citas de Mantenimiento</h1>
+                <h1 class="text-2xl font-bold mb-6">Todas los mantenimientos</h1>
             </div>
     
             <!-- Formulario de filtros -->
