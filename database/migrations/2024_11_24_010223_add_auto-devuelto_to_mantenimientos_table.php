@@ -11,10 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('categorias', function (Blueprint $table) {
-            $table->string('electronica')->nullable()->change();
-            $table->string('mecanica')->nullable()->change();
-            $table->string('planchado_pintura')->nullable()->change(); 
+        Schema::table('mantenimientos', function (Blueprint $table) {
+            $table->boolean('auto_devuelto')->default(false)->after('reparacion_terminada');
         });
     }
 
@@ -23,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('categorias', function (Blueprint $table) {
-            //
+        Schema::table('mantenimientos', function (Blueprint $table) {
+            $table->dropColumn('auto_devuelto');
         });
     }
 };

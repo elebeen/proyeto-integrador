@@ -3,12 +3,16 @@
 use App\Http\Controllers\EmpleadoLoginController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\EmpleadoResetPasswordController;
-use App\Http\Controllers\MantenimientoDetalleEmpleadoController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ProfileController;
 use App\Mail\MyTestEmail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
+
+//rutas publicas
+Route::get('/', [UsuarioController::class, 'welcome'])->name('usuario.welcome');
+Route::get('servicios', [UsuarioController::class, 'services'])->name('usuario.servicios');
+Route::get('quienes_somos', [UsuarioController::class, 'quienes_somos'])->name('usuario.quienes_somos');
 
 Route::get('/', function () {
     return view('welcome');
@@ -25,6 +29,8 @@ Route::get('/testroute', function(){
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('servicios', [UsuarioController::class, 'services'])->name('usuario.servicios');
+    Route::get('welcome',  [UsuarioController::class, 'welcome'])->name('usuario.welcome');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -81,6 +87,19 @@ Route::middleware(['auth:empleado'])->group(function () {
 
     Route::post('empleado/citas/{mantenimiento}/editar', [EmpleadoController::class, 'editar_mantenimiento'])
         ->name('empleado.editar_mantenimiento');
+
+    Route::get('empleado/cola-de-espera', [EmpleadoController::class, 'lista_de_recojo'])
+        ->name('cola.espera');
+    
+    Route::post('empleado/cola-espera/{id}/recogido', [EmpleadoController::class, 'marcarComoRecogido'])
+        ->name('cola.recogido');
+
+    Route::post('empleado/citas/{mantenimiento}/reparacion', [EmpleadoController::class, 'agregarReparacion'])
+        ->name('mantenimiento.reparaciones');
+
+    Route::get('/mantenimiento/{mantenimiento}/formulario-reparacion', [EmpleadoController::class, 'reparacionFormulario'])
+        ->name('reparacion.formulario');
+    
 });
 
 require __DIR__.'/auth.php';

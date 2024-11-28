@@ -4,16 +4,42 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Mantenimiento;
+use App\Models\Reparacion;
 use App\Models\Repuesto;
 use App\Models\Auto;
 use App\Models\User;
 use Carbon\Carbon;
+use Doctrine\DBAL\Schema\View;
+use SplDoublyLinkedList;
 use SplHeap;
+use SplStack;
+
+
 
 class EmpleadoController extends Controller
 {
     public function index() {
-        return view("empleado.index");
+        // Obtén los últimos 10 usuarios registrados, ordenados por fecha de creación descendente.
+        $ultimosUsuarios = User::orderBy('created_at', 'desc')
+        ->take(10)
+        ->get();
+
+        // Crea un stack con SplStack.
+        $stack = new SplStack();
+
+        // Apila los usuarios en el stack.
+        foreach ($ultimosUsuarios as $usuario) {
+            $stack->push($usuario);
+        }
+
+        // Extrae los usuarios del stack (LIFO) para mostrarlos en el orden esperado.
+        $usuariosEnOrden = [];
+        while (!$stack->isEmpty()) {
+            $usuariosEnOrden[] = $stack->pop(); // Devuelve el último elemento del stack.
+        }
+
+        // Devuelve una vista con los usuarios en orden.
+        return view('empleado.index', compact('usuariosEnOrden'));
     }
 
     public function filtros_citas(Request $request, Mantenimiento $mantenimiento)
@@ -64,7 +90,7 @@ class EmpleadoController extends Controller
         }
 
         // Ejecutar la consulta y obtener las citas filtradas
-        $citasFiltradas = $query->get();
+        $citasFiltradas = $query->paginate(15);
 
         // Pasar las citas filtradas a la vista
         return view('empleado.citas', compact('citasFiltradas', 'mantenimiento'));
@@ -219,93 +245,115 @@ class EmpleadoController extends Controller
     public function mantenimientosDetalle(Mantenimiento $mantenimiento)
     {
         // No necesitas buscarlo de nuevo, Laravel ya lo ha cargado.
+        $mantenimiento->load('reparaciones.repuestos');
         return view('empleado.detalle-cita', compact('mantenimiento'));
     }
 
-    /**
-     * Método para actualizar el estado de una cita a terminado y guardar la fecha de la reparacion
-     */
-
     public function editar_mantenimiento(Mantenimiento $mantenimiento, Request $request) {
+        
         $validated = $request->validate([
-            'motivo' => 'required|string|max:1024', 
-            'auto_ingresado' => 'required|boolean',  
-            'fecha_ingreso' => 'required|date',    
-            'fecha_devolucion' => 'required|date',   
-            'estado' => 'required|boolean',            
-            'reparacion_terminada' => 'required|date', 
-            'servicio_tipo' => 'required|string',     
-            'categoria' => 'required|string', 
+            'auto_ingresado' => 'required|boolean',
+            'fecha_entrega_cliente' => 'date|nullable',
+            'fecha_devol_cliente' => 'date|nullable',
+            'estado' => 'required|boolean',
+            'reparacion_terminada' => 'date|nullable',
         ]);
 
         $mantenimiento->update($validated);
 
         return redirect()->route('citas.filtros')->with('success', 'Mantenimiento actualizado exitosamente.');
     }
-    public function actualizar_estado_cita(Mantenimiento $mantenimiento, Request $request)
+    
+    // funcion de filtrar auto
+    public function filtrarAuto(Request $request)
     {
-        // Buscar la cita por su ID
-        $cita = Mantenimiento::findOrFail($mantenimiento);
+        $query = Mantenimiento::query();
 
-        // Verificar si el estado es de 'false' a 'true' (marcar como completado)
-        if ($cita->estado == false && $request->estado == true) {
-            // Acción por defecto: marcar como completado
-            $cita->estado = true;
-            $cita->reparacion_terminada = Carbon::now(); // Establecer la fecha de terminación
-            $cita->save();
-
-            // Redirigir después de completar
-            return redirect()->route('empleado.editar')->with('success', 'La cita fue marcada como terminada.');
+        if ($request->filled('estado')) {
+            $query->where('estado', $request->estado);
         }
 
-        // Si el estado cambia de 'true' a 'false' (marcar como incompleto)
-        if ($cita->estado == true && $request->estado == false) {
-            // Pedir confirmación para cambiar el estado a incompleto
-            if (!$request->has('confirmar')) {
-                // Si no se ha confirmado, mostrar mensaje de confirmación
-                return redirect()->route('empleado.editar', ['id' => $mantenimiento])
-                    ->with('confirmar_cambio', true);
-            }
+        $query->whereHas('auto', function ($q) {
+            $q->where('auto_ingresado', true);
+        });
 
-            // Confirmación recibida: cambiar estado a incompleto
-            $cita->estado = false;
-            $cita->reparacion_terminada = null; // Restablecer la fecha de terminación
-            $cita->save();
+        $mantenimientosFiltrados = $query->with('auto')->get();
 
-            return redirect()->route('empleado.editar')->with('success', 'La cita fue marcada como incompleta.');
-        }
-
-        // Si el estado no cambia, simplemente redirigir sin acción
-        // return redirect()->route('empleado.editar');
-        return response()->json($cita);
+        return view('empleado.mantenimientos', compact('mantenimientosFiltrados'));
     }
-
-    /**
-     * Método para marcar el auto como ingresado al taller y actualizar la fecha de entrega del auto al taller
-     */
-    public function marcar_auto_ingresado(Mantenimiento $mantenimiento)
+    
+    // function para la lista de  de los autos
+    public function lista_de_recojo()
     {
-        $cita = Mantenimiento::findOrFail($mantenimiento);
+        $mantenimientosTerminados = Mantenimiento::where('estado', true)
+            ->where('auto_devuelto', false) // excluir los recogudos
+            ->whereHas('auto', function ($q) {
+                $q->where('auto_ingresado', true);
+            })
+            ->with('auto') 
+            ->get();
 
-        $cita->auto_ingresado = true; 
-        $cita->save();
-
-        $cita->fecha_entrega_cliente = Carbon::now(); 
-        $cita->save();
-
-        // return redirect()->route('empleado.editar');
-        return response()->json($cita);
-    }
-
-    // marcar cuando el auto es recogido por el cliente del taller
-    public function marcar_auto_entregado(Mantenimiento $mantenimiento) 
-    {
-        $cita = Mantenimiento::findOrFail($mantenimiento);
         
-        $cita->fecha_devol_cliente = Carbon::now();
-        $cita->save();
+        $listaEnlazada = new SplDoublyLinkedList();
 
-        // return redirect()->route('empleado.editar');
-        return response()->json($cita);
+    
+        foreach ($mantenimientosTerminados as $mantenimiento) {
+            $listaEnlazada->push($mantenimiento);
+        }
+
+        // Pasar la lista como array a la vista
+        $autosEnCola = [];
+        for ($listaEnlazada->rewind(); $listaEnlazada->valid(); $listaEnlazada->next()) {
+            $autosEnCola[] = $listaEnlazada->current();
+        }
+
+        return view('empleado.cola-espera', compact('autosEnCola'));
+    }
+
+    // funcion para el auto recogido
+
+    public function marcarComoRecogido($id)
+    {
+        $mantenimiento = Mantenimiento::findOrFail($id);
+
+        $mantenimiento->update([
+            'auto_devuelto' => true,
+        ]);
+
+        return redirect()->route('cola.espera')->with('success', 'Auto eliminado de la lista.');
+    }
+
+
+    public function reparacionFormulario(Mantenimiento $mantenimiento)
+    {
+        $repuestos = Repuesto::all();
+
+        // Retornar la vista con los datos necesarios
+        return view('reparaciones.formulario', compact('mantenimiento', 'repuestos'));
+    }    
+
+    public function agregarReparacion(Mantenimiento $mantenimiento, Request $request) {
+        $request->validate([
+            'descripcion' => 'required|text',
+            'repuestos' => 'required|array', // Un array con los IDs de los repuestos
+            'repuestos.*.id' => 'required|exists:repuestos,id', // Validar que existen
+            'repuestos.*.cantidad_usada' => 'required|integer|min:1', // Validar cantidad positiva
+        ]);
+        
+        $reparacion = $mantenimiento->reparaciones()->create([
+            'descripcion' => $request->input('descripcion'),
+        ]);
+
+        foreach ($request->input('repuestos') as $repuesto) {
+            $reparacion->repuestos()->attach($repuesto['id'], [
+                'cantidad_usada' => $repuesto['cantidad_usada'],
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Reparación agregada exitosamente.');
+    }
+
+    public function mostrarUltimosUsuarios(User $user) {
+        
     }
 }

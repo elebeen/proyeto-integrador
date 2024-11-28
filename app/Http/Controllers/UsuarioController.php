@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 
 class UsuarioController extends Controller
 {
-    public function index() {
-        return view("usuario.index");
+    public function welcome() {
+        return view("welcome");
     }
 
     public function create() {
@@ -16,4 +16,13 @@ class UsuarioController extends Controller
     public function store(Request $request) {
         
     }
+    public function services() {
+        return view("usuario.services");
+    }
+
+    public function quienes_somos() {
+        return view("usuario.quienes_somos");
+    }
+
 }
+

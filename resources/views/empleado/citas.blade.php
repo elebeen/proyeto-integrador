@@ -61,9 +61,15 @@
                     </div>
                 </div>
     
-                <div class="mt-4">
-                    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Filtrar</button>
-                    <a href="{{ route('citas.filtros') }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">Limpiar Filtros</a>
+                <div class="grid grid-cols-1 mt-4">
+                    <div class="flex justify-center">
+                        <div class="flex items-center pr-2">
+                            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Filtrar</button>
+                        </div>
+                        <div class="flex items-center pl-2">
+                            <a href="{{ route('citas.filtros') }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">Limpiar Filtros</a>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
@@ -73,14 +79,14 @@
                 <table class="w-full bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200 table-fixed">
                     <thead class="sticky top-0 bg-gray-800 text-white">
                         <tr>
-                            <th class="p-4 text-left font-semibold uppercase tracking-wider">Fecha de recepción</th>
-                            <th class="p-4 text-left font-semibold uppercase tracking-wider">Tipo de Servicio</th>
-                            <th class="p-4 text-left font-semibold uppercase tracking-wider">Estado</th>
-                            <th class="p-4 text-left font-semibold uppercase tracking-wider">Ingreso del auto al taller</th>
-                            <th class="p-4 text-left font-semibold uppercase tracking-wider">Usuario</th>
-                            <th class="p-4 text-left font-semibold uppercase tracking-wider">Placa</th>
-                            <th class="p-4 text-left font-semibold uppercase tracking-wider">Empleado a cargo</th>
-                            <th class="p-4 text-left font-semibold uppercase tracking-wider">Categoria</th>
+                            <th class="p-4 text-center font-semibold uppercase tracking-wider">Fecha de recibo del auto</th>
+                            <th class="p-4 text-center font-semibold uppercase tracking-wider">Tipo de Servicio</th>
+                            <th class="p-4 text-center font-semibold uppercase tracking-wider">Estado</th>
+                            <th class="p-4 text-center font-semibold uppercase tracking-wider">Ingreso del auto al taller</th>
+                            <th class="p-4 text-center font-semibold uppercase tracking-wider">Usuario</th>
+                            <th class="p-4 text-center font-semibold uppercase tracking-wider">Placa</th>
+                            <th class="p-4 text-center font-semibold uppercase tracking-wider">Empleado a cargo</th>
+                            <th class="p-4 text-center font-semibold uppercase tracking-wider">Categoria</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -89,33 +95,70 @@
                                 class="{{ $index % 2 === 0 ? 'bg-gray-100' : 'bg-white' }} hover:bg-gray-300 transition duration-200 cursor-pointer"
                                 onclick="window.location='{{ route('mantenimiento.detalle', $cita->id) }}'"
                                 >
-                                <td class="p-4 text-gray-700 border-b">{{ $cita->fecha_entrega_cliente }}</td>
                                 <td class="p-4 text-gray-700 border-b">
-                                    <span class="px-3 py-1 rounded-full text-sm font-medium 
-                                        {{ $cita->servicio_tipo === 'normal' ? 'bg-blue-400 text-white' : 'bg-yellow-500 text-black' }}">
-                                        {{ ucfirst($cita->servicio_tipo) }}
-                                    </span>
+                                    <div class="flex justify-center">
+                                        @if ($cita->fecha_entrega_cliente)
+                                            {{ $cita->fecha_entrega_cliente->format('d/m/Y') }}
+                                        @else
+                                            <span class="px-3 py-1 rounded-full text-sm font-medium bg-red-600 text-white">
+                                                No se ingresó
+                                            </span>
+                                        @endif
+                                    </div>
+                                </td>
+                                <td class="p-4 text-gray-700 border-b">
+                                    <div class="flex justify-center">
+                                        <span class="px-3 py-1 rounded-full text-sm font-medium 
+                                            {{ $cita->servicio_tipo === 'normal' ? 'bg-blue-400 text-white' : 'bg-yellow-500 text-black' }}">
+                                            {{ ucfirst($cita->servicio_tipo) }}
+                                        </span>
+                                    </div>
                                 </td>
                                 <td class="p-4 text-white border-b">
-                                    <span class="px-3 py-1 rounded-full text-sm font-medium 
-                                        {{ $cita->estado ? 'bg-green-600' : 'bg-red-600' }}">
-                                        {{ $cita->estado ? 'Terminado' : 'Pendiente' }}
-                                    </span>
+                                    <div class="flex justify-center">
+                                        <span class="px-3 py-1 rounded-full text-sm font-medium 
+                                            {{ $cita->estado ? 'bg-green-600' : 'bg-red-600' }}">
+                                            {{ $cita->estado ? 'Terminado' : 'Pendiente' }}
+                                        </span>
+                                    </div>
                                 </td>
                                 <td class="p-4 text-white border-b">
-                                    <span class="px-3 py-1 rounded-full text-sm font-medium 
-                                        {{ $cita->auto_ingresado ? 'bg-green-600' : 'bg-red-600' }}">
-                                        {{ $cita->auto_ingresado ? 'Ingresado' : 'No ingresado' }}
-                                    </span>
+                                    <div class="flex justify-center">
+                                        <span class="px-3 py-1 rounded-full text-sm font-medium 
+                                            {{ $cita->auto_ingresado ? 'bg-green-600' : 'bg-red-600' }}">
+                                            {{ $cita->auto_ingresado ? 'Ingresado' : 'No ingresado' }}
+                                        </span>
+                                    </div>
                                 </td>
-                                <td class="p-4 text-gray-700 border-b">{{ $cita->user->name }}</td>
-                                <td class="p-4 text-gray-700 border-b">{{ $cita->auto->placa ?? 'N/A' }}</td>
-                                <td class="p-4 text-gray-700 border-b">{{ $cita->empleado->nombre ?? 'N/A' }}</td>
-                                <td class="p-4 text-gray-700 border-b">{{ $cita->categoria }}</td>
+                                <td class="p-4 text-gray-700 border-b">
+                                    <div class="flex justify-center">
+                                        {{ $cita->user->name }}
+                                    </div>
+                                </td>
+                                <td class="p-4 text-gray-700 border-b">
+                                    <div class="flex justify-center">
+                                        {{ $cita->auto->placa ?? 'N/A' }}
+                                    </div>
+                                </td>
+                                <td class="p-4 text-gray-700 border-b">
+                                    <div class="flex justify-center">
+                                        {{ $cita->empleado->nombre ?? 'N/A' }}
+                                    </div>
+                                </td>
+                                <td class="p-4 text-gray-700 border-b">
+                                    <div class="flex justify-center">
+                                        {{ $cita->categoria }}        
+                                    </div>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
+                <div class="mt-4">
+                    <div class="space-x-4 flex items-center justify-around">
+                        {{ $citasFiltradas->links('pagination::tailwind') }}
+                    </div>
+                </div>
             @else
                 <div class="h-full flex items-center justify-center">
                     <x-no-found>

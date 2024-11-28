@@ -7,6 +7,7 @@
                     <thead class="bg-gray-800 text-white">
                         <tr>
                             <th class="p-4 text-left font-semibold uppercase tracking-wider">Fecha de Creación</th>
+                            <th class="p-4 text-left font-semibold uppercase tracking-wider">Fecha de recibo del auto</th>
                             <th class="p-4 text-left font-semibold uppercase tracking-wider">Tipo de Servicio</th>
                             <th class="p-4 text-left font-semibold uppercase tracking-wider">Estado</th>
                             <th class="p-4 text-left font-semibold uppercase tracking-wider">Ingreso del auto al taller</th>
@@ -19,7 +20,8 @@
                         <tr class="{{ $index % 2 === 0 ? 'bg-gray-100' : 'bg-white' }} hover:bg-gray-300 transition duration-200 cursor-pointer"
                             onclick="window.location='{{ route('mantenimiento.detalle', $cita->id) }}"
                         >
-                            <td class="p-4 text-gray-700 border-b">{{ $cita->created_at->format('d/m/Y H:i') }}</td>
+                            <td class="p-4 text-gray-700 border-b">{{ $cita->created_at->format('d/m/Y') }}</td>
+                            <td class="p-4 text-gray-700 border-b">{{ $cita->fecha_entrega_cliente->format('d/m/Y') }}</td>
                             <td class="p-4 text-gray-700 border-b">
                                 <span class="px-3 py-1 rounded-full text-sm font-medium 
                                     {{ $cita->servicio_tipo === 'normal' ? 'bg-blue-400 text-white' : 'bg-yellow-500 text-black' }}">

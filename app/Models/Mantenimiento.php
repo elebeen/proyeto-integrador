@@ -11,13 +11,19 @@ class Mantenimiento extends Model
 
     // Campos permitidos para la asignación masiva
     protected $fillable = [
-        'motivo',
-        'auto_ingresado',
+        'reparacion_terminada',
         'fecha_entrega_cliente',
         'fecha_devol_cliente',
+        'auto_ingresado',
         'estado',
+        'auto_devuelto',
     ];
 
+    protected $casts = [
+        'fecha_entrega_cliente' => 'datetime',
+        'reparacion_terminada' => 'datetime',
+    ];
+    
     // Definir relaciones
     public function auto()
     {
@@ -29,7 +35,7 @@ class Mantenimiento extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function reparacion()
+    public function reparaciones()
     {
         return $this->hasMany(Reparacion::class);
     }
