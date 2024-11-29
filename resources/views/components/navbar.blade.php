@@ -1,6 +1,7 @@
 <nav class="bg-black text-white px-6 py-4 flex justify-between items-center">
-    <a href="#">
-        <img src="https://vip2cars.pe/wp-content/uploads/2024/07/logo-blanco-02-2-1-2048x473.png" alt="Logo" class="h-12 md:h-16">
+    <a href="#" class="flex items-center">
+        <img src="https://vip2cars.pe/wp-content/uploads/2024/07/logo-blanco-02-2-1-2048x473.png" class="h-12 md:h-16" alt="Logo" />
+        <span class="self-center text-2xl font-semibold whitespace-nowrap"></span>
     </a>
 
     <button id="menu-toggle" class="block md:hidden text-white focus:outline-none">
@@ -19,8 +20,15 @@
     <div class="hidden md:flex items-center space-x-6">
         <a href="#" class="bg-red-600 text-white font-bold py-2 px-4 rounded-md hover:bg-red-700 transition">Agendar Cita</a>
         <div class="flex space-x-4">
-            <a href="{{ route('login') }}" class="text-white hover:text-red-500 transition">Iniciar sesión</a>
-            <a href="{{ route('register') }}" class="text-white hover:text-red-500 transition">Registrarse</a>
+            @if (Route::has('login'))
+                @auth
+                @else
+                    <a href="{{ route('login') }}" class="text-white hover:text-red-500 transition">Iniciar sesión</a>
+                    @if (Route::has('register'))
+                        <a href="{{ route('register') }}" class="text-white hover:text-red-500 transition">Registrarse</a>
+                    @endif
+                @endauth
+            @endif
         </div>
     </div>
 </nav>
