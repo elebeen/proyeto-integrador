@@ -139,13 +139,13 @@
                                 <td class="p-4 text-gray-700 border-b">
                                     <div class="flex justify-center">
                                         <span class="px-3 py-1 rounded-full text-sm font-medium bg-stone-700 text-white">
-                                            {{ $cita->empleado->nombre ?? 'N/A' }}
+                                            {{ $cita->empleado->nombre }} {{ $cita->empleado->apellido }}
                                         </span>
                                     </div>
                                 </td>
                                 <td class="p-4 text-gray-700 border-b">
                                     <div class="flex justify-center">
-                                        {{ $cita->categoria }}        
+                                        {{ $cita->categoria }}
                                     </div>
                                 </td>
                             </tr>
