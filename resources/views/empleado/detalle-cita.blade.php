@@ -108,28 +108,6 @@
                         <x-input-error :messages="$errors->get('auto_ingresado')" class="mt-2" />
                     </div>
                     <div class="col-span-1">
-                        <label for="fecha_entrega_cliente" class="block text-lg font-medium text-gray-700 mb-2">Fecha de ingreso</label>
-                        <input
-                            type="date"
-                            id="fecha_entrega_cliente"
-                            name="fecha_entrega_cliente"
-                            value="{{ old('fecha_entrega_cliente', $mantenimiento->fecha_entrega_cliente?->format('Y-m-d')) }}"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none"
-                        >
-                        <x-input-error :messages="$errors->get('fecha_entrega_cliente')" class="mt-2" />
-                    </div>
-                    <div class="col-span-1">
-                        <label for="fecha_devol_cliente" class="block text-lg font-medium text-gray-700 mb-2">Fecha de devolución</label>
-                        <input 
-                            type="date" 
-                            id="fecha_devol_cliente" 
-                            name="fecha_devol_cliente" 
-                            value="{{ old('fecha_devol_cliente', $mantenimiento->fecha_devol_cliente) }}" 
-                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none"
-                        >
-                        <x-input-error :messages="$errors->get('fecha_devol_cliente')" class="mt-2" />
-                    </div>
-                    <div class="col-span-1">
                         <label for="estado" class="block text-lg font-medium text-gray-700 mb-2">Estado</label>
                         <!-- Botón Toggle -->
                         <button 
@@ -151,26 +129,56 @@
                         <x-input-error :messages="$errors->get('estado')" class="mt-2" />
                     </div>
                     <div class="col-span-1">
+                        <label for="auto_devuelto" class="block text-lg font-medium text-gray-700 mb-2">Auto devuelto</label>
+                        <button
+                            type="button" 
+                            id="auto_devuelto_toggle"
+                            class="{{ $mantenimiento->estado ? 'bg-green-600' : 'bg-red-600' }} w-full px-4 py-2 rounded-md text-white focus:ring focus:ring-blue-300 focus:outline-none"
+                            data-value="{{ old('auto_devuelto', $mantenimiento->auto_devuelto) }}"
+                            onclick="toggleAutoDevuelto()"
+                        >
+                            {{ $mantenimiento?->auto_devuelto ? 'Devuelto' : 'En taller' }}
+                        </button>
+                        <input
+                            type="hidden"
+                            id="auto_devuelto"
+                            name="auto_devuelto"
+                            value="{{ old('auto_devuelto', $mantenimiento->auto_devuelto) }}"
+                        >
+                        <x-input-error :messages="$errors->get('auto_devuelto')" class="mt-2" />
+                    </div>
+                    <div class="col-span-1">
+                        <label for="fecha_entrega_cliente" class="block text-lg font-medium text-gray-700 mb-2">Fecha de ingreso</label>
+                        <input
+                            type="date"
+                            id="fecha_entrega_cliente"
+                            name="fecha_entrega_cliente"
+                            value="{{ old('fecha_entrega_cliente', $mantenimiento->fecha_entrega_cliente?->format('Y-m-d')) }}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none"
+                        >
+                        <x-input-error :messages="$errors->get('fecha_entrega_cliente')" class="mt-2" />
+                    </div>
+                    <div class="col-span-1">
                         <label for="reparacion_terminada" class="block text-lg font-medium text-gray-700 mb-2">Fecha de término de la reparación</label>
                         <input 
                             type="date" 
                             id="reparacion_terminada" 
                             name="reparacion_terminada" 
-                            value="{{ old('reparacion_terminada', $mantenimiento->reparacion_terminada) }}" 
+                            value="{{ old('reparacion_terminada', $mantenimiento->reparacion_terminada?->format('Y-m-d')) }}" 
                             class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none"
                         >
                         <x-input-error :messages="$errors->get('reparacion_terminada')" class="mt-2" />
                     </div>
                     <div class="col-span-1">
-                        <label for="empleado_asignado" class="block text-lg font-medium text-gray-700 mb-2">Empleado asignado</label>
+                        <label for="fecha_devol_cliente" class="block text-lg font-medium text-gray-700 mb-2">Fecha de devolución</label>
                         <input 
-                            type="text" 
-                            id="empleado_asignado" 
-                            name="empleado_asignado" 
-                            value="{{ old('nombre', $mantenimiento->empleado->nombre) }} {{ old('apellido', $mantenimiento->empleado->apellido) }}" 
+                            type="date" 
+                            id="fecha_devol_cliente" 
+                            name="fecha_devol_cliente" 
+                            value="{{ old('fecha_devol_cliente', $mantenimiento->fecha_devol_cliente?->format('Y-m-d')) }}" 
                             class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none"
-                            disabled
                         >
+                        <x-input-error :messages="$errors->get('fecha_devol_cliente')" class="mt-2" />
                     </div>
                     <div class="col-span-3 flex justify-center w-full gap-4">
                         <div class="flex items-center">
@@ -222,61 +230,207 @@
 
     </div>
     <script>
+        // function toggleAutoIngresado() {
+        //     // Obtener referencia al botón y al input oculto
+        //     const toggleButton = document.getElementById('auto_ingresado_toggle');
+        //     const hiddenInput = document.getElementById('auto_ingresado');
+        //     const fechaIngresoInput = document.getElementById('fecha_entrega_cliente');
+            
+        //     // Cambiar valor del botón (0 -> 1 o 1 -> 0)
+        //     let currentValue = toggleButton.getAttribute('data-value');
+        //     let newValue = currentValue == "1" ? "0" : "1";
+            
+        //     // Actualizar el valor del botón y el input oculto
+        //     toggleButton.setAttribute('data-value', newValue);
+        //     hiddenInput.value = newValue;
+    
+        //     // Cambiar estilos y texto según el nuevo valor
+        //     if (newValue == "1") {
+        //         toggleButton.textContent = "Ingresado";
+        //         toggleButton.classList.remove("bg-red-600", "hover:bg-red-700");
+        //         toggleButton.classList.add("bg-green-600", "hover:bg-green-700");
+        //         const currentDate = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
+        //         fechaIngresoInput.value = currentDate;
+        //     } else if (newValue == "0") {
+        //         toggleButton.textContent = "No Ingresado";
+        //         toggleButton.classList.remove("bg-green-600", "hover:bg-green-700");
+        //         toggleButton.classList.add("bg-red-600", "hover:bg-red-700");
+        //         fechaIngresoInput.value = "";
+        //     }
+        // }
+
+        // function toggleEstado() {
+        //     // Obtener referencias al botón y al input oculto
+        //     const toggleButton = document.getElementById('estado_toggle');
+        //     const hiddenInput = document.getElementById('estado');
+        //     const reparacion_terminada_input = document.getElementById('reparacion_terminada');
+            
+        //     // Cambiar valor del botón (0 -> 1 o 1 -> 0)
+        //     let currentValue = toggleButton.getAttribute('data-value');
+        //     let newValue = currentValue == "1" ? "0" : "1";
+            
+        //     // Actualizar el valor del botón y del input oculto
+        //     toggleButton.setAttribute('data-value', newValue);
+        //     hiddenInput.value = newValue;
+
+        //     // Cambiar estilos y texto según el nuevo valor
+        //     if (newValue == "1") {
+        //         toggleButton.textContent = "Terminado";
+        //         toggleButton.classList.remove("bg-red-600", "hover:bg-red-700");
+        //         toggleButton.classList.add("bg-green-600", "hover:bg-green-700");
+        //         const currentDate = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
+        //         reparacion_terminada_input.value = currentDate;
+        //     } else if (newValue == "0"){
+        //         toggleButton.textContent = "Pendiente";
+        //         toggleButton.classList.remove("bg-green-600", "hover:bg-green-700");
+        //         toggleButton.classList.add("bg-red-600", "hover:bg-red-700");
+        //         reparacion_terminada_input.value = "";
+        //     }
+        // }
+
+        // function toggleAutoDevuelto() {
+        //     // Obtener referencias al botón y al input oculto
+        //     const toggleButton = document.getElementById('auto_devuelto_toggle');
+        //     const hiddenInput = document.getElementById('auto_devuelto');
+        //     const reparacion_terminada_input = document.getElementById('fecha_devol_cliente');
+            
+        //     // Cambiar valor del botón (0 -> 1 o 1 -> 0)
+        //     let currentValue = toggleButton.getAttribute('data-value');
+        //     let newValue = currentValue == "1" ? "0" : "1";
+            
+        //     // Actualizar el valor del botón y del input oculto
+        //     toggleButton.setAttribute('data-value', newValue);
+        //     hiddenInput.value = newValue;
+
+        //     // Cambiar estilos y texto según el nuevo valor
+        //     if (newValue == "1") {
+        //         toggleButton.textContent = "Devuelto";
+        //         toggleButton.classList.remove("bg-red-600", "hover:bg-red-700");
+        //         toggleButton.classList.add("bg-green-600", "hover:bg-green-700");
+        //         const currentDate = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
+        //         reparacion_terminada_input.value = currentDate;
+        //     } else if (newValue == "0"){
+        //         toggleButton.textContent = "En taller";
+        //         toggleButton.classList.remove("bg-green-600", "hover:bg-green-700");
+        //         toggleButton.classList.add("bg-red-600", "hover:bg-red-700");
+        //         reparacion_terminada_input.value = "";
+        //     }
+        // }
+
         function toggleAutoIngresado() {
-            // Obtener referencia al botón y al input oculto
             const toggleButton = document.getElementById('auto_ingresado_toggle');
             const hiddenInput = document.getElementById('auto_ingresado');
             const fechaIngresoInput = document.getElementById('fecha_entrega_cliente');
-            
-            // Cambiar valor del botón (0 -> 1 o 1 -> 0)
+            const estadoToggle = document.getElementById('estado_toggle');
+            const estadoInput = document.getElementById('estado');
+            const fechaReparacion_terminadaInput = document.getElementById('reparacion_terminada');
+            const autoDevueltoToggle = document.getElementById('auto_devuelto_toggle');
+            const autoDevueltoInput = document.getElementById('auto_devuelto');
+            const fechaDevolucionInput = document.getElementById('fecha_devol_cliente');
+
             let currentValue = toggleButton.getAttribute('data-value');
-            let newValue = currentValue == "1" ? "0" : "1";
-            
-            // Actualizar el valor del botón y el input oculto
+            let newValue = currentValue === "1" ? "0" : "1";
+
             toggleButton.setAttribute('data-value', newValue);
             hiddenInput.value = newValue;
-    
-            // Cambiar estilos y texto según el nuevo valor
-            if (newValue == "1") {
+
+            if (newValue === "1") {
                 toggleButton.textContent = "Ingresado";
                 toggleButton.classList.remove("bg-red-600", "hover:bg-red-700");
                 toggleButton.classList.add("bg-green-600", "hover:bg-green-700");
-                const currentDate = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
-                fechaIngresoInput.value = currentDate;
-            } else if (newValue == "0") {
+                fechaIngresoInput.value = new Date().toISOString().split('T')[0];
+            } else {
                 toggleButton.textContent = "No Ingresado";
                 toggleButton.classList.remove("bg-green-600", "hover:bg-green-700");
                 toggleButton.classList.add("bg-red-600", "hover:bg-red-700");
                 fechaIngresoInput.value = "";
+
+                // Forzar los otros estados a false
+                estadoToggle.setAttribute('data-value', "0");
+                estadoToggle.textContent = "Pendiente";
+                estadoToggle.classList.remove("bg-green-600", "hover:bg-green-700");
+                estadoToggle.classList.add("bg-red-600", "hover:bg-red-700");
+                estadoInput.value = "0";
+                fechaReparacion_terminadaInput.value = "";
+
+                autoDevueltoToggle.setAttribute('data-value', "0");
+                autoDevueltoToggle.textContent = "En taller";
+                autoDevueltoToggle.classList.remove("bg-green-600", "hover:bg-green-700");
+                autoDevueltoToggle.classList.add("bg-red-600", "hover:bg-red-700");
+                autoDevueltoInput.value = "0";
+                fechaDevolucionInput.value = "";
             }
         }
 
         function toggleEstado() {
-            // Obtener referencias al botón y al input oculto
             const toggleButton = document.getElementById('estado_toggle');
             const hiddenInput = document.getElementById('estado');
-            const reparacion_terminada_input = document.getElementById('reparacion_terminada');
-            
-            // Cambiar valor del botón (0 -> 1 o 1 -> 0)
+            const reparacionTerminadaInput = document.getElementById('reparacion_terminada');
+            const autoIngresadoInput = document.getElementById('auto_ingresado');
+
             let currentValue = toggleButton.getAttribute('data-value');
-            let newValue = currentValue == "1" ? "0" : "1";
-            
-            // Actualizar el valor del botón y del input oculto
+            let newValue = currentValue === "1" ? "0" : "1";
+
+            if (autoIngresadoInput.value === "0" && newValue === "1") {
+                alert("El auto debe estar ingresado al taller antes de marcar como terminado.");
+                return;
+            }
+
             toggleButton.setAttribute('data-value', newValue);
             hiddenInput.value = newValue;
 
-            // Cambiar estilos y texto según el nuevo valor
-            if (newValue == "1") {
+            if (newValue === "1") {
                 toggleButton.textContent = "Terminado";
                 toggleButton.classList.remove("bg-red-600", "hover:bg-red-700");
                 toggleButton.classList.add("bg-green-600", "hover:bg-green-700");
-                const currentDate = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
-                reparacion_terminada_input.value = currentDate;
-            } else if (newValue == "0"){
+                reparacionTerminadaInput.value = new Date().toISOString().split('T')[0];
+            } else {
                 toggleButton.textContent = "Pendiente";
                 toggleButton.classList.remove("bg-green-600", "hover:bg-green-700");
                 toggleButton.classList.add("bg-red-600", "hover:bg-red-700");
-                reparacion_terminada_input.value = "";
+                reparacionTerminadaInput.value = "";
+
+                // Forzar Auto Devuelto a falso
+                const autoDevueltoToggle = document.getElementById('auto_devuelto_toggle');
+                const autoDevueltoInput = document.getElementById('auto_devuelto');
+                const fechaDevolucionInput = document.getElementById('fecha_devol_cliente');
+
+                autoDevueltoToggle.setAttribute('data-value', "0");
+                autoDevueltoToggle.textContent = "En taller";
+                autoDevueltoToggle.classList.remove("bg-green-600", "hover:bg-green-700");
+                autoDevueltoToggle.classList.add("bg-red-600", "hover:bg-red-700");
+                autoDevueltoInput.value = "0";
+                fechaDevolucionInput.value = "";
+            }
+        }
+
+        function toggleAutoDevuelto() {
+            const toggleButton = document.getElementById('auto_devuelto_toggle');
+            const hiddenInput = document.getElementById('auto_devuelto');
+            const fechaDevolucionInput = document.getElementById('fecha_devol_cliente');
+            const estadoInput = document.getElementById('estado');
+
+            let currentValue = toggleButton.getAttribute('data-value');
+            let newValue = currentValue === "1" ? "0" : "1";
+
+            if (estadoInput.value === "0" && newValue === "1") {
+                alert("El estado debe estar terminado antes de marcar como devuelto.");
+                return;
+            }
+
+            toggleButton.setAttribute('data-value', newValue);
+            hiddenInput.value = newValue;
+
+            if (newValue === "1") {
+                toggleButton.textContent = "Devuelto";
+                toggleButton.classList.remove("bg-red-600", "hover:bg-red-700");
+                toggleButton.classList.add("bg-green-600", "hover:bg-green-700");
+                fechaDevolucionInput.value = new Date().toISOString().split('T')[0];
+            } else {
+                toggleButton.textContent = "En taller";
+                toggleButton.classList.remove("bg-green-600", "hover:bg-green-700");
+                toggleButton.classList.add("bg-red-600", "hover:bg-red-700");
+                fechaDevolucionInput.value = "";
             }
         }
     </script>

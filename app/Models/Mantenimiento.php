@@ -22,6 +22,7 @@ class Mantenimiento extends Model
     protected $casts = [
         'fecha_entrega_cliente' => 'datetime',
         'reparacion_terminada' => 'datetime',
+        'fecha_devol_cliente' => 'datetime',
     ];
     
     // Definir relaciones
