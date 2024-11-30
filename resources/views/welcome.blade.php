@@ -16,10 +16,10 @@
 
     <!-- equipo profesionañ -->
         <!-- ga -->
-        <section class="p-8 bg-white text-gray-900">
+        <section class="p-14 bg-white text-gray-900">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
             <!-- columna de texto -->
-            <div class="md:w-1/2 space-y-6">
+            <div class="md:w-1/2 space-y-8">
                 <h2 class="text-4xl font-bold leading-tight">
                     Somos un equipo calificado y profesional.
                 </h2>
@@ -37,7 +37,6 @@
                         <div class="h-8 w-8 flex items-center justify-center rounded-full bg-white mr-4">
                             <div class="checkmark bg-red-600 rounded-full h-5 w-5 flex items-center justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1.707-5.293a1 1 0 011.414 0L10 13.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-2-2a1 1 0 010-1.414z" clip-rule="evenodd" />
                                 </svg>
                             </div>
                         </div>
@@ -50,7 +49,6 @@
                         <div class="h-8 w-8 flex items-center justify-center rounded-full bg-white mr-4">
                             <div class="checkmark bg-red-600 rounded-full h-5 w-5 flex items-center justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1.707-5.293a1 1 0 011.414 0L10 13.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-2-2a1 1 0 010-1.414z" clip-rule="evenodd" />
                                 </svg>
                             </div>
                         </div>
@@ -63,7 +61,6 @@
                         <div class="h-8 w-8 flex items-center justify-center rounded-full bg-white mr-4">
                             <div class="checkmark bg-red-600 rounded-full h-5 w-5 flex items-center justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1.707-5.293a1 1 0 011.414 0L10 13.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-2-2a1 1 0 010-1.414z" clip-rule="evenodd" />
                                 </svg>
                             </div>
                         </div>
@@ -76,7 +73,6 @@
                         <div class="h-8 w-8 flex items-center justify-center rounded-full bg-white mr-4">
                             <div class="checkmark bg-red-600 rounded-full h-5 w-5 flex items-center justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1.707-5.293a1 1 0 011.414 0L10 13.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-2-2a1 1 0 010-1.414z" clip-rule="evenodd" />
                                 </svg>
                             </div>
                         </div>
@@ -103,48 +99,47 @@
             <div id="marcaSliderWrapper" class="overflow-hidden relative">
                 <div id="marcaSlider" class="flex w-max transition-transform ease-linear">
                     <!-- Marcas -->
-                    <div class="w-40 mx-9 flex-shrink-0">
+                    <div class="w-40 mx-10 flex-shrink-0">
                         <img src="https://vip2cars.pe/wp-content/uploads/2024/07/AnyConv.com__pngegg-6-150x150.webp" alt="Marca 1" class="mx-auto">
                     </div>
-                    <div class="w-40 mx-9 flex-shrink-0">
+                    <div class="w-40 mx-10 flex-shrink-0">
                         <img src="https://vip2cars.pe/wp-content/uploads/2024/07/AnyConv.com__pngegg-15-150x150.webp" alt="Marca 2" class="mx-auto">
                     </div>
-                    <div class="w-40 mx-9 flex-shrink-0">
+                    <div class="w-40 mx-10 flex-shrink-0">
                         <img src="https://vip2cars.pe/wp-content/uploads/2024/07/AnyConv.com__pngegg-4-150x150.webp" alt="Marca 3" class="mx-auto">
                     </div>
-                    <div class="w-40 mx-9 flex-shrink-0">
+                    <div class="w-40 mx-10 flex-shrink-0">
                         <img src="https://vip2cars.pe/wp-content/uploads/2024/07/Frame-4-150x150.png.webp" alt="Marca 4" class="mx-auto">
                     </div>
-                    <div class="w-40 mx-9 flex-shrink-0">
+                    <div class="w-40 mx-10 flex-shrink-0">
                         <img src="https://vip2cars.pe/wp-content/uploads/2024/07/AnyConv.com__pngwing.com_-150x150.webp" alt="Marca 5" class="mx-auto">
                     </div>
-                    <div class="w-40 mx-9 flex-shrink-0">
+                    <div class="w-40 mx-10 flex-shrink-0">
                         <img src="https://vip2cars.pe/wp-content/uploads/2024/07/AnyConv.com__pngegg-4-1-150x150.webp" alt="Marca 6" class="mx-auto">
                     </div>  
-                    <div class="w-40 mx-9 flex-shrink-0">
+                    <div class="w-40 mx-10 flex-shrink-0">
                         <img src="https://vip2cars.pe/wp-content/uploads/2024/07/AnyConv.com__pngegg-2-1-150x150.webp" alt="Marca 7" class="mx-auto">
                     </div>
-                    <div class="w-40 mx-9 flex-shrink-0">
+                    <div class="w-40 mx-10 flex-shrink-0">
                         <img src="https://vip2cars.pe/wp-content/uploads/2024/07/AnyConv.com__pngegg-1-1-150x150.webp" alt="Marca 8" class="mx-auto">
                     </div>
-                    <div class="w-40 mx-9 flex-shrink-0">
+                    <div class="w-40 mx-10 flex-shrink-0">
                         <img src="https://vip2cars.pe/wp-content/uploads/2024/07/AnyConv.com__pngegg-4-150x150.webp" alt="Marca 9" class="mx-auto">
                     </div>
-                    <div class="w-40 mx-9 flex-shrink-0">
+                    <div class="w-40 mx-10 flex-shrink-0">
                         <img src="https://vip2cars.pe/wp-content/uploads/2024/07/AnyConv.com__pngegg-1-150x150.webp" alt="Marca 10" class="mx-auto">
                     </div>
                     <!-- duplique marcas para la continuidad -->
-                    <div class="w-40 mx-9 flex-shrink-0">
+                    <div class="w-40 mx-10 flex-shrink-0">
                         <img src="https://vip2cars.pe/wp-content/uploads/2024/07/AnyConv.com__pngegg-6-150x150.webp" alt="Marca 1" class="mx-auto">
                     </div>
-                    <div class="w-40 mx-9 flex-shrink-0">
+                    <div class="w-40 mx-10 flex-shrink-0">
                         <img src="https://vip2cars.pe/wp-content/uploads/2024/07/AnyConv.com__pngegg-15-150x150.webp" alt="Marca 2" class="mx-auto">
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
     <section class="p-8 text-gray-900 mt-5"> 
         <div class="max-w-7xl mx-auto text-center">
             <h2 class="text-3xl font-semibold mb-4">Ubícanos en</h2>
@@ -180,10 +175,10 @@
         let offset = 0;
 
         function rotateBrands() {
-            offset -= 0.5; 
+            offset -= 0.3; 
             marcas.style.transform = `translateX(${offset}px)`;
 
-            // Reiniciar el offset cuando llegue al final
+            // el if para reiniciar el off set una vez que llegue al final
             if (Math.abs(offset) >= marcas.scrollWidth / 2) {
                 offset = 0;
             }

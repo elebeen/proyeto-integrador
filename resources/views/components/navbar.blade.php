@@ -36,7 +36,7 @@
 <div id="mobile-menu" class="hidden bg-black text-white p-6 space-y-4 md:hidden">
     <ul class="space-y-4">
         <li><a href="{{ url('/') }}" class="hover:text-red-600 transition">Inicio</a></li>
-        <li><a href="#" class="hover:text-red-600 transition">Quienes Somos</a></li>
+        <li><a href="{{ route('usuario.quienes_somos')}}" class="hover:text-red-600 transition">Quienes Somos</a></li>
         <li><a href="{{ route('usuario.servicios') }}" class="hover:text-red-600 transition">Servicios</a></li>
         <li><a href="#" class="hover:text-red-600 transition">Contacto</a></li>
     </ul>
