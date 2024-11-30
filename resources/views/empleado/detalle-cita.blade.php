@@ -177,7 +177,7 @@
                             <button class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" type="submit">Actualizar</button>
                         </div>
                         <div class="flex items-center">
-                            <a href="{{ route('citas.filtros') }}" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">Regresar</a>
+                            <a href="{{ route('mantenimiento.empleado') }}" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">Regresar</a>
                         </div>
                     </div>
                 </div>

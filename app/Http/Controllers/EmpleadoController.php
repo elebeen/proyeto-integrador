@@ -8,6 +8,7 @@ use App\Models\Mantenimiento;
 use App\Models\Reparacion;
 use App\Models\Repuesto;
 use App\Models\Auto;
+use App\Models\Empleado;
 use App\Models\User;
 use Carbon\Carbon;
 use SplDoublyLinkedList;
@@ -99,10 +100,11 @@ class EmpleadoController extends Controller
     {
         // Obtener solo las citas de la tabla `mantenimientos` donde el estado sea 'false' (incompleto)
         // y donde el auto esté ingresado.
-        $citas = Mantenimiento::where('estado', '=',0)
-            ->whereHas('auto', function($query) {
+        $citas = Mantenimiento::where('estado', '=', 0)
+            ->whereNull('empleado_id') // Filtro para empleado_id null
+            ->whereHas('auto', function ($query) {
                 $query->where('auto_ingresado', true);
-            })  
+            })
             ->with(['auto', 'user']) // Cargar relaciones de auto y user
             ->get();
 
@@ -125,7 +127,7 @@ class EmpleadoController extends Controller
             $heap->insert($cita);
         }
 
-        $citasOrdenadas = [];
+        $citasOrdenadas = collect();
         foreach ($heap as $cita) {
             $citasOrdenadas[] = $cita;
         }
@@ -274,29 +276,29 @@ class EmpleadoController extends Controller
     }
     
     // function para la lista de  de los autos
-    public function lista_de_recojo()
-    {
-        $mantenimientosTerminados = Mantenimiento::where('estado', true)
-            ->where('auto_devuelto', false) // excluir los recogudos
-            ->whereHas('auto', function ($q) {
-                $q->where('auto_ingresado', true);
-            })
-            ->with('auto') 
-            ->get();
-        
-        $listaEnlazada = new SplDoublyLinkedList();
+        public function lista_de_recojo()
+        {
+            $mantenimientosTerminados = Mantenimiento::where('estado', true)
+                ->where('auto_devuelto', false) // excluir los recogudos
+                ->whereHas('auto', function ($q) {
+                    $q->where('auto_ingresado', true);
+                })
+                ->with('auto') 
+                ->get();
+            
+            $listaEnlazada = new SplDoublyLinkedList();
 
-        foreach ($mantenimientosTerminados as $mantenimiento) {
-            $listaEnlazada->push($mantenimiento);
+            foreach ($mantenimientosTerminados as $mantenimiento) {
+                $listaEnlazada->push($mantenimiento);
+            }
+
+            $autosEnCola = collect();
+            for ($listaEnlazada->rewind(); $listaEnlazada->valid(); $listaEnlazada->next()) {
+                $autosEnCola->push($listaEnlazada->current());
+            }
+
+            return view('empleado.cola-espera', compact('autosEnCola'));
         }
-
-        $autosEnCola = [];
-        for ($listaEnlazada->rewind(); $listaEnlazada->valid(); $listaEnlazada->next()) {
-            $autosEnCola[] = $listaEnlazada->current();
-        }
-
-        return view('empleado.cola-espera', compact('autosEnCola'));
-    }
 
     // funcion para el auto recogido
 
@@ -340,8 +342,6 @@ class EmpleadoController extends Controller
             foreach ($request->input('repuestos') as $repuesto) {
                 $reparacion->repuestos()->attach($repuesto['id'], [
                     'cantidad_usada' => $repuesto['cantidad_usada'],
-                    'created_at' => now(),
-                    'updated_at' => now(),
                 ]);
             }
 
@@ -356,26 +356,76 @@ class EmpleadoController extends Controller
         }
     }
 
-    public function mostrarMantenimientoPorEmpleado(Mantenimiento $mantenimiento) {
-         // Obtener el empleado asociado a la credencial autenticada
+    public function mostrarMantenimientoPorEmpleado(Request $request) {
+        // Obtener el empleado asociado a la credencial autenticada
         $credencial = Auth::guard('empleado')->user();
         $empleado = $credencial?->empleado;
-
+    
         if (!$empleado) {
             return redirect()
                 ->route('empleado.inicio')
                 ->with('error', 'No se encontró un empleado asociado a esta credencial.');
         }
-
-        // Obtener los mantenimientos del empleado
-        $mantenimientos = $empleado->mantenimientos()->paginate(15);
-
-        // Verificar si el empleado tiene mantenimientos
+    
+        // Base query: Obtener los mantenimientos asociados al empleado autenticado
+        $query = $empleado->mantenimientos()->with(['user', 'auto']);
+    
+        // Filtrar por fecha de entrega hasta una fecha específica
+        if ($request->filled('fecha')) {
+            $query->where('fecha_entrega_cliente', '<=', $request->fecha);
+        }
+    
+        // Filtrar por tipo de servicio
+        if ($request->filled('servicio_tipo')) {
+            $query->where('servicio_tipo', $request->servicio_tipo);
+        }
+    
+        // Filtrar por estado
+        if ($request->filled('estado')) {
+            $query->where('estado', $request->estado);
+        }
+    
+        // Filtrar por nombre del usuario (relacionado a la tabla `users`)
+        if ($request->filled('usuario')) {
+            $query->whereHas('user', function($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->usuario . '%');
+            });
+        }
+    
+        // Filtrar por placa del vehículo (relacionado a la tabla `autos`)
+        if ($request->filled('placa')) {
+            $query->whereHas('auto', function($q) use ($request) {
+                $q->where('placa', 'like', '%' . $request->placa . '%');
+            });
+        }
+    
+        // Filtrar por categoría
+        if ($request->filled('categoria')) {
+            $query->where('categoria', $request->categoria);
+        }
+    
+        // Paginación y obtención de resultados
+        $mantenimientos = $query->paginate(15)->appends($request->except('page'));
+    
+        // Verificar si hay mantenimientos asociados
         if ($mantenimientos->isEmpty()) {
             return view('empleado.mis-mantenimientos', compact('mantenimientos'))
-                ->with('error', 'No se encontraron mantenimientos asociados al empleado.');
+                ->with('error', 'No se encontraron mantenimientos asociados.');
         }
-
+    
         return view('empleado.mis-mantenimientos', compact('mantenimientos'));
+    }
+
+    public function tomar_mantenimiento(Mantenimiento $mantenimiento, Empleado $empleado) {
+        $credencial = Auth::guard('empleado')->user();
+        $empleado = $credencial?->empleado;
+
+        $mantenimiento->update([
+            'empleado_id' => $empleado->id,
+        ]);
+
+        return redirect()
+            ->route('citas.prioridad')
+            ->with('success', 'Mantenimiento tomado correctamente.');
     }
 }

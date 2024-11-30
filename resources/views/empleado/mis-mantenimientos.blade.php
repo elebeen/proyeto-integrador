@@ -4,7 +4,7 @@
             <h1 class="text-2xl font-bold mb-6">Mis mantenimientos</h1>
         </div>
 
-        <form action="{{ route('citas.filtros') }}" method="GET" class="mb-6 p-4 bg-gray-100 rounded-lg">
+        <form action="{{ route('mantenimiento.empleado') }}" method="GET" class="mb-6 p-4 bg-gray-100 rounded-lg">
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 <!-- Filtro por fecha -->
                 <div>
@@ -64,14 +64,14 @@
                         <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Filtrar</button>
                     </div>
                     <div class="flex items-center pl-2">
-                        <a href="{{ route('citas.filtros') }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">Limpiar Filtros</a>
+                        <a href="{{ route('mantenimiento.empleado') }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">Limpiar Filtros</a>
                     </div>
                 </div>
             </div>
         </form>
 
         <div class="overflow-x-auto h-full w-full">
-            @if($mantenimientos->isNotEmpty()) 
+            @if($mantenimientos->isNotEmpty())
                 <table class="w-full bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200 table-fixed">
                     <thead class="sticky top-0 bg-gray-800 text-white">
                         <tr>

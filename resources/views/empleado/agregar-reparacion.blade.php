@@ -1,19 +1,21 @@
 <x-empleado>
-    <div class="w-full p-6 bg-gray-100 rounded-lg shadow-md">
-        <form action="{{ route('mantenimiento.reparaciones', $mantenimiento->id) }}" method="POST" class="space-y-6">
+    <div class="w-full p-6 pt-0">
+        <div class=" pt-6">
+            <h1 class="text-2xl font-bold mb-6">Agregar reparación</h1>
+        </div>
+        <form action="{{ route('mantenimiento.reparaciones', $mantenimiento->id) }}" method="POST" class="mb-6 p-4 bg-gray-100 rounded-lg">
             @csrf
             
-            <div>
-                <label for="descripcion" class="block text-sm font-medium text-gray-700">Descripción de la reparación:</label>
+            <div class="pb-6">
+                <label for="descripcion" class="block text-base font-medium text-gray-700">Descripción de la reparación:</label>
                 <input type="text" id="descripcion" name="descripcion" required 
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-gray-700">
             </div>
             
             <div id="repuestos-container" class="space-y-4">
-                <h4 class="text-lg font-semibold text-gray-800">Repuestos:</h4>
-                <div class="repuesto-item flex items-center space-x-4">
+                <div class="repuesto-item flex items-center space-x-4 pb-6">
                     <div class="flex-1">
-                        <label for="repuestos[0][id]" class="block text-sm font-medium text-gray-700">Repuesto:</label>
+                        <label for="repuestos[0][id]" class="block text-base font-medium text-gray-700">Repuestos utilizados</label>
                         <select name="repuestos[0][id]" id="repuestos[0][id]" 
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-gray-700">
                             @foreach($repuestos as $repuesto)
@@ -23,7 +25,7 @@
                     </div>
         
                     <div class="flex-1">
-                        <label for="repuestos[0][cantidad]" class="block text-sm font-medium text-gray-700">Cantidad:</label>
+                        <label for="repuestos[0][cantidad]" class="block text-base font-medium text-gray-700">Cantidad:</label>
                         <input type="number" name="repuestos[0][cantidad]" min="1" required 
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-gray-700">
                     </div>

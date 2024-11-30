@@ -2,7 +2,7 @@
     <div class="w-full p-6">
         <h1 class="text-2xl font-bold mb-6">Citas a atender</h1>
         <div class="overflow-x-auto bg-white shadow rounded-lg h-full">
-            {{-- @if($citasOrdenadas->isNotEmpty()) --}}
+            @if($citasOrdenadas->isNotEmpty())
                 <table class="w-full bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200 table-fixed">
                     <thead class="bg-gray-800 text-white">
                         <tr>
@@ -13,12 +13,12 @@
                             <th class="p-4 text-left font-semibold uppercase tracking-wider">Ingreso del auto al taller</th>
                             <th class="p-4 text-left font-semibold uppercase tracking-wider">Placa</th>
                             <th class="p-4 text-left font-semibold uppercase tracking-wider">Cliente</th>
+                            <th class="p-4 text-left font-semibold uppercase tracking-wider">Acción</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($citasOrdenadas as $index => $cita)
-                        <tr class="{{ $index % 2 === 0 ? 'bg-gray-100' : 'bg-white' }} hover:bg-gray-300 transition duration-200 cursor-pointer"
-                            onclick="window.location='{{ route('mantenimiento.detalle', $cita->id) }}"
+                        <tr class="{{ $index % 2 === 0 ? 'bg-gray-100' : 'bg-white' }} hover:bg-gray-300 transition duration-200"
                         >
                             <td class="p-4 text-gray-700 border-b">{{ $cita->created_at->format('d/m/Y') }}</td>
                             <td class="p-4 text-gray-700 border-b">{{ $cita->fecha_entrega_cliente->format('d/m/Y') }}</td>
@@ -42,11 +42,22 @@
                             </td>
                             <td class="p-4 text-gray-700 border-b">{{ $cita->auto->placa ?? 'N/A' }}</td>
                             <td class="p-4 text-gray-700 border-b">{{ $cita->user->name ?? 'N/A' }}</td>
+                            <td class="p-4 text-gray-700 border-b">
+                                <form action="{{ route('tomar-mantenimiento') }}" method="POST">
+                                    @csrf
+                                    @method('POST')
+                                    <button type="submit">
+                                        <div class="flex justify-left items-center transform transition-transform hover:scale-110 bg-teal-500 hover:bg-teal-600 p-2 rounded text-white font-medium">
+                                            Tomar trabajo
+                                        </div>
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
-            {{-- @else
+            @else
                 <div class="h-full flex items-center justify-center">
                     <x-no-found>
                         <div class="h-full text-center">
@@ -55,7 +66,7 @@
                         </div>
                     </x-no-found> 
                 </div>
-            @endif --}}
+            @endif
         </div>
     </div>
 </x-empleado>

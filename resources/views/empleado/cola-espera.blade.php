@@ -2,7 +2,7 @@
     <div class="w-full p-6">
         <h1 class="text-2xl font-bold mb-6 text-gray-800">Cola de Espera</h1>
         <div class="overflow-x-auto bg-white shadow rounded-lg h-full">
-            {{-- @if($autosEnCola->isNotEmpty()) --}}
+            @if($autosEnCola->isNotEmpty())
                 <table class="w-full bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200 table-fixed">
                     <thead class="bg-gray-800 text-white">
                         <tr>
@@ -18,9 +18,7 @@
                     </thead>
                     <tbody>
                         @foreach($autosEnCola as $index => $auto)
-                        <tr class="{{ $index % 2 === 0 ? 'bg-gray-100' : 'bg-white' }} hover:bg-gray-300 transition duration-200 cursor-pointer"
-                            onclick="window.location='{{ route('mantenimiento.detalle', $auto->id) }}'"
-                        >
+                        <tr class="{{ $index % 2 === 0 ? 'bg-gray-100' : 'bg-white' }} hover:bg-gray-300 transition duration-200">
                             <td class="p-4 text-gray-700 border-b">{{ $auto->auto->placa ?? 'N/A' }}</td>
                             <td class="p-4 text-gray-700 border-b">{{ $auto->auto->marca ?? 'N/A' }}</td>
                             <td class="p-4 text-gray-700 border-b">{{ $auto->auto->modelo ?? 'N/A' }}</td>
@@ -44,10 +42,9 @@
                                 </span>
                             </td>
                             <td class="p-4 text-center border-b">
-                                <form action="{{ route('cola.recogido', $auto->id) }}" method="POST">
+                                <form action="{{ route('cola.recogido', $auto->id) }}" method="POST" onsubmit="return confirmAction();">
                                     @csrf
                                     <button type="submit"
-                                        onclick="confirmAction({{ $auto->id }})"
                                         class="px-4 py-2 font-semibold rounded {{ $auto->auto_devuelto ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600' }} text-white transition duration-300 ease-in-out">
                                         {{ $auto->auto_devuelto ? 'Devuelto' : 'En taller' }}
                                     </button>   
@@ -57,22 +54,25 @@
                         @endforeach
                     </tbody>
                 </table>
-            {{-- @else
-                <div class="p-6 text-center text-gray-700">
-                    <h2 class="text-lg font-semibold">No hay autos en la cola de espera.</h2>
+            @else
+                <div class="h-full flex items-center justify-center">
+                    <x-no-found>
+                        <div class="h-full text-center">
+                            <h1 class="mt-4 text-white text-lg">Lo sentimos,</h1>
+                            <p class="font-bold text-white text-2xl">no hay Autos en la cola de espera</p>
+                        </div>
+                    </x-no-found> 
                 </div>
-            @endif --}}
+            @endif
         </div>
     </div>
     <script>
-        function confirmAction(autoid) {
+        function confirmAction() {
             // Mostrar la ventana de confirmación
             const confirmed = confirm("¿Estás seguro de que deseas marcar este mantenimiento como recogido?");
             
-            if (confirmed) {
-                // Si el usuario confirma, enviar el formulario
-                document.getElementById('form-' + autoid).submit();
-            }
+            // Si se cancela, retorna false para prevenir el envío
+            return confirmed;
         }
     </script>
 </x-empleado>

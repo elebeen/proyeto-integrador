@@ -67,8 +67,8 @@ Route::middleware(['auth:empleado'])->group(function () {
     Route::get('empleado/citas', [EmpleadoController::class,'filtros_citas'])
         ->name('citas.filtros');
 
-    Route::get('empleado/cola-citas',[EmpleadoController::class, 'ordenar_citas_prioridad'])
-        ->name('cola.citas');
+    // Route::get('empleado/cola-citas',[EmpleadoController::class, 'ordenar_citas_prioridad'])
+    //     ->name('cola.citas');
 
     Route::get('empleado/autos', [EmpleadoController::class, 'filtros_autos'])
         ->name('autos.filtros');
@@ -102,6 +102,9 @@ Route::middleware(['auth:empleado'])->group(function () {
 
     Route::get('/empleado/mis_reparaciones', [EmpleadoController::class, 'mostrarMantenimientoPorEmpleado'])
         ->name('mantenimiento.empleado');
+
+    Route::post('empleado/cita/tomar-mantenimiento', [EmpleadoController::class, 'tomar_mantenimiento'])
+        ->name('tomar-mantenimiento');
     
 });
 

@@ -91,10 +91,7 @@
                     </thead>
                     <tbody>
                         @foreach($citasFiltradas as $index => $cita)
-                            <tr 
-                                class="{{ $index % 2 === 0 ? 'bg-gray-100' : 'bg-white' }} hover:bg-gray-300 transition duration-200 cursor-pointer"
-                                onclick="window.location='{{ route('mantenimiento.detalle', $cita->id) }}'"
-                                >
+                            <tr class="{{ $index % 2 === 0 ? 'bg-gray-100' : 'bg-white' }} hover:bg-gray-300 transition duration-200">
                                 <td class="p-4 text-gray-700 border-b">
                                     <div class="flex justify-center">
                                         @if ($cita->fecha_entrega_cliente)
