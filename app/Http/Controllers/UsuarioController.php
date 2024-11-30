@@ -24,5 +24,22 @@ class UsuarioController extends Controller
         return view("usuario.quienes_somos");
     }
 
+    public function agendar_cita() {
+        return view("usuario.agendar_cita");
+    }
+
+    public function guardar_cita(Mantenimiento $mantenimiento, Request $request) {
+        
+        $validated = $request->validate([
+            'motivo' => 'required|string',
+            'servicio_tipo' => 'required|in:Electricidad,Mecanica,Planchado,General',
+            'categoria' => 'required|in:normal,premium',
+            'auto_id' => 'required|integer',
+        ]);
+
+        $mantenimiento->create($validated);
+
+        return redirect()->route('citas.filtros')->with('success', 'Mantenimiento actualizado exitosamente.');
+    }
 }
 
