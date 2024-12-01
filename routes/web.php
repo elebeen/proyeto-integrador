@@ -10,9 +10,14 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
 
 //rutas publicas
-Route::get('/', [UsuarioController::class, 'welcome'])->name('usuario.welcome');
-Route::get('servicios', [UsuarioController::class, 'services'])->name('usuario.servicios');
-Route::get('quienes_somos', [UsuarioController::class, 'quienes_somos'])->name('usuario.quienes_somos');
+Route::get('/', [UsuarioController::class, 'welcome'])
+    ->name('usuario.welcome');
+
+Route::get('servicios', [UsuarioController::class, 'services'])
+    ->name('usuario.servicios');
+
+Route::get('quienes_somos', [UsuarioController::class, 'quienes_somos'])
+    ->name('usuario.quienes_somos');
 
 Route::get('/', function () {
     return view('welcome');
@@ -29,12 +34,33 @@ Route::get('/testroute', function(){
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('servicios', [UsuarioController::class, 'services'])->name('usuario.servicios');
-    Route::get('welcome',  [UsuarioController::class, 'welcome'])->name('usuario.welcome');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::
+
+    Route::get('welcome',  [UsuarioController::class, 'welcome'])
+        ->name('usuario.welcome');
+
+    Route::get('servicios', [UsuarioController::class, 'services'])
+        ->name('usuario.servicios');
+    
+    Route::post('crear-cita', [UsuarioController::class, 'guardar_cita'])
+        ->name('usuario.crear-cita');
+
+    Route::get('agendar-cita', [UsuarioController::class, 'agendar_cita'])
+        ->name('usuario.cita-formulario');
+
+    Route::get('añadir-auto',[UsuarioController::class, 'form_auto'])
+        ->name('usuario.añadir-auto');
+
+    Route::post('crear-auto',[UsuarioController::class, 'crear_auto'])
+        ->name('usuario.crear-auto');
+
+    Route::get('mantenimientos', [UsuarioController::class, 'mostrar_mantenimientos'])
+        ->name('usuario.mantenimientos');
+
+    Route::get('autos', [UsuarioController::class, 'mostrar_autos'])
+        ->name('usuario.autos');
 });
 
 Route::middleware('guest')->group(function () {
@@ -67,9 +93,6 @@ Route::middleware(['auth:empleado'])->group(function () {
 
     Route::get('empleado/citas', [EmpleadoController::class,'filtros_citas'])
         ->name('citas.filtros');
-
-    // Route::get('empleado/cola-citas',[EmpleadoController::class, 'ordenar_citas_prioridad'])
-    //     ->name('cola.citas');
 
     Route::get('empleado/autos', [EmpleadoController::class, 'filtros_autos'])
         ->name('autos.filtros');

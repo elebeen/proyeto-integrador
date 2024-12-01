@@ -1,20 +1,8 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Sistema de Gestión de Talleres Automotrices</title>
-    @vite('resources/css/app2.css') 
-</head>
-<body class="bg-gray-50 text-gray-900 font-sans">
-
-    <!-- Navbar Componente -->
-    @include('components.navbar')
-
-    <!-- Hero Section componente -->
+<x-usuario>
+    <!-- Video de fondo -->
     @include('components.hero')
 
-    <!-- equipo profesionañ -->
+    <!-- equipo profesional -->
         <!-- ga -->
         <section class="p-14 bg-white text-gray-900">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
@@ -157,19 +145,6 @@
             </div>
         </div>
     </section>
-    
-    <!-- Footer componente  -->
-    @include('components.footer')
-
-    <!-- JavaScript for Hamburger Menu Toggle -->
-    <script>
-        const menuToggle = document.getElementById('menu-toggle');
-        const mobileMenu = document.getElementById('mobile-menu');
-        menuToggle.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-    </script>
-
     <script>
         const marcas = document.getElementById('marcaSlider');
         let offset = 0;
@@ -188,8 +163,5 @@
 
         rotateBrands(); 
     </script>
-
-
-</body>
-</html>
+</x-usuario>
 

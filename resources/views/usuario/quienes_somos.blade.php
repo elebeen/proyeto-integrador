@@ -1,18 +1,4 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Quiénes Somos - Sistema de Gestión de Talleres Automotrices</title>
-    @vite('resources/css/app2.css')
-</head>
-<body class="bg-gray-50 text-gray-900 font-sans" >
-<body class="bg-gray-50 text-gray-900 font-sans" style="background-image: url('ruta/a/tu/imagen.jpg'); background-size: cover; background-position: center;">
-
-
-    <!-- Navbar Component -->
-    @include('components.navbar')
-
+<x-usuario>
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-10">
         <section class="text-center mb-10">
@@ -82,18 +68,4 @@
             </div>
         </section>
     </main>
-
-    <!-- Footer Component -->
-    @include('components.footer')
-
-    <!-- JavaScript for Hamburger Menu Toggle -->
-    <script>
-        const menuToggle = document.getElementById('menu-toggle');
-        const mobileMenu = document.getElementById('mobile-menu');
-        menuToggle.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-    </script>
-
-</body>
-</html>
+</x-usuario>

@@ -1,20 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agendar Cita - Taller Mecánico</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100">
-
+<x-usuario>
     <div class="min-h-screen flex items-center justify-center">
         <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-lg">
             <h2 class="text-2xl font-semibold text-gray-800 text-center mb-6">Agendar Cita</h2>
 
             <!-- Formulario -->
-            <form action="/citas/agendar" method="POST" class="space-y-4">
+            <form action="{{ route('usuario.crear-cita') }}" method="POST" class="space-y-4">
                 @csrf
 
                 <!-- Motivo -->
@@ -56,15 +46,17 @@
                 </div>
 
                 <!-- Botones -->
-                <div class="flex justify-between items-center">
+                <div class="flex justify-around">
                     <button type="submit"
                         class="bg-red-600 text-white py-2 px-4 rounded-md shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                         Agendar Cita
+                    </button>
+                    <button type="submit"
+                        class="bg-red-600 text-white py-2 px-4 rounded-md shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                        Regresar
                     </button>
                 </div>
             </form>
         </div>
     </div>
-
-</body>
-</html>
+</x-usuario>

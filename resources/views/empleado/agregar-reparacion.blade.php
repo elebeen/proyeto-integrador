@@ -40,7 +40,11 @@
                 <button type="submit" 
                     class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:ring-2 focus:ring-green-400">
                     Guardar reparación
-                </button>
+                </button>   
+                <a href="{{ route('mantenimiento.detalle', $mantenimiento->id) }}"
+                    class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:ring-2 focus:ring-gray-400">
+                    Regresar
+                </a>
             </div>
         </form>
         

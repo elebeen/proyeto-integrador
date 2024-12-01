@@ -18,16 +18,59 @@
     </ul>
 
     <div class="hidden md:flex items-center space-x-6">
-        <a href="#" class="bg-red-600 text-white font-bold py-2 px-4 rounded-md hover:bg-red-700 transition">Agendar Cita</a>
-        <div class="flex space-x-4">
+        <a href="{{ route('usuario.cita-formulario') }}" class="bg-red-600 text-white font-bold py-2 px-4 rounded-md hover:bg-red-700 transition">Agendar Cita</a>
+        <div class="flex space-x-4" x-data="{ open: false }">
             @if (Route::has('login'))
-                @auth
-                @else
-                    <a href="{{ route('login') }}" class="text-white hover:text-red-500 transition">Iniciar sesión</a>
-                    @if (Route::has('register'))
-                        <a href="{{ route('register') }}" class="text-white hover:text-red-500 transition">Registrarse</a>
-                    @endif
-                @endauth
+                <nav class="-mx-3 flex flex-1 justify-end">
+                    @auth
+                        <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800" type="button">
+                            {{ Auth::user()->name }} {{ Auth::user()->apellido }}
+                            <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                            </svg>
+                        </button>
+                            
+                        <!-- Dropdown menu -->
+                        <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-blue-700">
+                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+                                <li>
+                                    <a href="" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-blue-600 dark:hover:text-white">Mantenimientos</a>
+                                </li>
+                                <li>
+                                    <a href="" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-blue-600 dark:hover:text-white">Autos</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('profile.edit') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-blue-600 dark:hover:text-white">Ver perfil</a>
+                                </li>
+                                <li>
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-blue-600 dark:hover:text-white w-full text-left">
+                                            {{ __('Log Out') }}
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+
+                    @else
+                        <a
+                            href="{{ route('login') }}"
+                            class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                        >
+                            Log in
+                        </a>
+
+                        @if (Route::has('register'))
+                            <a
+                                href="{{ route('register') }}"
+                                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                            >
+                                Register
+                            </a>
+                        @endif
+                    @endauth
+                </nav>
             @endif
         </div>
     </div>
@@ -40,7 +83,7 @@
         <li><a href="{{ route('usuario.servicios') }}" class="hover:text-red-600 transition">Servicios</a></li>
         <li><a href="#" class="hover:text-red-600 transition">Contacto</a></li>
     </ul>
-    <a href="#" class="block bg-red-600 text-white font-bold py-2 px-4 rounded-md hover:bg-red-700 transition text-center">Agendar Cita</a>
+    <a href="{{ route('usuario.cita-formulario') }}" class="block bg-red-600 text-white font-bold py-2 px-4 rounded-md hover:bg-red-700 transition text-center">Agendar Cita</a>
     <div class="flex space-x-4 justify-center">
         <a href="{{ route('login') }}" class="hover:text-red-500 transition">Iniciar sesión</a>
         <a href="{{ route('register') }}" class="hover:text-red-500 transition">Registrarse</a>

@@ -254,7 +254,7 @@ class EmpleadoController extends Controller
 
         $mantenimiento->update($validated);
 
-        return redirect()->route('citas.filtros')->with('success', 'Mantenimiento actualizado exitosamente.');
+        return redirect()->route('mantenimiento.empleado')->with('success', 'Mantenimiento actualizado exitosamente.');
     }
     
     // funcion de filtrar auto
@@ -334,7 +334,7 @@ class EmpleadoController extends Controller
 
         try {
             // Crear la reparación asociada al mantenimiento
-            $reparacion = $mantenimiento->reparaciones()->create([
+            $reparacion = $mantenimiento->reparaciones->create([
                 'descripcion' => $request->input('descripcion'),
             ]);
 

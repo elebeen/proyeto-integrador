@@ -1,16 +1,4 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Servicios - Sistema de Gestión de Talleres Automotrices</title>
-    @vite('resources/css/app2.css')
-</head>
-<body class="bg-gray-50 text-gray-900 font-sans">
-
-
-    @include('components.navbar')
-
+<x-usuario>
     <!-- titulo de la pagina -->
     <section class="text-center py-12">
         <h1 class="text-5xl font-bold mb-4">Nuestros Servicios</h1>
@@ -62,18 +50,4 @@
 
         </div>
     </section>
-
-    <!-- Footer Component -->
-    @include('components.footer')
-
-    <!-- JavaScript for Hamburger Menu Toggle -->
-    <script>
-        const menuToggle = document.getElementById('menu-toggle');
-        const mobileMenu = document.getElementById('mobile-menu');
-        menuToggle.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-    </script>
-
-</body>
-</html>
+</x-usuario>
