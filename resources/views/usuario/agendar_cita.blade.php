@@ -28,6 +28,7 @@
                             <option value="Mecanica">Mecánica</option>
                             <option value="Planchado">Planchado</option>
                             <option value="General">General</option>
+                            <option value="Preventivo">Preventivo</option>
                         </select>
                     </div>
 
@@ -45,8 +46,11 @@
                     <!-- Auto -->
                     <div>
                         <label for="auto" class="block text-sm font-medium text-gray-700">Auto</label>
-                        <input type="number" id="auto" name="auto" placeholder=""
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-700" required>
+                        <select name="auto" id="auto" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-700" required>>
+                            @foreach ($autos as $auto)
+                                <option value="{{ $auto->id }}">{{ $auto->marca }} {{ $auto->modelo }}</option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <!-- Botones -->

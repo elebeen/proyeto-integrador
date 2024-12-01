@@ -25,7 +25,7 @@ class UsuarioController extends Controller
     }
 
     public function agendar_cita() {
-        if (Auth::user()->auto == null) {
+        if (Auth::user()->autos == null) {
             return redirect()->route('usuario.anadir-auto')
                 ->with('error', 'Registre un auto para comenzar.');
         }
@@ -55,7 +55,7 @@ class UsuarioController extends Controller
     }
 
     public function crear_auto(Auto $auto, Request $request) {
-        // dd($request->all()); 
+        // Validación de los datos
         $validated = $request->validate([
             'marca' => 'required|string',
             'modelo' => 'required|string',
@@ -65,11 +65,21 @@ class UsuarioController extends Controller
             'anio_fabri' => 'required|digits:4|numeric',
             'user_id' => 'required|exists:users,id',
         ]);
-
-        Auto::create([$validated]);
-
-        return redirect()->route('usuario.autos')->with('succes', 'Auto registrado exitosamente');
+    
+        // Crear el auto con los datos validados
+        Auto::create([
+            'marca' => $validated['marca'],
+            'modelo' => $validated['modelo'],
+            'kilometraje' => $validated['kilometraje'],
+            'color' => $validated['color'],
+            'placa' => $validated['placa'],
+            'anio_fabri' => $validated['anio_fabri'],
+        ]);
+    
+        // Redirigir con mensaje de éxito
+        return redirect()->route('usuario.autos')->with('success', 'Auto registrado exitosamente');
     }
+    
 
     public function mostrar_mantenimientos()
     {
