@@ -51,11 +51,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    public function auto(){
+    public function autos(){
         return $this->hasMany(Auto::class);
     }
 
-    public function mantenimiento(){
+    public function mantenimientos(){
         return $this->hasMany(Mantenimiento::class);
     }
 

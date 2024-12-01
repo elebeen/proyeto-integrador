@@ -5,7 +5,7 @@
         </div>
         <form method="POST" action="{{ route('usuario.crear-auto') }}" class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg">
             @csrf <!-- Token de seguridad CSRF -->
-            
+            @method('POST')
             <!-- Marca -->
             <div class="mb-4">
                 <label for="marca" class="block text-gray-700 font-bold mb-2">Marca</label>
@@ -56,15 +56,6 @@
                 <label for="anio_fabri" class="block text-gray-700 font-bold mb-2">Año de fabricación</label>
                 <input type="number" name="anio_fabri" id="anio_fabri" class="w-full border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-500" required>
                 @error('anio_fabri')
-                <span class="text-red-500 text-sm">{{ $message }}</span>
-                @enderror
-            </div>
-            
-            <!-- Usuario -->
-            <div class="mb-4">
-                <label for="user_id" class="block text-gray-700 font-bold mb-2">Usuario (ID)</label>
-                <input type="number" name="user_id" id="user_id" class="w-full border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-500" required>
-                @error('user_id')
                 <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
             </div>
