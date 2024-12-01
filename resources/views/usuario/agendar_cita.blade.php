@@ -51,10 +51,10 @@
                         class="bg-red-600 text-white py-2 px-4 rounded-md shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                         Agendar Cita
                     </button>
-                    <button type="submit"
-                        class="bg-red-600 text-white py-2 px-4 rounded-md shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    <a href="{{ route('usuario.welcome') }}"
+                        class="bg-gray-600 text-white py-2 px-4 rounded-md shadow-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
                         Regresar
-                    </button>
+                    </a>
                 </div>
             </form>
         </div>

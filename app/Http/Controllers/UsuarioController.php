@@ -54,11 +54,11 @@ class UsuarioController extends Controller
         $validated = $request->validate([
             'marca' => 'required|string',
             'modelo' => 'required|string',
-            'kilometraje' => 'required|number',
-            'color' => 'required|',
-            'placa' => 'required|unique',
-            'anio_fabri' => 'required|unique',
-            'user_id' => 'required|unique',
+            'kilometraje' => 'required|numeric',
+            'color' => 'required|string',
+            'placa' => 'required|unique:autos,placa',
+            'anio_fabri' => 'required|numeric',
+            'user_id' => 'required|exists:users,id',
         ]);
 
         $auto->create($validated);
@@ -66,18 +66,15 @@ class UsuarioController extends Controller
         return redirect()->route('usuario.autos')->with('succes', 'Auto registrado exitosamente');
     }
 
-    public function mostrar_mantenimientos(Mantenimiento $mantenimientos) {
-        $mantenimientos = Mantenimiento::get()
-            ->where('usuario_id', '=', Auth::user()->id)
-            ->all();
+    public function mostrar_mantenimientos()
+    {
+        $mantenimientos = Mantenimiento::where('user_id', Auth::user()->id)->paginate(15);
 
-        return view('usuario.mantenimientos', compact(',mantenimientos'));
+        return view('usuario.mantenimientos', compact('mantenimientos'));
     }
 
     public function mostrar_autos(Auto $autos) {
-        $autos = Auto::get()
-            ->where('usuario_id', '=', Auth::user()->id)
-            ->all();
+        $autos = Auto::where('user_id', '=', Auth::user()->id)->paginate(15);
 
         return view('usuario.autos', compact('autos'));
     }

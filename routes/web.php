@@ -51,7 +51,7 @@ Route::middleware('auth')->group(function () {
         ->name('usuario.cita-formulario');
 
     Route::get('añadir-auto',[UsuarioController::class, 'form_auto'])
-        ->name('usuario.añadir-auto');
+        ->name('usuario.anadir-auto');
 
     Route::post('crear-auto',[UsuarioController::class, 'crear_auto'])
         ->name('usuario.crear-auto');

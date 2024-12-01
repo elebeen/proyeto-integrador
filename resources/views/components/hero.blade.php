@@ -8,6 +8,6 @@
         <p class="text-lg md:text-xl mb-8 max-w-xl mx-auto">
             ¡Hola! Somos VIP2CARS, el primer taller automotriz especializado en autos de gama alta en Lima y Arequipa.
         </p>
-        <a href="#" class="bg-red-500 text-white font-bold py-3 px-8 rounded hover:bg-red-600">Comienza Ahora</a>
+        <a href="{{ route('usuario.cita-formulario') }}" class="bg-red-500 text-white font-bold py-3 px-8 rounded hover:bg-red-600">Comienza Ahora</a>
     </div>
 </section>

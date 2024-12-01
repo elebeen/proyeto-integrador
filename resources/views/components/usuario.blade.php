@@ -7,9 +7,11 @@
     @vite('resources/css/app2.css') 
 </head>
 <body class="bg-gray-50 text-gray-900 font-sans">
-    @include('components.navbar')
-        {{ $slot }}
-    @include('components.footer')
+    <div class="min-h-screen">
+        @include('components.navbar')
+            {{ $slot }}
+        @include('components.footer')
+    </div>
     <script>
         const menuToggle = document.getElementById('menu-toggle');
         const mobileMenu = document.getElementById('mobile-menu');
