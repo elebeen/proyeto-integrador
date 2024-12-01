@@ -54,8 +54,7 @@ class UsuarioController extends Controller
         return view('usuario.crear-auto');
     }
 
-    public function crear_auto(Auto $auto, Request $request) {
-        // Validación de los datos
+    public function crear_auto(Request $request) {
         $validated = $request->validate([
             'marca' => 'required|string',
             'modelo' => 'required|string',
@@ -63,20 +62,13 @@ class UsuarioController extends Controller
             'color' => 'required|string',
             'placa' => 'required|regex:/^[A-Za-z0-9]{3}-[A-Za-z0-9]{3}$/|unique:autos,placa',
             'anio_fabri' => 'required|digits:4|numeric',
-            'user_id' => 'required|exists:users,id',
         ]);
     
-        // Crear el auto con los datos validados
-        Auto::create([
-            'marca' => $validated['marca'],
-            'modelo' => $validated['modelo'],
-            'kilometraje' => $validated['kilometraje'],
-            'color' => $validated['color'],
-            'placa' => $validated['placa'],
-            'anio_fabri' => $validated['anio_fabri'],
-        ]);
+        $validated['user_id'] = Auth::user()->id;
     
-        // Redirigir con mensaje de éxito
+        
+        Auto::create($validated);
+    
         return redirect()->route('usuario.autos')->with('success', 'Auto registrado exitosamente');
     }
     
