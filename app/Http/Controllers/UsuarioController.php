@@ -54,8 +54,7 @@ class UsuarioController extends Controller
         return view('usuario.crear-auto');
     }
 
-    public function crear_auto(Auto $auto, Request $request) {
-        //dd($request->all()); 
+    public function crear_auto(Request $request) {
         $validated = $request->validate([
             'marca' => 'required|string',
             'modelo' => 'required|string',
@@ -63,13 +62,16 @@ class UsuarioController extends Controller
             'color' => 'required|string',
             'placa' => 'required|regex:/^[A-Za-z0-9]{3}-[A-Za-z0-9]{3}$/|unique:autos,placa',
             'anio_fabri' => 'required|digits:4|numeric',
-            'user_id' => 'required|exists:users,id',
         ]);
-
-        Auto::create([$validated]);
-
-        return redirect()->route('usuario.autos')->with('succes', 'Auto registrado exitosamente');
+    
+        $validated['user_id'] = Auth::user()->id;
+    
+        
+        Auto::create($validated);
+    
+        return redirect()->route('usuario.autos')->with('success', 'Auto registrado exitosamente');
     }
+    
 
     public function mostrar_mantenimientos()
     {
