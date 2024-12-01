@@ -1,8 +1,8 @@
 <x-usuario>
-    <!-- Video de fondo -->
+    <!-- Hero Section componente -->
     @include('components.hero')
 
-    <!-- equipo profesional -->
+    <!-- equipo profesionañ -->
         <!-- ga -->
         <section class="p-14 bg-white text-gray-900">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
@@ -164,4 +164,3 @@
         rotateBrands(); 
     </script>
 </x-usuario>
-

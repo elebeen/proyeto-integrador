@@ -55,7 +55,7 @@ class UsuarioController extends Controller
     }
 
     public function crear_auto(Auto $auto, Request $request) {
-        // dd($request->all()); 
+        //dd($request->all()); 
         $validated = $request->validate([
             'marca' => 'required|string',
             'modelo' => 'required|string',
