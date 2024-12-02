@@ -42,7 +42,7 @@
                                     <a href="{{ route('usuario.anadir-auto') }}" class="block px-4 py-2 hover:bg-gray-800 transition">Añadir autos</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('profile.edit') }}" class="block px-4 py-2 hover:bg-gray-800 transition">Ver perfil</a>
+                                    <a href="{{ route('usuario.editar') }}" class="block px-4 py-2 hover:bg-gray-800 transition">Ver perfil</a>
                                 </li>
                                 <li>
                                     <form method="POST" action="{{ route('logout') }}">

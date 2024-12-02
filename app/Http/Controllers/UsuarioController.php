@@ -3,18 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Auto;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Models\Mantenimiento;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
+use App\Http\Requests\ProfileUpdateRequest;
 
 class UsuarioController extends Controller
 {
     public function welcome() {
         return view("welcome");
-    }
-
-    public function create() {
-        return view("usuario.create");
     }
     public function services() {
         return view("usuario.services");
@@ -85,6 +85,50 @@ class UsuarioController extends Controller
         $autos = Auto::where('user_id', '=', Auth::user()->id)->paginate(15);
 
         return view('usuario.autos', compact('autos'));
+    }
+
+    public function edit(Request $request): View
+    {
+        return view('usuario.edit-profile', [
+            'user' => $request->user(),
+        ]);
+    }
+
+    /**
+     * Update the user's profile information.
+     */
+    public function update(ProfileUpdateRequest $request): RedirectResponse
+    {
+        $request->user()->fill($request->validated());
+
+        if ($request->user()->isDirty('email')) {
+            $request->user()->email_verified_at = null;
+        }
+
+        $request->user()->save();
+
+        return Redirect::route('usuario.edit-profile')->with('status', 'profile-updated');
+    }
+
+    /**
+     * Delete the user's account.
+     */
+    public function destroy(Request $request): RedirectResponse
+    {
+        $request->validateWithBag('userDeletion', [
+            'password' => ['required', 'current_password'],
+        ]);
+
+        $user = $request->user();
+
+        Auth::logout();
+
+        $user->delete();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return Redirect::to('/');
     }
 }
 

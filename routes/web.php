@@ -61,6 +61,16 @@ Route::middleware('auth')->group(function () {
 
     Route::get('autos', [UsuarioController::class, 'mostrar_autos'])
         ->name('usuario.autos');
+
+    Route::get('/editar-perfil', [UsuarioController::class, 'edit'])
+        ->name('usuario.editar');
+    
+    Route::patch('/editar-perfil', [UsuarioController::class, 'update'])
+        ->name('usuario.actualizar');
+
+    Route::delete('/editar-perfil', [UsuarioController::class, 'destroy'])
+        ->name('usuario.eliminar');
+
 });
 
 Route::middleware('guest')->group(function () {
