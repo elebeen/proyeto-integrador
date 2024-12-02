@@ -26,7 +26,7 @@ class MantenimientosSeeder extends Seeder
                 'reparacion_terminada' => now()->subDays(rand(1, 15)),
                 'auto_devuelto' => rand(0, 1),
                 'servicio_tipo' => $servicio_tipos[array_rand($servicio_tipos)],
-                'user_id' => rand(1, 35), // Asegúrate de tener usuarios en la tabla users
+                'user_id' => rand(1, 15), // Asegúrate de tener usuarios en la tabla users
                 'auto_id' => rand(1, 81), // Asegúrate de tener autos en la tabla autos
                 'empleado_id' => rand(0, 1) ? rand(1, 10) : null, // Permite valores nulos ocasionalmente
                 'categoria' => $categorias[array_rand($categorias)],
