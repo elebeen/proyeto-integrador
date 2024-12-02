@@ -23,9 +23,9 @@
                         @foreach($mantenimientos as $index => $cita)
                             <tr 
                                 class="{{ $index % 2 === 0 ? 'bg-gray-100' : 'bg-white' }} hover:bg-[#FFD166] transition duration-200 cursor-pointer"
-                                onclick="window.location='{{ route('mantenimiento.detalle', $cita->id) }}'">
+                                onclick="window.location='{{ route('usuario.mantenimiento-detalle', $cita->id) }}'">
                                 <td class="p-4 text-gray-700 border-b">
-                                    <div class="flex justify-center">
+                                    <div class="flex justify-center">   
                                         @if ($cita->fecha_entrega_cliente)
                                             {{ $cita->fecha_entrega_cliente->format('d/m/Y') }}
                                         @else

@@ -82,20 +82,26 @@ class UsuarioController extends Controller
         return view('usuario.mantenimientos', compact('mantenimientos'));
     }
 
+    public function mantenimiento_detalle(Mantenimiento $mantenimiento) {
+        
+        $mantenimiento->load(['reparaciones.repuestos', 'user']);
+        // dd($mantenimiento->toArray());
+        return view('usuario.mantenimiento-detalle', compact('mantenimiento'));
+    }
+
     public function mostrar_autos(Auto $autos) {
         $autos = Auto::where('user_id', '=', Auth::user()->id)->paginate(15);
 
         return view('usuario.autos', compact('autos'));
     }
 
-    public function edit(Request $request, User $user): View
+    public function edit(Request $request): View
     {
-        if ($user->id !== Auth::id()) {
+        if ($request->user()->id !== Auth::id()) {
             abort(403, 'No tienes permiso para editar este perfil.');
         }
-
         return view('usuario.edit-profile', [
-            'user' => $user, // Pasamos directamente el modelo User
+            'user' => $request->user(),
         ]);
     }
 

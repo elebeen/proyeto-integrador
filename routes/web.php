@@ -71,6 +71,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/editar-perfil', [UsuarioController::class, 'destroy'])
         ->name('usuario.eliminar');
 
+    Route::get('/mantenimiento-detalle/{mantenimiento}', [UsuarioController::class, 'mantenimiento_detalle'])
+        ->name('usuario.mantenimiento-detalle');
+
 });
 
 Route::middleware('guest')->group(function () {
