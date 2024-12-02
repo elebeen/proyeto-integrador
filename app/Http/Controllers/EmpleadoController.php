@@ -243,7 +243,9 @@ class EmpleadoController extends Controller
     }
 
     public function editar_mantenimiento(Mantenimiento $mantenimiento, Request $request) {
-        
+        if ($mantenimiento->empleado_id !== Auth::id()) {
+            abort(403, 'No tienes permiso para editar este mantenimiento.');
+        }
         $validated = $request->validate([
             'auto_ingresado' => 'required|boolean',
             'fecha_entrega_cliente' => 'date|nullable',
@@ -276,29 +278,29 @@ class EmpleadoController extends Controller
     }
     
     // function para la lista de  de los autos
-        public function lista_de_recojo()
-        {
-            $mantenimientosTerminados = Mantenimiento::where('estado', true)
-                ->where('auto_devuelto', false) // excluir los recogudos
-                ->whereHas('auto', function ($q) {
-                    $q->where('auto_ingresado', true);
-                })
-                ->with('auto') 
-                ->get();
-            
-            $listaEnlazada = new SplDoublyLinkedList();
+    public function lista_de_recojo()
+    {
+        $mantenimientosTerminados = Mantenimiento::where('estado', true)
+            ->where('auto_devuelto', false) // excluir los recogudos
+            ->whereHas('auto', function ($q) {
+                $q->where('auto_ingresado', true);
+            })
+            ->with('auto') 
+            ->get();
+        
+        $listaEnlazada = new SplDoublyLinkedList();
 
-            foreach ($mantenimientosTerminados as $mantenimiento) {
-                $listaEnlazada->push($mantenimiento);
-            }
-
-            $autosEnCola = collect();
-            for ($listaEnlazada->rewind(); $listaEnlazada->valid(); $listaEnlazada->next()) {
-                $autosEnCola->push($listaEnlazada->current());
-            }
-
-            return view('empleado.cola-espera', compact('autosEnCola'));
+        foreach ($mantenimientosTerminados as $mantenimiento) {
+            $listaEnlazada->push($mantenimiento);
         }
+
+        $autosEnCola = collect();
+        for ($listaEnlazada->rewind(); $listaEnlazada->valid(); $listaEnlazada->next()) {
+            $autosEnCola->push($listaEnlazada->current());
+        }
+
+        return view('empleado.cola-espera', compact('autosEnCola'));
+    }
 
     // funcion para el auto recogido
 
@@ -316,6 +318,9 @@ class EmpleadoController extends Controller
 
     public function reparacionFormulario(Mantenimiento $mantenimiento)
     {
+        if ($mantenimiento->empleado_id !== Auth::id()) {
+            abort(403, 'No tienes permiso para editar este mantenimiento.');
+        }
         $repuestos = Repuesto::all();
 
         // Retornar la vista con los datos necesarios

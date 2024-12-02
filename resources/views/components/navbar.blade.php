@@ -55,21 +55,23 @@
                             </ul>
                         </div>
                     @else
-                        <a
-                            href="{{ route('login') }}"
-                            class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                        >
-                            Log in
-                        </a>
-
-                        @if (Route::has('register'))
+                        <div class="grid grid-cols-2 gap-4 text-center">
                             <a
-                                href="{{ route('register') }}"
-                                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                href="{{ route('login') }}"
+                                class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-white/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white bg-gray-700"
                             >
-                                Register
+                                Log in
                             </a>
-                        @endif
+
+                            @if (Route::has('register'))
+                                <a
+                                    href="{{ route('register') }}"
+                                    class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-white/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white bg-gray-700"
+                                >
+                                    Register
+                                </a>
+                            @endif
+                        </div>
                     @endauth
                 </nav>
             @endif
@@ -88,31 +90,55 @@
         <li>
             <a href="{{ route('usuario.servicios') }}" class="hover:text-red-600 transition">Servicios</a>
         </li>
+        
+        @if (Route::has('login'))
+            <nav>
+                @auth
+                    <!-- Dropdown -->
+                    <li class="relative">
+                        <button id="dropdown-mobile-button" class="w-full text-left flex justify-between items-center hover:text-red-600 transition">
+                            {{ Auth::user()->name }} {{ Auth::user()->apellido }}
+                            <svg class="w-4 h-4 ml-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
 
-        <!-- Dropdown -->
-        <li class="relative">
-            <button id="dropdown-mobile-button" class="w-full text-left flex justify-between items-center hover:text-red-600 transition">
-                {{ Auth::user()->name }} {{ Auth::user()->apellido }}
-                <svg class="w-4 h-4 ml-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                </svg>
-            </button>
-
-            <ul id="dropdown-mobile-menu" class="hidden mt-2 bg-gray-800 rounded-md shadow-md space-y-2 p-2">
-                <li>
-                    <a href="{{ route('usuario.mantenimientos') }}" class="block px-4 py-2 text-white hover:bg-red-600 transition rounded-md">Mantenimientos</a>
-                </li>
-                <li>
-                    <a href="{{ route('usuario.autos') }}" class="block px-4 py-2 text-white hover:bg-red-600 transition rounded-md">Autos</a>
-                </li>
-                <li>
-                    <a href="{{ route('usuario.anadir-auto') }}" class="block px-4 py-2 text-white hover:bg-red-600 transition rounded-md">Añadir Autos</a>
-                </li>
-                <li>
-                    <a href="{{ route('profile.edit') }}" class="block px-4 py-2 hover:bg-gray-800 transition">Ver perfil</a>
-                </li>
-            </ul>
-        </li>
+                        <ul id="dropdown-mobile-menu" class="hidden mt-2 bg-gray-800 rounded-md shadow-md space-y-2 p-2">
+                            <li>
+                                <a href="{{ route('usuario.mantenimientos') }}" class="block px-4 py-2 text-white hover:bg-red-600 transition rounded-md">Mantenimientos</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('usuario.autos') }}" class="block px-4 py-2 text-white hover:bg-red-600 transition rounded-md">Autos</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('usuario.anadir-auto') }}" class="block px-4 py-2 text-white hover:bg-red-600 transition rounded-md">Añadir Autos</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('usuario.editar') }}" class="block px-4 py-2 hover:bg-gray-800 transition">Ver perfil</a>
+                            </li>
+                        </ul>
+                    </li>
+                @else
+                    <div class="grid grid-cols-2 gap-4 text-center">
+                        <a
+                            href="{{ route('login') }}"
+                            class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-white/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white bg-gray-700"
+                        >
+                            Log in
+                        </a>
+    
+                        @if (Route::has('register'))
+                            <a
+                                href="{{ route('register') }}"
+                                class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-white/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white  bg-gray-700"
+                            >
+                                Register
+                            </a>
+                        @endif
+                    </div>
+                @endauth
+            </nav>
+        @endif
     </ul>
     <a href="{{ route('usuario.cita-formulario') }}" class="block bg-red-600 text-white font-bold py-2 px-4 rounded-md hover:bg-red-700 transition text-center">Agendar Cita</a>
 </div>

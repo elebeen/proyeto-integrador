@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 
 class UsuarioController extends Controller
 {
@@ -87,10 +88,14 @@ class UsuarioController extends Controller
         return view('usuario.autos', compact('autos'));
     }
 
-    public function edit(Request $request): View
+    public function edit(Request $request, User $user): View
     {
+        if ($user->id !== Auth::id()) {
+            abort(403, 'No tienes permiso para editar este perfil.');
+        }
+
         return view('usuario.edit-profile', [
-            'user' => $request->user(),
+            'user' => $user, // Pasamos directamente el modelo User
         ]);
     }
 
