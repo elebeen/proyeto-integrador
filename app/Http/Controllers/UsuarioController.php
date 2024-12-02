@@ -25,15 +25,15 @@ class UsuarioController extends Controller
         return view("usuario.quienes_somos");
     }
 
-    public function agendar_cita() {
+    public function agendar_cita(Request $request) {
         if (Auth::user()->autos == null) {
             return redirect()->route('usuario.anadir-auto')
                 ->with('error', 'Registre un auto para comenzar.');
         }
     
         $autos = Auto::where('user_id', Auth::user()->id)->get();
-        
-        return view("usuario.agendar_cita", compact('autos'));
+        $categoria = $request->input('categoria');
+        return view("usuario.agendar_cita", compact('autos', 'categoria'));
     }
 
     public function guardar_cita(Request $request) {
