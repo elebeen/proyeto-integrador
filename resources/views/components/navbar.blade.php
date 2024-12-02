@@ -30,7 +30,7 @@
                         </button>
                         
                         <!-- Dropdown menu -->
-                        <div id="dropdown" class="z-10 hidden bg-black text-white divide-y divide-gray-600 rounded-lg shadow w-44">
+                        <div id="dropdown" class="z-10 hidden bg-gray-700 text-white divide-y divide-gray-600 rounded-lg shadow w-44">
                             <ul class="py-2 text-sm" aria-labelledby="dropdownDefaultButton">
                                 <li>
                                     <a href="{{ route('usuario.mantenimientos') }}" class="block px-4 py-2 hover:bg-gray-800 transition">Mantenimientos</a>
@@ -92,7 +92,7 @@
         <!-- Dropdown -->
         <li class="relative">
             <button id="dropdown-mobile-button" class="w-full text-left flex justify-between items-center hover:text-red-600 transition">
-                Más Opciones
+                {{ Auth::user()->name }} {{ Auth::user()->apellido }}
                 <svg class="w-4 h-4 ml-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                 </svg>
@@ -107,6 +107,9 @@
                 </li>
                 <li>
                     <a href="{{ route('usuario.anadir-auto') }}" class="block px-4 py-2 text-white hover:bg-red-600 transition rounded-md">Añadir Autos</a>
+                </li>
+                <li>
+                    <a href="{{ route('profile.edit') }}" class="block px-4 py-2 hover:bg-gray-800 transition">Ver perfil</a>
                 </li>
             </ul>
         </li>

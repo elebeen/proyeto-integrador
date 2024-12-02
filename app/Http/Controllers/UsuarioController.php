@@ -67,7 +67,7 @@ class UsuarioController extends Controller
     
         $validated['user_id'] = Auth::user()->id;
     
-        
+
         Auto::create($validated);
     
         return redirect()->route('usuario.autos')->with('success', 'Auto registrado exitosamente');

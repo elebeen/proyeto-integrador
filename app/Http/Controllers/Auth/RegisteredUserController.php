@@ -52,6 +52,6 @@ class RegisteredUserController extends Controller
 
         $user->assignRole('usuario');
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect(route('usuario.welcome', absolute: false));
     }
 }
