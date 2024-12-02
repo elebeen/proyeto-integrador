@@ -14,12 +14,12 @@ class CredencialesEmpleado extends Seeder
     public function run(): void
     {
         $credenciales = [
-            // [
-            //     'id' => 1,
-            //     'usuario' => 'empleado1',
-            //     'password' => Hash::make('Tecsup2024'),
-            //     'empleado_id' => 1,
-            // ],
+            [
+                'id' => 1,
+                'usuario' => 'empleado1',
+                'password' => Hash::make('Tecsup2024'),
+                'empleado_id' => 1,
+            ],
             [
                 'id' => 2,
                 'usuario' => 'empleado2',
@@ -43,6 +43,36 @@ class CredencialesEmpleado extends Seeder
                 'usuario' => 'empleado5',
                 'password' => Hash::make('Tecsup2024'),
                 'empleado_id' => 5,
+            ],
+            [
+                'id' => 1,
+                'usuario' => 'empleado',
+                'password' => Hash::make('Tecsup2024'),
+                'empleado_id' => 6,
+            ],
+            [
+                'id' => 2,
+                'usuario' => 'empleado7',
+                'password' => Hash::make('Tecsup2024'),
+                'empleado_id' => 7,
+            ],
+            [
+                'id' => 3,
+                'usuario' => 'empleado8',
+                'password' => Hash::make('Tecsup2024'),
+                'empleado_id' => 8,
+            ],
+            [
+                'id' => 4,
+                'usuario' => 'empleado9',
+                'password' => Hash::make('Tecsup2024'),
+                'empleado_id' => 9,
+            ],
+            [
+                'id' => 5,
+                'usuario' => 'empleado10',
+                'password' => Hash::make('Tecsup2024'),
+                'empleado_id' => 10,
             ],
         ];
 
