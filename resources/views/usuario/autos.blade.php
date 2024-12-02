@@ -1,5 +1,5 @@
 <x-usuario>
-    <div class="min-h-screen flex flex-col">
+    <div class="flex flex-col">
         <div class="w-full p-6 flex-grow">
             <h1 class="text-2xl font-bold mb-6 text-[#D00000]">Mis autos</h1>
             <div class="overflow-x-auto h-full w-full">
@@ -13,7 +13,6 @@
                                 <th class="px-4 py-2 text-left font-semibold uppercase tracking-wider">Color</th>
                                 <th class="px-4 py-2 text-left font-semibold uppercase tracking-wider">Placa</th>
                                 <th class="px-4 py-2 text-left font-semibold uppercase tracking-wider">Año</th>
-                                <th class="px-4 py-2 text-left font-semibold uppercase tracking-wider">Cliente</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -29,7 +28,6 @@
                                     <td class="px-4 py-2 border-b text-gray-700">{{ $auto->color }}</td>
                                     <td class="px-4 py-2 border-b text-gray-700">{{ $auto->placa }}</td>
                                     <td class="px-4 py-2 border-b text-gray-700">{{ $auto->anio_fabri }}</td>
-                                    <td class="px-4 py-2 border-b text-gray-700">{{ $auto->user->name ?? 'N/A' }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

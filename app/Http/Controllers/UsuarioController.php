@@ -35,16 +35,17 @@ class UsuarioController extends Controller
         return view("usuario.agendar_cita", compact('autos'));
     }
 
-    public function guardar_cita(Mantenimiento $mantenimiento, Request $request) {
-    
+    public function guardar_cita(Request $request) {
+        // dd($request->all()); 
         $validated = $request->validate([
             'motivo' => 'required|string',
-            'servicio_tipo' => 'required|in:Electricidad,Mecanica,Planchado,General',
+            'servicio_tipo' => 'required|in:Electricidad,Mecanica,Planchado,General,Preventivo',
             'categoria' => 'required|in:normal,premium',
-            'auto_id' => 'required',
+            'auto_id' => 'required|exists:autos,id',
         ]);
+        $validated['user_id'] = Auth::user()->id;
     
-        $mantenimiento->create($validated);
+        Mantenimiento::create($validated);
     
         return redirect()->route('usuario.mantenimientos')->with('success', 'Mantenimiento actualizado exitosamente.');
     }

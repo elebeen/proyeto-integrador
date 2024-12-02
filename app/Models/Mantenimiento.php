@@ -17,6 +17,11 @@ class Mantenimiento extends Model
         'auto_ingresado',
         'estado',
         'auto_devuelto',
+        'motivo',
+        'servicio_tipo',
+        'categoria',
+        'user_id',
+        'auto_id',
     ];
 
     protected $casts = [
