@@ -6,6 +6,8 @@
                     <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
                         <h2 class="mb-4 text-3xl font-bold text-gray-900 dark:text-white">Agendar Cita</h2>
                         <form action="{{ route('usuario.crear-cita') }}" method="POST">
+                            @csrf
+                            @method('POST')
                             <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
                                 <div>
                                     <label for="categoria" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Categoría</label>

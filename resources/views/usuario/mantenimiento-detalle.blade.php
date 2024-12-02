@@ -1,9 +1,10 @@
 <x-usuario>
-    <div class="w-full p-6">
-        <h1 class="text-2xl font-bold pl-6">Detalle del Mantenimiento</h1>
+    <div class="w-full">
         <div class="overflow-x-auto h-full w-full p-6">
-            <div class="grid grid-cols-3 gap-6 bg-white p-8 rounded-lg shadow-md">
-                <div class="col-span-3">
+            <h1 class="text-2xl font-bold p-6 pl-0 pt-0">Detalle del Mantenimiento</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-white p-8 rounded-lg shadow-md">
+                <!-- Descripción del problema -->
+                <div class="col-span-full">
                     <label for="motivo" class="block text-lg font-medium text-gray-700 mb-2">Descripción del problema</label>
                     <textarea 
                         id="motivo"
@@ -11,9 +12,10 @@
                         class="w-full px-4 py-2 m-0 border border-gray-300 rounded-md"
                         disabled
                         rows="3"
-                    >{{ old('motivo', $mantenimiento->motivo ) }}
-                    </textarea>
+                    >{{ old('motivo', $mantenimiento->motivo ) }}</textarea>
                 </div>
+        
+                <!-- Cliente -->
                 <div class="col-span-1">
                     <label for="cliente" class="block text-lg font-medium text-gray-700 mb-2">Cliente</label>
                     <input 
@@ -25,6 +27,8 @@
                         disabled
                     >
                 </div>
+        
+                <!-- Marca -->
                 <div class="col-span-1">
                     <label for="marca" class="block text-lg font-medium text-gray-700 mb-2">Marca</label>
                     <input 
@@ -36,6 +40,8 @@
                         disabled
                     >
                 </div>
+        
+                <!-- Placa -->
                 <div class="col-span-1">
                     <label for="placa" class="block text-lg font-medium text-gray-700 mb-2">Placa</label>
                     <input 
@@ -47,6 +53,8 @@
                         disabled
                     >
                 </div>
+        
+                <!-- Categoría -->
                 <div class="col-span-1">
                     <label for="categoria" class="block text-lg font-medium text-gray-700 mb-2">Categoria</label>
                     <input 
@@ -58,6 +66,8 @@
                         disabled
                     >
                 </div>
+        
+                <!-- Tipo de Servicio -->
                 <div class="col-span-1">
                     <label for="servicio_tipo" class="block text-lg font-medium text-gray-700 mb-2">Tipo de servicio</label>
                     <input 
@@ -69,6 +79,8 @@
                         disabled
                     >
                 </div>
+        
+                <!-- Modelo -->
                 <div class="col-span-1">
                     <label for="modelo" class="block text-lg font-medium text-gray-700 mb-2">Modelo</label>
                     <input
@@ -81,10 +93,10 @@
                     >
                 </div>
             </div>
-        </div>
+        </div>             
 
         <div class="overflow-x-auto h-full w-full p-6">
-            <div class="grid grid-cols-3 gap-6 bg-white p-8 rounded-lg shadow-md">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-white p-8 rounded-lg shadow-md">
                 <div class="col-span-1">
                     <label for="auto_ingresado" class="block text-lg font-medium text-gray-700 mb-2">Auto ingresado al taller</label>
                     <button 
@@ -96,7 +108,6 @@
                     >
                         {{ $mantenimiento?->auto_ingresado ? 'Ingresado' : 'No Ingresado' }}
                     </button>
-                    <!-- Campo oculto para enviar el valor del botón -->
                     <input 
                         type="hidden" 
                         id="auto_ingresado" 
@@ -105,9 +116,9 @@
                     >
                     <x-input-error :messages="$errors->get('auto_ingresado')" class="mt-2" />
                 </div>
+        
                 <div class="col-span-1">
                     <label for="estado" class="block text-lg font-medium text-gray-700 mb-2">Estado</label>
-                    <!-- Botón Toggle -->
                     <button 
                         type="button" 
                         id="estado_toggle" 
@@ -117,7 +128,6 @@
                     >
                         {{ $mantenimiento?->estado ? 'Terminado' : 'Pendiente' }}
                     </button>
-                    <!-- Campo oculto para sincronizar el valor del botón -->
                     <input 
                         type="hidden" 
                         id="estado" 
@@ -126,6 +136,7 @@
                     >
                     <x-input-error :messages="$errors->get('estado')" class="mt-2" />
                 </div>
+        
                 <div class="col-span-1">
                     <label for="auto_devuelto" class="block text-lg font-medium text-gray-700 mb-2">Auto devuelto</label>
                     <button
@@ -145,6 +156,7 @@
                     >
                     <x-input-error :messages="$errors->get('auto_devuelto')" class="mt-2" />
                 </div>
+        
                 <div class="col-span-1">
                     <label for="fecha_entrega_cliente" class="block text-lg font-medium text-gray-700 mb-2">Fecha de ingreso</label>
                     <input
@@ -153,20 +165,24 @@
                         name="fecha_entrega_cliente"
                         value="{{ old('fecha_entrega_cliente', $mantenimiento->fecha_entrega_cliente?->format('Y-m-d')) }}"
                         class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none"
+                        disabled
                     >
                     <x-input-error :messages="$errors->get('fecha_entrega_cliente')" class="mt-2" />
                 </div>
+        
                 <div class="col-span-1">
                     <label for="reparacion_terminada" class="block text-lg font-medium text-gray-700 mb-2">Fecha de término de la reparación</label>
                     <input 
                         type="date" 
                         id="reparacion_terminada" 
                         name="reparacion_terminada" 
-                        value="{{ old('reparacion_terminada', $mantenimiento->reparacion_terminada?->format('Y-m-d')) }}" 
+                        value="{{ old('reparacion_terminada', $mantenimiento->reparacion_terminada?->format('Y-m-d')) }}"
                         class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none"
+                        disabled
                     >
                     <x-input-error :messages="$errors->get('reparacion_terminada')" class="mt-2" />
                 </div>
+        
                 <div class="col-span-1">
                     <label for="fecha_devol_cliente" class="block text-lg font-medium text-gray-700 mb-2">Fecha de devolución</label>
                     <input 
@@ -175,16 +191,17 @@
                         name="fecha_devol_cliente" 
                         value="{{ old('fecha_devol_cliente', $mantenimiento->fecha_devol_cliente?->format('Y-m-d')) }}" 
                         class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none"
+                        disabled
                     >
                     <x-input-error :messages="$errors->get('fecha_devol_cliente')" class="mt-2" />
                 </div>
-                <div class="col-span-3 flex justify-center w-full gap-4">
-                    <div class="flex items-center">
-                        <a href="{{ route('mantenimiento.empleado') }}" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">Regresar</a>
-                    </div>
+        
+                <div class="col-span-1 flex justify-center md:col-span-2 lg:col-span-3 w-full gap-4">
+                    <a href="{{ route('mantenimiento.empleado') }}" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">Regresar</a>
                 </div>
             </div>
         </div>
+        
 
         <div class="overflow-x-auto h-full w-full p-6 pt-0">
             <h1 class="text-2xl font-bold mb-6">Reparaciones</h1>
@@ -207,5 +224,4 @@
                 </ul>
             @endforeach
         </div>
-
 </x-usuario>
