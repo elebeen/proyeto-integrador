@@ -72,9 +72,17 @@
                                     </div>
                                 </td>
                                 <td class="p-4 text-gray-700 border-b">
-                                    <div class="flex justify-center">
-                                        {{ $cita->empleado->nombre }} {{ $cita->empleado->apellido }}
-                                    </div>
+                                    @if ($cita->empleado)
+                                        <div class="flex justify-center">
+                                            {{ $cita->empleado->nombre }} {{ $cita->empleado->apellido }}
+                                        </div>
+                                    @else
+                                        <div class="flex justify-center">
+                                            <span class="px-3 py-1 rounded-full text-sm font-medium bg-red-700 text-white">
+                                                En proceso
+                                            </span>
+                                        </div>
+                                    @endif
                                 </td>
                                 <td class="p-4 text-gray-700 border-b">
                                     <div class="flex justify-center">

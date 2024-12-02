@@ -46,7 +46,7 @@
                                 <form action="{{ route('tomar-mantenimiento') }}" method="POST">
                                     @csrf
                                     @method('POST')
-                                    <button type="submit">
+                                    <button type="submit" id="tomarTrabajo">
                                         <div class="flex justify-left items-center transform transition-transform hover:scale-110 bg-teal-500 hover:bg-teal-600 p-2 rounded text-white font-medium">
                                             Tomar trabajo
                                         </div>
@@ -69,4 +69,17 @@
             @endif
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('formTomarTrabajo');
+            const button = document.getElementById('tomarTrabajo');
+    
+            button.addEventListener('click', function (event) {
+                const confirmed = confirm('¿Estás seguro de que deseas tomar este trabajo?');
+                if (!confirmed) {
+                    event.preventDefault(); // Evita que el formulario se envíe
+                }
+            });
+        });
+    </script>
 </x-empleado>

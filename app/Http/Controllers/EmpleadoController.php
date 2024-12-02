@@ -171,7 +171,7 @@ class EmpleadoController extends Controller
         }
 
         // Obtener los autos filtrados
-        $autos = $query->get();
+        $autos = $query->paginate(15);
 
         // Pasar los autos filtrados a la vista
         return view('empleado.autos', compact('autos'));
@@ -189,8 +189,6 @@ class EmpleadoController extends Controller
             $query->where('apellido','like','%' . $request->apellido . '%');
         }
         
-        $users = $query->get();
-
         $users = $query->get();
 
         // Calcular la edad para cada usuario

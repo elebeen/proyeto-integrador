@@ -90,5 +90,10 @@
                 </div>
             @endif
         </div>
+        <div class="mt-4">
+            <div class="space-x-4 flex items-center justify-around">
+                {{ $autos->links('pagination::tailwind') }}
+            </div>
+        </div>
     </div>
 </x-empleado>
