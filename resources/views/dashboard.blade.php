@@ -11,6 +11,7 @@
                 <div class="p-6 text-gray-900">
                     {{ __("You're logged in!") }}
                 </div>
+                <a href="{{ route('dashboard')}}">nueva pagina</a>
             </div>
         </div>
     </div>

@@ -24,6 +24,12 @@
         </div>
 
         <div>
+            <x-input-label for="apellido" :value="__('Lastname')" />
+            <x-text-input id="apellido" name="apellido" type="text" class="mt-1 block w-full" :value="old('apellido', $user->apellido)" required autofocus autocomplete="name" />
+            <x-input-error class="mt-2" :messages="$errors->get('apellido')" />
+        </div>
+
+        <div>
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
@@ -45,6 +51,18 @@
                     @endif
                 </div>
             @endif
+        </div>
+
+        <div>
+            <x-input-label for="fecha_nac" :value="__('Birthday')" />
+            <x-text-input id="fecha_nac" name="fecha_nac" type="date" class="mt-1 block w-full" :value="old('fecha_nac', $user->fecha_nac)" required autofocus autocomplete="name" />
+            <x-input-error class="mt-2" :messages="$errors->get('fecha_nac')" />
+        </div>
+
+        <div>
+            <x-input-label for="telefono" :value="__('Phone')" />
+            <x-text-input id="telefono" name="telefono" type="text" class="mt-1 block w-full" :value="old('telefono', $user->telefono)" required autofocus autocomplete="name" />
+            <x-input-error class="mt-2" :messages="$errors->get('telefono')" />
         </div>
 
         <div class="flex items-center gap-4">
