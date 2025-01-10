@@ -12,12 +12,12 @@
                                 <div>
                                     <label for="categoria" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Categoría</label>
                                     <select id="categoria" name="categoria" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                        <option value="" disabled {{ empty($categoria) ? 'selected' : '' }}>Selecciona una categoría</option>
-                                        <option value="Electricidad" {{ $categoria == 'Electricidad' ? 'selected' : '' }}>Electricidad</option>
-                                        <option value="Mecanica" {{ $categoria == 'Mecanica' ? 'selected' : '' }}>Mecanica</option>
-                                        <option value="Planchado" {{ $categoria == 'Planchado' ? 'selected' : '' }}>Planchado</option>
-                                        <option value="General" {{ $categoria == 'General' ? 'selected' : '' }}>General</option>
-                                        <option value="Preventivo" {{ $categoria == 'Preventivo' ? 'selected' : '' }}>Preventivo</option>
+                                        <option selected="">Selecciona una categoría</option>
+                                        <option value="Electricidad">Electricidad</option>
+                                        <option value="Mecanica">Mecanica</option>
+                                        <option value="Planchado">Planchado</option>
+                                        <option value="General">General</option>
+                                        <option value="Preventivo">Preventivo</option>
                                     </select>
                                 </div>
                                 <div>
